@@ -3,9 +3,11 @@
 | Module | State |
 |---|---|
 | Project skeleton (Laravel 12.70, Sanctum, Spatie, Purifier, Livewire, Vue islands) | done 2026-10-26 |
-| Roles and permissions (60 permissions, 4 roles, from prototype) | done, seeded |
+| Roles and permissions (100 permissions: 20 modules x 5 actions, 4 roles, from prototype `admin.js` incl. analytics, tags, videos, magazine, radios, television, audit, backups; audit/backups admin-only) | done, seeded; updated 2026-10-28 |
 | Content schema (categories, posts, media, podcasts, FR/EN translations) | migrated |
-| Authentication (login, API tokens) | todo |
+| Authentication (admin session login/logout at `/admin/login`, Sanctum tokens `POST /api/tokens`, `DELETE /api/tokens/current`, `login` rate limiter 5/min per account+IP and 20/min per IP, `Password::defaults()` min 12 mixed) | done 2026-10-28, `tests/Feature/AuthTest.php`; password minimum is a working value pending owner rule; admin styling to port with the admin layout module |
+| Audit log append-only (EX-28, INV-02): `audit_logs` table, `AuditLog::record()`, model refuses update/delete, no write route, read-only `/admin/audit` behind `audit.view`; login, logout, failed login, lockout, token create/revoke journaled | done 2026-10-28, `tests/Feature/AuditLogTest.php`; no DB trigger (shared-host MySQL may lack TRIGGER privilege, Q9); other modules must call `AuditLog::record()` on writes |
+| Role permissions CRUD screen (phase 1 exit: admin changes a role's rights, journaled) | todo, next |
 | Import of the 64 articles per language from the prototype/WordPress dump | todo |
 | Public pages (home, category, article, podcasts) in Blade | todo |
 | Admin Livewire: posts, categories, media | todo |
