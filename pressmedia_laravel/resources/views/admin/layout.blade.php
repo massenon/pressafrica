@@ -13,6 +13,7 @@
 <header class="flex items-center justify-between border-b bg-white px-6 py-3">
     <a href="{{ route('admin.dashboard') }}" class="font-serif text-lg font-bold">{{ config('app.name') }}</a>
     <nav class="flex items-center gap-4 text-sm">
+        @can('users.view')<a href="{{ route('admin.roles.index') }}">Roles</a>@endcan
         @can('audit.view')<a href="{{ route('admin.audit.index') }}">Audit log</a>@endcan
         <span class="text-slate-500">{{ auth()->user()->name }}</span>
         <form method="POST" action="{{ route('admin.logout') }}">@csrf<button type="submit" class="text-red-700">Log out</button></form>
