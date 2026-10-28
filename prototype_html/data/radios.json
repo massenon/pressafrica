@@ -1,0 +1,22 @@
+{
+  "stations": [
+    {"id": "rad-001", "status": "published", "name": "RFI Afrique", "country": "FR", "language": "fr", "genre": "public", "website": "https://www.rfi.fr",
+     "fr": {"desc": "La radio d'information internationale française, avec des éditions et des programmes dédiés à l'actualité du continent."},
+     "en": {"desc": "French international news radio, with editions and programmes devoted to news from the continent."}},
+    {"id": "rad-002", "status": "published", "name": "BBC Afrique", "country": "GB", "language": "fr", "genre": "public", "website": "https://www.bbc.com/afrique",
+     "fr": {"desc": "Le service francophone de la BBC : informations, reportages et analyses sur l'Afrique et le monde."},
+     "en": {"desc": "The BBC's French-language service: news, reports and analysis on Africa and the world."}},
+    {"id": "rad-003", "status": "published", "name": "Radio Okapi", "country": "CD", "language": "fr", "genre": "news", "website": "https://www.radiookapi.net",
+     "fr": {"desc": "Radio d'information de référence en République démocratique du Congo, centrée sur l'actualité nationale et locale."},
+     "en": {"desc": "A leading news radio station in the Democratic Republic of the Congo, focused on national and local news."}},
+    {"id": "rad-004", "status": "published", "name": "VOA Afrique", "country": "US", "language": "fr", "genre": "public", "website": "https://www.voaafrique.com",
+     "fr": {"desc": "Le service en français de la Voix de l'Amérique, consacré à l'actualité africaine."},
+     "en": {"desc": "The French-language service of the Voice of America, devoted to African news."}},
+    {"id": "rad-005", "status": "published", "name": "Deutsche Welle", "country": "DE", "language": "fr,en", "genre": "public", "website": "https://www.dw.com",
+     "fr": {"desc": "Le média international allemand, avec des contenus en plusieurs langues et des rubriques consacrées à l'Afrique."},
+     "en": {"desc": "Germany's international broadcaster, with content in several languages and sections devoted to Africa."}},
+    {"id": "rad-006", "status": "published", "name": "Voice of Nigeria", "country": "NG", "language": "en", "genre": "public", "website": "https://von.gov.ng",
+     "fr": {"desc": "La radio internationale du Nigeria, diffusée en anglais et dans d'autres langues, tournée vers l'actualité nigériane et africaine."},
+     "en": {"desc": "Nigeria's international radio service, broadcasting in English and other languages, focused on Nigerian and African news."}}
+  ]
+}

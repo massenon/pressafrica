@@ -1,0 +1,5 @@
+# SITE_URL is a placeholder host, see tools/build_site.py
+User-agent: *
+Allow: /
+Disallow: /admin/
+Sitemap: https://www.africaglobalpress.example/sitemap.xml

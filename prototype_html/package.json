@@ -1,0 +1,15 @@
+{
+  "name": "africa-global-press-prototype",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build:css": "tailwindcss -c tailwind.config.js -i assets/css/src.css -o assets/css/app.min.css --minify",
+    "watch:css": "tailwindcss -c tailwind.config.js -i assets/css/src.css -o assets/css/app.min.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "@hotwired/turbo": "^8.0.23"
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "topics": [
+    {
+      "id": "politics",
+      "fr": "Politique",
+      "en": "Politics"
+    },
+    {
+      "id": "economy",
+      "fr": "Économie",
+      "en": "Economy"
+    },
+    {
+      "id": "society",
+      "fr": "Société",
+      "en": "Society"
+    },
+    {
+      "id": "culture",
+      "fr": "Culture",
+      "en": "Culture"
+    },
+    {
+      "id": "health",
+      "fr": "Santé",
+      "en": "Health"
+    }
+  ],
+  "videos": [
+    {
+      "id": "vid-001",
+      "article": "4617",
+      "topic": "economy",
+      "date": "2026-10-26",
+      "status": "published",
+      "fr": {
+        "title": "Ghana : le cedi, baromètre de la reprise",
+        "desc": "Pourquoi la performance de la monnaie ghanéenne est suivie de près par les marchés, et ce qu'elle change pour l'économie réelle."
+      },
+      "en": {
+        "title": "Ghana: the cedi as a barometer of recovery",
+        "desc": "Why markets are watching the Ghanaian currency so closely, and what it means for the real economy."
+      },
+      "duration": 10,
+      "file": "assets/video/vid-001.mp4",
+      "poster": "assets/img/posts/cedi-860.webp"
+    },
+    {
+      "id": "vid-002",
+      "article": "4632",
+      "topic": "politics",
+      "date": "2026-10-24",
+      "status": "published",
+      "fr": {
+        "title": "Gambie : la succession de Barrow en jeu",
+        "desc": "À l'approche de la présidentielle de décembre 2026, les scénarios qui se dessinent autour de la succession."
+      },
+      "en": {
+        "title": "The Gambia: the race to succeed Barrow",
+        "desc": "With the December 2026 presidential election approaching, the scenarios taking shape around the succession."
+      },
+      "duration": 10,
+      "file": "assets/video/vid-002.mp4",
+      "poster": "assets/img/posts/potentiels-candidats-presidentielle-gambienne-860.webp"
+    },
+    {
+      "id": "vid-003",
+      "article": "4575",
+      "topic": "culture",
+      "date": "2026-10-22",
+      "status": "published",
+      "fr": {
+        "title": "Congo : l'économie culturelle en pleine montée",
+        "desc": "Musique, mode, cinéma : les industries créatives deviennent un relais de croissance."
+      },
+      "en": {
+        "title": "Congo: the cultural economy on the rise",
+        "desc": "Music, fashion and film: the creative industries are becoming a growth engine."
+      },
+      "duration": 10,
+      "file": "assets/video/vid-003.mp4",
+      "poster": "assets/img/posts/congo-860.webp"
+    },
+    {
+      "id": "vid-004",
+      "article": "4555",
+      "topic": "health",
+      "date": "2026-10-20",
+      "status": "published",
+      "fr": {
+        "title": "Maurice : la mortalité materno-infantile, un défi persistant",
+        "desc": "Les chiffres, les causes et les réponses du système de santé."
+      },
+      "en": {
+        "title": "Mauritius: maternal and infant mortality, a lasting challenge",
+        "desc": "The figures, the causes and the health system's response."
+      },
+      "duration": 10,
+      "file": "assets/video/vid-004.mp4",
+      "poster": "assets/img/posts/photo-accouchement-780x470-1-860.webp"
+    },
+    {
+      "id": "vid-005",
+      "article": "4503",
+      "topic": "politics",
+      "date": "2026-10-18",
+      "status": "published",
+      "fr": {
+        "title": "Namibie : portrait d'une pionnière à la présidence",
+        "desc": "Le parcours de Netumbo Nandi-Ndaitwah, première femme à la tête de l'État namibien."
+      },
+      "en": {
+        "title": "Namibia: portrait of a trailblazing president",
+        "desc": "The path of Netumbo Nandi-Ndaitwah, the first woman to lead the Namibian state."
+      },
+      "duration": 10,
+      "file": "assets/video/vid-005.mp4",
+      "poster": "assets/img/posts/netumbo-nandi-ndaitwah-860.webp"
+    },
+    {
+      "id": "vid-006",
+      "article": "4504",
+      "topic": "economy",
+      "date": "2026-10-15",
+      "status": "published",
+      "fr": {
+        "title": "Mozambique : l'agriculture, pilier encore sous-exploité",
+        "desc": "Un secteur qui fait vivre la majorité des habitants, mais dont le potentiel reste à débloquer."
+      },
+      "en": {
+        "title": "Mozambique: agriculture, a pillar still under-used",
+        "desc": "A sector that supports most of the population, with potential still waiting to be unlocked."
+      },
+      "duration": 10,
+      "file": "assets/video/vid-006.mp4",
+      "poster": "assets/img/posts/agriculture-au-mozambique-860.webp"
+    },
+    {
+      "id": "vid-007",
+      "article": "4572",
+      "topic": "society",
+      "date": "2026-10-12",
+      "status": "published",
+      "fr": {
+        "title": "Somalie : un quotidien de résilience et d'espoir",
+        "desc": "Rencontre avec celles et ceux qui reconstruisent, malgré les incertitudes."
+      },
+      "en": {
+        "title": "Somalia: everyday resilience and hope",
+        "desc": "Meeting the people rebuilding their lives despite the uncertainty."
+      },
+      "duration": 10,
+      "file": "assets/video/vid-007.mp4",
+      "poster": "assets/img/posts/vie-des-somaliens-860.webp"
+    },
+    {
+      "id": "vid-008",
+      "article": "4468",
+      "topic": "politics",
+      "date": "2026-10-09",
+      "status": "published",
+      "fr": {
+        "title": "CEDEAO : un cinquantenaire en quête de souffle",
+        "desc": "Cinquante ans après sa création, l'organisation face à ses défis d'intégration régionale."
+      },
+      "en": {
+        "title": "ECOWAS: fifty years on, looking for a second wind",
+        "desc": "Half a century after its creation, the organisation faces its regional integration challenges."
+      },
+      "duration": 10,
+      "file": "assets/video/vid-008.mp4",
+      "poster": "assets/img/posts/cedeao-860.webp"
+    }
+  ]
+}

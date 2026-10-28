@@ -1,0 +1,175 @@
+{
+ "shows": [
+  {
+   "id": "grand-format",
+   "fr": {
+    "title": "Le Grand Format",
+    "desc": "Un sujet africain décortiqué en profondeur, chaque semaine."
+   },
+   "en": {
+    "title": "The Big Story",
+    "desc": "One African story unpacked in depth, every week."
+   }
+  },
+  {
+   "id": "afrique-eco",
+   "fr": {
+    "title": "Afrique Éco",
+    "desc": "Économie, finance et marchés du continent en quelques minutes."
+   },
+   "en": {
+    "title": "Africa Economy",
+    "desc": "The continent's economy, finance and markets in a few minutes."
+   }
+  },
+  {
+   "id": "voix",
+   "fr": {
+    "title": "Voix d'Afrique",
+    "desc": "Société, jeunesse et débats : la parole à celles et ceux qui font l'actualité."
+   },
+   "en": {
+    "title": "Voices of Africa",
+    "desc": "Society, youth and debate: the people behind the headlines speak."
+   }
+  }
+ ],
+ "episodes": [
+  {
+   "id": "ep-001",
+   "show": "afrique-eco",
+   "article": "4617",
+   "date": "2026-10-22",
+   "duration": 26,
+   "audio": "assets/audio/ep-001-{lang}.mp3",
+   "status": "published",
+   "fr": {
+    "title": "Ghana : le cedi, baromètre de la reprise",
+    "desc": "Pourquoi la monnaie ghanéenne s'est stabilisée, et ce que cela change pour les entreprises et les ménages."
+   },
+   "en": {
+    "title": "Ghana: the cedi as a gauge of recovery",
+    "desc": "Why the Ghanaian currency stabilised, and what it changes for businesses and households."
+   }
+  },
+  {
+   "id": "ep-002",
+   "show": "grand-format",
+   "article": "4632",
+   "date": "2026-10-20",
+   "duration": 24,
+   "audio": "assets/audio/ep-002-{lang}.mp3",
+   "status": "published",
+   "fr": {
+    "title": "Gambie : la succession de Barrow",
+    "desc": "Quatre scénarios pour l'après-Barrow, des alliances politiques aux attentes de la rue."
+   },
+   "en": {
+    "title": "Gambia: the succession to Barrow",
+    "desc": "Four scenarios for the post-Barrow era, from political alliances to what the street expects."
+   }
+  },
+  {
+   "id": "ep-003",
+   "show": "voix",
+   "article": "4637",
+   "date": "2026-10-17",
+   "duration": 26,
+   "audio": "assets/audio/ep-003-{lang}.mp3",
+   "status": "published",
+   "fr": {
+    "title": "Cap-Vert face aux catastrophes naturelles",
+    "desc": "Sécheresses, tempêtes, érosion : comment l'archipel s'organise pour protéger sa population."
+   },
+   "en": {
+    "title": "Cape Verde facing natural disasters",
+    "desc": "Droughts, storms, erosion: how the archipelago is organising to protect its people."
+   }
+  },
+  {
+   "id": "ep-004",
+   "show": "grand-format",
+   "article": "4622",
+   "date": "2026-10-15",
+   "duration": 26,
+   "audio": "assets/audio/ep-004-{lang}.mp3",
+   "status": "published",
+   "fr": {
+    "title": "Ouganda : la tension monte avant les élections",
+    "desc": "Violences, opposition et institutions : ce que révèlent les semaines qui précèdent le scrutin."
+   },
+   "en": {
+    "title": "Uganda: tension rises before the elections",
+    "desc": "Violence, opposition and institutions: what the weeks before the vote reveal."
+   }
+  },
+  {
+   "id": "ep-005",
+   "show": "afrique-eco",
+   "article": "4618",
+   "date": "2026-10-13",
+   "duration": 25,
+   "audio": "assets/audio/ep-005-{lang}.mp3",
+   "status": "published",
+   "fr": {
+    "title": "Côte d'Ivoire : un budget 2026 ambitieux",
+    "desc": "Les grands chantiers du budget et les paris sur la croissance, expliqués simplement."
+   },
+   "en": {
+    "title": "Côte d'Ivoire: an ambitious 2026 budget",
+    "desc": "The budget's major projects and growth bets, explained simply."
+   }
+  },
+  {
+   "id": "ep-006",
+   "show": "voix",
+   "article": "4285",
+   "date": "2026-10-10",
+   "duration": 25,
+   "audio": "assets/audio/ep-006-{lang}.mp3",
+   "status": "published",
+   "fr": {
+    "title": "TikTok : les dérives qui inquiètent",
+    "desc": "Créateurs, parents et experts débattent de la sexualisation précoce sur les réseaux."
+   },
+   "en": {
+    "title": "TikTok: the excesses raising concern",
+    "desc": "Creators, parents and experts debate early sexualisation on social media."
+   }
+  },
+  {
+   "id": "ep-007",
+   "show": "afrique-eco",
+   "article": "4504",
+   "date": "2026-10-08",
+   "duration": 26,
+   "audio": "assets/audio/ep-007-{lang}.mp3",
+   "status": "published",
+   "fr": {
+    "title": "Mozambique : l'agriculture, pilier sous-exploité",
+    "desc": "Terres, financement, infrastructures : où se trouve le potentiel agricole du pays."
+   },
+   "en": {
+    "title": "Mozambique: agriculture, an underused pillar",
+    "desc": "Land, financing, infrastructure: where the country's farming potential lies."
+   }
+  },
+  {
+   "id": "ep-008",
+   "show": "voix",
+   "article": "4237",
+   "date": "2026-10-06",
+   "duration": 26,
+   "audio": "assets/audio/ep-008-{lang}.mp3",
+   "status": "published",
+   "fr": {
+    "title": "Togo : une crise financière après le changement de régime",
+    "desc": "Dette, recettes et confiance : le point sur la situation avec nos correspondants."
+   },
+   "en": {
+    "title": "Togo: a financial crisis after the change of regime",
+    "desc": "Debt, revenue and confidence: where things stand, with our correspondents."
+   }
+  }
+ ]
+}

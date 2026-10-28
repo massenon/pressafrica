@@ -1,0 +1,28 @@
+{
+  "channels": [
+    {"id": "tv-001", "status": "published", "name": "France 24", "country": "FR", "language": "fr,en", "genre": "news", "website": "https://www.france24.com",
+     "fr": {"desc": "La chaîne d'information internationale française, diffusée en plusieurs langues, dont le français et l'anglais."},
+     "en": {"desc": "The French international news channel, broadcasting in several languages including French and English."}},
+    {"id": "tv-002", "status": "published", "name": "TV5Monde Afrique", "country": "FR", "language": "fr", "genre": "culture", "website": "https://www.tv5monde.com",
+     "fr": {"desc": "La chaîne culturelle francophone TV5Monde, avec une offre pour l'Afrique : magazines, documentaires et information."},
+     "en": {"desc": "The French-language cultural channel TV5Monde, with an offering for Africa: magazines, documentaries and news."}},
+    {"id": "tv-003", "status": "published", "name": "Africanews", "country": "CG", "language": "fr,en", "genre": "news", "website": "https://www.africanews.com",
+     "fr": {"desc": "Chaîne d'information panafricaine, en français et en anglais, tournée vers l'actualité du continent."},
+     "en": {"desc": "A pan-African news channel, in French and English, focused on the continent's news."}},
+    {"id": "tv-004", "status": "published", "name": "Al Jazeera English", "country": "QA", "language": "en", "genre": "news", "website": "https://www.aljazeera.com",
+     "fr": {"desc": "La chaîne d'information internationale en anglais d'Al Jazeera, basée au Qatar, avec une couverture de l'Afrique."},
+     "en": {"desc": "Al Jazeera's English-language international news channel, based in Qatar, with coverage of Africa."}},
+    {"id": "tv-005", "status": "published", "name": "CGTN Africa", "country": "CN", "language": "en", "genre": "news", "website": "https://africa.cgtn.com",
+     "fr": {"desc": "Le pôle Afrique de la chaîne chinoise CGTN, qui diffuse des programmes d'information en anglais."},
+     "en": {"desc": "The Africa arm of China's CGTN, broadcasting news programmes in English."}},
+    {"id": "tv-006", "status": "published", "name": "SABC News", "country": "ZA", "language": "en", "genre": "public", "website": "https://www.sabcnews.com",
+     "fr": {"desc": "La chaîne d'information du groupe public sud-africain SABC, centrée sur l'actualité de l'Afrique du Sud et de la région."},
+     "en": {"desc": "The news channel of South Africa's public broadcaster SABC, focused on news from South Africa and the region."}},
+    {"id": "tv-007", "status": "published", "name": "Channels TV", "country": "NG", "language": "en", "genre": "news", "website": "https://www.channelstv.com",
+     "fr": {"desc": "Chaîne d'information nigériane en anglais, consacrée à la politique, à l'économie et à la société du pays."},
+     "en": {"desc": "A Nigerian English-language news channel covering the country's politics, economy and society."}},
+    {"id": "tv-008", "status": "published", "name": "RTI", "country": "CI", "language": "fr", "genre": "public", "website": "",
+     "fr": {"desc": "La Radiodiffusion Télévision Ivoirienne, le groupe audiovisuel public de la Côte d'Ivoire."},
+     "en": {"desc": "Radiodiffusion Télévision Ivoirienne, Côte d'Ivoire's public broadcasting group."}}
+  ]
+}

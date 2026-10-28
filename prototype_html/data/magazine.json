@@ -1,0 +1,28 @@
+{
+  "issues": [
+    {"id": "mag-006", "number": 6, "date": "2026-10-01", "status": "published", "cover_article": "4617",
+     "articles": ["4617", "4329", "4488", "4458", "4237", "4587"],
+     "fr": {"title": "Argent et monnaies : l'Afrique face à ses équilibres", "desc": "Taux de change, financement des PME, institutions régionales : le sixième numéro suit l'argent du continent, du cedi ghanéen aux plans stratégiques des fonds de garantie."},
+     "en": {"title": "Money and currencies: Africa and its balancing act", "desc": "Exchange rates, SME financing, regional institutions: issue six follows the continent's money, from the Ghanaian cedi to the strategic plans of guarantee funds."}},
+    {"id": "mag-005", "number": 5, "date": "2026-09-01", "status": "published", "cover_article": "4632",
+     "articles": ["4632", "4503", "4468", "4518", "4540", "4451"],
+     "fr": {"title": "Pouvoirs et successions", "desc": "Présidentielles, transitions et organisations régionales : un numéro consacré aux rapports de force politiques, de la Gambie à la Namibie."},
+     "en": {"title": "Power and succession", "desc": "Presidential races, transitions and regional bodies: an issue on political balance of power, from The Gambia to Namibia."}},
+    {"id": "mag-004", "number": 4, "date": "2026-08-01", "status": "published", "cover_article": "4575",
+     "articles": ["4575", "4529", "4342", "4259", "4299"],
+     "fr": {"title": "La culture comme moteur", "desc": "Musique, tourisme, industries créatives : comment la culture pèse de plus en plus dans les économies africaines."},
+     "en": {"title": "Culture as an engine", "desc": "Music, tourism, creative industries: how culture weighs ever more in African economies."}},
+    {"id": "mag-003", "number": 3, "date": "2026-07-01", "status": "published", "cover_article": "4504",
+     "articles": ["4504", "4496", "4347", "4293", "4607", "4630"],
+     "fr": {"title": "Économies : forces et fragilités", "desc": "Agriculture, jeunesse, matières premières et exportations : un panorama des moteurs et des points faibles de plusieurs économies du continent."},
+     "en": {"title": "Economies: strengths and weaknesses", "desc": "Agriculture, youth, raw materials and exports: an overview of the drivers and weak points of several of the continent's economies."}},
+    {"id": "mag-002", "number": 2, "date": "2026-06-01", "status": "published", "cover_article": "4316",
+     "articles": ["4316", "4555", "4495", "4285", "4334"],
+     "fr": {"title": "Santé et société", "desc": "Addictions, santé maternelle, pauvreté : les défis sociaux qui pèsent sur le quotidien, vus à travers plusieurs pays."},
+     "en": {"title": "Health and society", "desc": "Addiction, maternal health, poverty: the social challenges weighing on everyday life, seen across several countries."}},
+    {"id": "mag-001", "number": 1, "date": "2026-05-01", "status": "published", "cover_article": "4320",
+     "articles": ["4320", "4299", "4254", "4264", "4267"],
+     "fr": {"title": "Numéro 1 : sport, innovation et sécurité", "desc": "Le premier numéro du magazine réunit la Coupe d'Afrique des Nations, l'innovation africaine et l'état des lieux de la lutte antiterroriste."},
+     "en": {"title": "Issue 1: sport, innovation and security", "desc": "The magazine's first issue brings together the Africa Cup of Nations, African innovation and a review of counter-terrorism."}}
+  ]
+}

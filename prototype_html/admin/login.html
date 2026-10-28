@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' data: blob: https:; font-src 'self' data:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com https://w.soundcloud.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<title>Sign in - AGP Admin</title>
+<link rel="icon" href="../assets/icons/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/icons/favicon-16.png">
+<link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/css/admin.min.css">
+<script src="../assets/js/admin-boot.js"></script>
+</head>
+<body class="a-body" data-page="login">
+<div class="a-login">
+  <aside class="a-login-art" aria-label="Africa Global Press">
+    <div class="flex items-center gap-3"><span class="a-logo" aria-hidden="true"><img src="../assets/icons/icon-192.png" alt="" width="44" height="44"></span><b class="a-serif text-2xl" >Africa Global Press</b></div>
+    <div><h1>The newsroom console.</h1><p>Write, review and publish across languages and formats. Prototype build: data lives in your browser (localStorage).</p></div>
+    <p class="a-eyebrow">Prototype • no real authentication</p>
+  </aside>
+  <main id="main" class="a-login-form"><div class="a-card a-card-b w-full" id="loginCard">
+    <h2 class="text-3xl mb-1">Sign in</h2><p class="a-muted mb-4">Use a demo account below. Any password of 8+ characters works in this mock.</p>
+    <div id="loginErr" class="a-badge bad mb-3" role="alert" hidden></div>
+    <form id="loginForm" novalidate>
+      <div class="a-field"><label class="a-label" for="email">Email</label><input class="a-input" id="email" type="email" autocomplete="username" value="media@pressafrica.example" required aria-required="true"></div>
+      <div class="a-field"><label class="a-label" for="password">Password</label><input class="a-input" id="password" type="password" autocomplete="current-password" value="demo-password" required aria-required="true">
+        <label class="a-check mt-2"><input type="checkbox" id="showPass"><span>Show password</span></label></div>
+      <button class="a-btn a-btn-primary w-full" type="submit">Sign in</button>
+    </form>
+    <p class="a-label mt-5">Quick demo sign-in</p><div id="demo" class="flex flex-wrap gap-2"></div>
+    <p class="a-hint mt-4">Brute-force protection (mock): repeated unknown accounts lock sign-in for a few minutes.</p>
+  </div></main></div>
+<noscript><p class="a-view">This console needs JavaScript enabled.</p></noscript>
+<script src="data-seed.js" defer></script>
+<script src="../assets/js/admin.js" defer></script>
+<script src="../assets/js/admin-lib.js" defer></script>
+<script src="../assets/js/admin-login.js" defer></script>
+</body>
+</html>

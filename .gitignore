@@ -1,0 +1,36 @@
+# dependencies and build output
+node_modules/
+vendor/
+pressmedia_laravel/public/build/
+pressmedia_laravel/public/hot
+__pycache__/
+
+# secrets and local data
+.env
+.env.*
+!.env.example
+*.sqlite
+*.log
+.phpunit.result.cache
+pressmedia_laravel/storage/*.key
+
+# database dump of the WordPress site (may hold e-mails and password hashes)
+*.sql
+
+# third-party material saved for analysis: saved pages of the Foxiz demo and clones of the live site (copyright)
+clone/
+prototype_html/The Focus Report*
+prototype_html/Discover*
+
+# bulky or regenerable files
+*.zip
+pressmedia_images/
+docs/qa/shots/
+docs/qa/design-shots/
+docs/qa/data/
+
+# editor and OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
