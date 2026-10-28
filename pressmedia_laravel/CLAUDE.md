@@ -1,6 +1,6 @@
 # Africa Global Press (pressmedia_laravel)
 
-Laravel port of the HTML prototype in `C:\Projects1\pressafrica` (see its `docs/TECHNICAL.md`). Read this file first; do not re-read the specs.
+Laravel port of the HTML prototype in `../prototype_html` (see `../docs/TECHNICAL.md`). Read this file first; do not re-read the specs.
 
 ## Stack (fixed)
 Laravel 12.70, PHP 8.3, MySQL in production (SQLite locally), Sanctum 4, spatie/laravel-permission 8, mews/purifier, Livewire 3 admin (Tailwind, SweetAlert2, Chart.js, Quill, Choices, flatpickr), Vue 3 + Pinia + vue-i18n + TypeScript on the public site.
@@ -22,7 +22,7 @@ Build assets before deploy (`npm run build` locally or in CI), web root = `publi
 - Locales: `fr` (default) and `en`. Text lives in `*_translations` tables. URLs mirror the prototype (`/fr/...`, `/en/...`).
 - Sanitise every HTML body with Purifier before saving. Never render user HTML unescaped otherwise.
 - Permissions are `<module>.<action>` (`RolesSeeder`). Check with policies or `can()`, never by role name.
-- Tailwind everywhere (owner decision 2026-10-28, public and admin). Keep the prototype look: tokens from `pressafrica/prototype_html/assets/css/src.css`. No redesign.
+- Tailwind everywhere (owner decision 2026-10-28, public and admin). Keep the prototype look: tokens from `../prototype_html/assets/css/src.css`. No redesign.
 - One module per session; finish with tests (Pest/PHPUnit) and update `docs/PROGRESS.md`.
 - Comments explain why, not what. Match surrounding style.
 
