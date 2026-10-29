@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\AuditLog;
+use App\Support\Settings;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Auth\Events\Login;
@@ -24,14 +25,17 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Minimum 12 is a working value; the PRD leaves the exact rule to the owner (IMPLEMENTATION-PLAN §5, Sécurité).
+        // Length and complexity come from Settings > Security (owner sets the rule; default 12 + complexity).
         // The breach check calls an external API, so it runs in production only.
-        Password::defaults(fn () => Password::min(12)->letters()->mixedCase()->numbers()->symbols()
+        Password::defaults(fn () => Password::min(max(8, (int) Settings::get('minPassword')))
+            ->when(Settings::get('passComplexity'), fn ($rule) => $rule->letters()->mixedCase()->numbers()->symbols())
             ->when(app()->isProduction(), fn ($rule) => $rule->uncompromised()));
 
-        // Per account and per IP: the first stops guessing one password, the second stops spraying many accounts.
+        // Per account and per IP: the first stops guessing one password (maxAttempts per lockMinutes, from Settings),
+        // the second stops spraying many accounts.
         RateLimiter::for('login', fn (Request $request) => [
-            Limit::perMinute(5)->by(Str::lower((string) $request->input('email')).'|'.$request->ip())
+            Limit::perMinutes(max(1, (int) Settings::get('lockMinutes')), max(1, (int) Settings::get('maxAttempts')))
+                ->by(Str::lower((string) $request->input('email')).'|'.$request->ip())
                 ->response(fn () => $this->lockedOut($request)),
             Limit::perMinute(20)->by('ip:'.$request->ip())
                 ->response(fn () => $this->lockedOut($request)),

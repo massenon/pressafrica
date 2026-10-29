@@ -3,6 +3,7 @@
  * elements like <div data-island="search" data-props='{"q":""}'></div>. One small component per island,
  * loaded on demand, so pages without islands ship no Vue.
  */
+import './theme';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';

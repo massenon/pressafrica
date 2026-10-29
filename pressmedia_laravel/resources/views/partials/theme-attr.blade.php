@@ -1,0 +1,1 @@
+data-theme="{{ request()->cookie('theme') === 'dark' ? 'dark' : 'light' }}"
