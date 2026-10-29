@@ -19,9 +19,9 @@ class DemoUsersSeeder extends Seeder
         }
         $password = env('DEMO_PASSWORD') ?: Str::password(16, symbols: false);
         foreach (['admin' => 'Admin', 'editor' => 'Éditeur', 'author' => 'Auteur', 'moderator' => 'Modérateur'] as $role => $name) {
-            $user = User::updateOrCreate(['email' => "$role@pressmedia.test"], ['name' => "$name (démo)", 'password' => $password]);
+            $user = User::updateOrCreate(['email' => "$role@pressafrica.media"], ['name' => "$name (démo)", 'password' => $password]);
             $user->syncRoles([$role]);
         }
-        $this->command?->info('Demo staff: admin@, editor@, author@, moderator@pressmedia.test'.(env('DEMO_PASSWORD') ? ' (DEMO_PASSWORD)' : " password: $password"));
+        $this->command?->info('Demo staff: admin@, editor@, author@, moderator@pressafrica.media'.(env('DEMO_PASSWORD') ? ' (DEMO_PASSWORD)' : " password: $password"));
     }
 }

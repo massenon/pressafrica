@@ -57,12 +57,20 @@ class CommentController extends Controller
             'consent_at' => now(), 'moderated_by' => $user->id, 'staff_user_id' => $user->id]);
         AuditLog::record('reply', 'comments', 'comment:'.$comment->id, 'reply:'.$reply->id);
 
+        // The answer is public whatever happens to the e-mail: an unreachable mail server is logged, not shown as a failure.
+        $mailed = false;
         if ($comment->notify_consent_at) {
-            Mail::to($comment->email)->send(new CommentReplied($comment->load('post.translations'), $reply->load('staff')));
-            $comment->update(['notified_at' => now()]);
+            try {
+                Mail::to($comment->email)->send(new CommentReplied($comment->load('post.translations'), $reply->load('staff')));
+                $comment->update(['notified_at' => now()]);
+                $mailed = true;
+            } catch (\Throwable $e) {
+                report($e);
+            }
         }
 
-        return back()->with('status', 'Reply published'.($comment->notify_consent_at ? ' and the reader was e-mailed.' : '.'));
+        return back()->with('status', 'Reply published'.($comment->notify_consent_at
+            ? ($mailed ? ' and the reader was e-mailed.' : '; the e-mail to the reader could not be sent (see the log).') : '.'));
     }
 
     public function destroy(Comment $comment): RedirectResponse

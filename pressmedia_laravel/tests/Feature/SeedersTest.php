@@ -32,7 +32,7 @@ class SeedersTest extends TestCase
         $this->assertSame(39, MediaItem::count());
         $this->assertSame(9, Comment::count());
         foreach (['admin', 'editor', 'author', 'moderator'] as $role) {
-            $this->assertTrue(User::where('email', "$role@pressmedia.test")->sole()->hasRole($role));
+            $this->assertTrue(User::where('email', "$role@pressafrica.media")->sole()->hasRole($role));
         }
 
         $this->get('/fr/index.html')->assertOk();

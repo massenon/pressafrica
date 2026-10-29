@@ -63,6 +63,23 @@ class CommentRepliesTest extends TestCase
         $this->assertStringContainsString('"text":"Le 12 avril, selon la CENA."', $m[0]);
     }
 
+    public function test_an_unreachable_mail_server_does_not_block_the_answer(): void
+    {
+        // A real SMTP transport pointed at a closed port: the send throws like an unreachable server.
+        config(['mail.default' => 'smtp', 'mail.mailers.smtp.scheme' => 'smtp', 'mail.mailers.smtp.host' => '127.0.0.1', 'mail.mailers.smtp.port' => 1, 'mail.mailers.smtp.timeout' => 2]);
+        $q = $this->question(['notify_consent_at' => now()]);
+        $this->actingAs(User::factory()->create()->assignRole('moderator'))
+            ->post("/admin/comments/{$q->id}/reply", ['body' => 'Réponse publiée quand même.'])->assertRedirect();
+        $this->assertTrue(Comment::where('body', 'Réponse publiée quand même.')->where('status', 'approved')->exists());
+        $this->assertNull($q->fresh()->notified_at);
+    }
+
+    public function test_support_inbox_is_configurable(): void
+    {
+        config(['mail.support' => 'support@example.test']);
+        $this->assertSame('support@example.test', config('mail.support'));
+    }
+
     public function test_no_email_without_the_readers_opt_in(): void
     {
         Mail::fake();

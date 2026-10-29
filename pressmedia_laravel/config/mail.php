@@ -110,6 +110,9 @@ return [
     |
     */
 
+    // Publisher support inbox (owner, 2026-10-29): receives what the site sends to the newsroom (contact form, alerts).
+    'support' => env('SUPPORT_MAIL'),
+
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
