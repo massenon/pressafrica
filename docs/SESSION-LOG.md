@@ -32,4 +32,11 @@ Q4/Q5 magazine/radio/TV content and outbound links (phase 5).
 Approach chosen to save tokens and keep the look 100 %: reuse the prototype's generated chrome, compiled CSS/JS and
 cleaned bodies instead of re-writing them. Found and fixed on the way: Purifier's default config dropped `<h2>`.
 
-**Next:** phase 4 — home, category and podcasts pages; sitemaps + robots; then refresh the chrome's dynamic zones.
+Then (same day): sections, home, fixed pages, search, robots/sitemaps/news sitemap/RSS. Parity tool
+`tools/qa/laravel_parity/sweep.sh` (normalised HTML diff) replaced screenshots: all FR pages identical; EN differs
+only for the 8 native EN WordPress rows (other date/author, one post keeps the FR one; listed in the import report).
+Generated from the prototype, never hand-edited: `resources/chrome/*`, `lang/*/proto.php`, `lang/*/seo.php`,
+`prototype_html/data/laravel-*.json` (re-run `tools/export_chrome.py` and `tools/export_laravel_import.py`).
+
+**Next:** phase 5 — media landing pages (podcasts, videos, magazine, radios, TV) public + admin; then refresh the
+chrome's dynamic zones (mega-menu cards) and the admin layout module (Livewire, prototype admin look).
