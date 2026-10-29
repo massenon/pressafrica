@@ -68,5 +68,18 @@ def main():
         print(lang, "header", len(header), "footer", len(footer))
 
 
+def home_static():
+    """Static blocks closing the home page (search frame, wave, editorial, tiles), same per language."""
+    import sys
+    sys.argv = sys.argv[:1]
+    import build_site as B
+    for lang in ("fr", "en"):
+        B.begin(lang, f"{lang}/index.html", {})
+        html = B.search_block("q-home") + B.WAVE + B.editorial_block() + B.tiles_block()
+        (OUT / f"home-static-{lang}.html").write_text(markers(absolutize(html, f"/{lang}/index.html")), encoding="utf8")
+        print(lang, "home static", len(html))
+
+
 if __name__ == "__main__":
     main()
+    home_static()

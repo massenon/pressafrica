@@ -1,0 +1,37 @@
+{{-- Home page, blocks of build_site.py build_home() in the same order. --}}
+@extends('site.layout', ['bodyClass' => 'page-home'])
+@php($lang = app()->getLocale())
+@push('jsonld')
+<script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => [['@type' => 'ListItem', 'position' => 1, 'name' => 'Africa Global Press']]], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+@endpush
+@section('after_header')
+<section class="ticker" aria-label="{{ __('proto.ticker') }}"><div class="container-page ticker-in"><p class="ticker-label"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-fire"/></svg><span>{{ __('proto.ticker') }}</span></p><ul class="ticker-list" data-ticker>@foreach ($ticker as $p)<li class="ticker-item"><a href="{{ $p->url($lang) }}">{{ \App\Support\Seo::truncate($p->translation()->title, 90) }}</a></li>@endforeach</ul><div class="ticker-ctl"><button type="button" class="icon-btn icon-btn-sm" data-ticker-prev aria-label="{{ __('proto.ticker_prev') }}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-l"/></svg></button><button type="button" class="icon-btn icon-btn-sm" data-ticker-pause aria-pressed="false" aria-label="{{ __('proto.ticker_pause') }}" data-l-pause="{{ __('proto.ticker_pause') }}" data-l-play="{{ __('proto.ticker_play') }}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pause"/></svg></button><button type="button" class="icon-btn icon-btn-sm" data-ticker-next aria-label="{{ __('proto.ticker_next') }}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-r"/></svg></button></div></div></section>
+@endsection
+@section('main')
+<h1 class="sr-only">{{ __('seo.title.home') }}</h1>
+@php($slides = collect([$hero[1] ?? null, 'intro', $hero[0] ?? null, $hero[2] ?? null])->filter()->values())
+<section class="hero container-page" aria-roledescription="carousel" aria-label="{{ __('proto.hero_label') }}" data-hero><div class="hero-viewport" aria-live="off">
+@foreach ($slides as $i => $s)
+<div class="hero-slide{{ $i === 0 ? ' is-active' : '' }}" role="group" aria-roledescription="slide" aria-label="{{ __('proto.slide') }} {{ $i + 1 }} / {{ $slides->count() }}" data-slide>
+@if ($s === 'intro')
+<img class="hero-img" src="/assets/img/posts/malabo-860.webp" srcset="/assets/img/posts/malabo-420.webp 420w, /assets/img/posts/malabo-860.webp 600w" sizes="(min-width:1280px) 1240px, 100vw" width="600" height="361" alt="{{ $lang === 'fr' ? "Panorama urbain d'une capitale africaine" : 'Urban skyline of an African capital' }}" title="{{ __('proto.hero_intro_title') }}" loading="lazy" fetchpriority="low" decoding="async"><span class="hero-ov" aria-hidden="true"></span><div class="hero-body"><h2 class="hero-title">{{ __('proto.hero_intro_title') }}</h2><p class="hero-text">{{ __('proto.hero_intro_text') }}</p><a class="btn btn-outline-w" href="{{ \App\Models\Category::where('key', 'online-press')->first()?->url($lang) }}">{{ __('proto.hero_intro_cta') }}</a></div>
+@else
+@php($st = $s->translation())
+@include('site.partials.img', ['media' => $s->cover, 'alt' => __('site.illustration', ['title' => $st->title]), 'title' => $st->title, 'class' => 'hero-img', 'sizes' => '(min-width:1280px) 1240px, 100vw', 'eager' => $i === 0, 'low' => $i > 0])<span class="hero-ov" aria-hidden="true"></span><div class="hero-body"><h2 class="hero-title">{{ $st->title }}</h2><p class="hero-text">{{ $st->excerpt }}</p><p class="hero-by">{{ __('proto.by') }} <b>{{ $s->author?->name }}</b></p><a class="btn btn-outline-w" href="{{ $s->url($lang) }}">{{ __('proto.read_more') }}<span class="sr-only"> : {{ $st->title }}</span></a></div>
+@endif
+</div>
+@endforeach
+</div><button type="button" class="hero-nav hero-prev" data-prev aria-label="{{ __('proto.slide_prev') }}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-angle-l"/></svg></button><button type="button" class="hero-nav hero-next" data-next aria-label="{{ __('proto.slide_next') }}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-angle-r"/></svg></button><div class="hero-ctl"><div class="hero-dots">@foreach ($slides as $i => $s)<button type="button" class="hero-dot" data-dot="{{ $i }}" aria-label="{{ __('proto.slide_go') }} {{ $i + 1 }}"{!! $i === 0 ? ' aria-current="true"' : '' !!}></button>@endforeach</div><button type="button" class="hero-pause" data-pause aria-pressed="false" aria-label="{{ __('proto.slide_pause') }}" data-l-pause="{{ __('proto.slide_pause') }}" data-l-play="{{ __('proto.slide_play') }}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pause"/></svg></button></div></section>
+<div class="container-page">
+@if ($latest->count() >= 3)
+<section class="block" aria-labelledby="sec-latest"><h2 class="sec-title sec-blue" id="sec-latest"><span class="sq" aria-hidden="true"></span>{{ __('proto.latest') }}</h2><div class="grid-latest"><div class="gl-big">@include('site.partials.card-lg', ['p' => $latest[0]])</div><div class="gl-md">@include('site.partials.card-md', ['p' => $latest[1]])@include('site.partials.card-md', ['p' => $latest[2]])</div></div><div class="grid-text">@foreach ($latest->slice(3) as $p)@include('site.partials.card-text')@endforeach</div></section>
+@endif
+<section class="block" aria-labelledby="sec-econ"><h2 class="sec-title sec-red" id="sec-econ"><span class="sq" aria-hidden="true"></span>{{ __('proto.economic') }}</h2><div class="econ" data-econ>
+@foreach ($econPages as $n => [$big, $small])<div class="econ-page" data-econ-page="{{ $n }}"{!! $n ? ' hidden' : '' !!}><div class="grid-econ-big">@foreach ($big as $p)@include('site.partials.card-lg')@endforeach</div><div class="grid-econ-small">@foreach ($small as $p)@include('site.partials.card-econ')@endforeach</div></div>@endforeach
+<div class="pager" role="navigation" aria-label="{{ __('proto.pages') }}"><button type="button" class="pager-btn" data-econ-prev disabled><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-angle-l"/></svg>{{ __('proto.prev') }}</button><button type="button" class="pager-btn pager-next" data-econ-next>{{ __('proto.next') }}<svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-angle-r"/></svg></button></div></div></section>
+<section class="block" aria-labelledby="sec-read"><h2 class="sec-title sec-red" id="sec-read"><span class="sq" aria-hidden="true"></span>{{ __('proto.most_read') }}</h2><ol class="rank-list">@foreach ($mostRead as $n => $p)<li class="rank-item reveal"><span class="rank-n" aria-hidden="true">{{ $n + 1 }}</span>@include('site.partials.card-text')</li>@endforeach</ol></section>
+@foreach ($topics as $tp)
+<section class="block" aria-labelledby="sec-{{ $tp['category']->key }}"><div class="sec-row"><h2 class="sec-title sec-{{ $tp['color'] }}" id="sec-{{ $tp['category']->key }}"><span class="sq" aria-hidden="true"></span>{{ $tp['category']->translation($lang)->name }}</h2><a class="sec-link" href="{{ $tp['category']->url($lang) }}">{{ __('proto.see_all') }}<svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-arrow-r"/></svg></a></div><div class="grid-econ-small">@foreach ($tp['posts'] as $p)@include('site.partials.card-econ')@endforeach</div></section>
+@endforeach
+<div class="home-nl">@include('site.partials.nl-card')</div>{!! \App\Support\Chrome::render('home-static', $lang) !!}</div>
+@endsection

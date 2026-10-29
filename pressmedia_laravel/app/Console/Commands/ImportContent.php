@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\AuditLog;
 use App\Models\Category;
+use App\Models\HomeSlot;
 use App\Models\Media;
 use App\Models\Post;
 use App\Models\User;
@@ -87,6 +88,9 @@ class ImportContent extends Command
                         if ($en['date'] !== $r['date']) {
                             $this->anomaly($id, "EN pair {$en['id']} dated {$en['date']}, FR {$r['date']}: one post keeps the FR date");
                         }
+                        if (trim($en['author'] ?? '') !== trim($r['author'] ?? '')) {
+                            $this->anomaly($id, "EN pair {$en['id']} signed by {$en['author']}, FR by {$r['author']}: one post keeps the FR byline");
+                        }
                         $mapped = fn ($row) => collect($row['categories'] ?? [])->pluck('slug')->map(fn ($s) => $catByDbSlug[$s] ?? null)->filter()->unique()->sort()->values()->all();
                         if ($mapped($en) !== $mapped($r)) {
                             $this->anomaly($id, "EN pair {$en['id']} has other sections than FR: one post keeps the FR sections");
@@ -120,6 +124,7 @@ class ImportContent extends Command
             }
         });
 
+        $this->homeSlots($rules['home'] ?? []);
         $sourceFr = $raw->count() - count($enNative);
         $this->table(['', 'source', 'imported'], [['FR', $sourceFr, $count['fr']], ['EN', $sourceFr, $count['en']]]);
         Storage::disk('local')->put('import-report.json', json_encode(['counts' => $count, 'anomalies' => $this->anomalies], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
@@ -127,6 +132,22 @@ class ImportContent extends Command
         AuditLog::system('import', 'posts', 'content:import', "FR {$count['fr']}, EN {$count['en']}, anomalies ".count($this->anomalies));
 
         return $count['fr'] === $sourceFr ? self::SUCCESS : self::FAILURE;
+    }
+
+    /** The prototype's home selection (FR WordPress ids) as home_slots rows. */
+    private function homeSlots(array $home): void
+    {
+        foreach (HomeSlot::SLOTS as $slot => $n) {
+            foreach (array_values($home[$slot] ?? []) as $i => $wpId) {
+                $postId = Post::where('legacy_id', (int) $wpId)->value('id');
+                if (! $postId) {
+                    $this->anomaly($wpId, "home $slot pick not found among imported posts");
+
+                    continue;
+                }
+                HomeSlot::updateOrCreate(['slot' => $slot, 'position' => $i + 1], ['post_id' => $postId]);
+            }
+        }
     }
 
     /** Creates the site sections and returns WordPress category slug => category id. */

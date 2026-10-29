@@ -52,6 +52,7 @@
 <body class="{{ $bodyClass ?? '' }}" id="top" data-lang="{{ $lang }}" data-home="/{{ $lang }}/index.html">
 {!! \App\Support\Chrome::render('sprite', $lang) !!}
 {!! \App\Support\Chrome::render('header', $lang, $alternates) !!}
+@yield('after_header')
 <main id="main" tabindex="-1">
 @yield('main')
 </main>

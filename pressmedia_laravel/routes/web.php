@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Site\ArticleController;
 use App\Http\Controllers\Site\CommentController as PublicCommentController;
+use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\SectionController;
 use App\Http\Middleware\SetLocale;
 use App\Support\Settings;
@@ -21,11 +22,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function (Request $request) {
     $saved = $request->cookie('locale');
 
-    return redirect('/'.(in_array($saved, SetLocale::LOCALES, true) ? $saved : Settings::get('defaultLang')));
+    return redirect('/'.(in_array($saved, SetLocale::LOCALES, true) ? $saved : Settings::get('defaultLang')).'/index.html');
 });
 
 Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware('locale')->group(function () {
-    Route::view('/', 'public.home')->name('home');
+    Route::get('/', fn () => redirect('/'.app()->getLocale().'/index.html', 301));
+    Route::get('index.html', [HomeController::class, 'show'])->name('home');
     Route::get('articles/{slug}.html', [ArticleController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('articles.show');
     Route::get('{slug}.html', [SectionController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('sections.show');   // keep last: catches /{locale}/*.html
     Route::post('articles/{slug}/comments', [PublicCommentController::class, 'store'])->middleware('throttle:comments')->name('comments.store');

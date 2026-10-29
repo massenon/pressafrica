@@ -1,0 +1,2 @@
+@php($pt = $p->translation())
+<article class="card card-lg reveal">@include('site.partials.thumb', ['cls' => 'thumb-fill', 'sizes' => $sizes ?? '(min-width:1024px) 600px, 100vw'])<div class="card-ov">@include('site.partials.chips', ['post' => $p])<h3 class="card-title "><a href="{{ $p->url(app()->getLocale()) }}">{{ $pt->title }}</a></h3><p class="excerpt">{{ $pt->excerpt }}</p>@include('site.partials.meta-date', ['post' => $p, 'avatar' => true])</div></article>

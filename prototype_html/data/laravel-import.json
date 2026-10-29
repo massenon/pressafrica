@@ -482,5 +482,42 @@
    "title": "Togo: deepening financial crisis due to regime change",
    "excerpt": "Lomé, October 22, 2025 - PRESS AFRICA - Togo is going through a delicate period marked by deep economic difficulties, worsened by a change of political regime that…"
   }
+ },
+ "home": {
+  "hero": [
+   "3740",
+   "3482",
+   "3473"
+  ],
+  "latest": [
+   "4596",
+   "4586",
+   "4267",
+   "4538",
+   "4281",
+   "4299"
+  ],
+  "econ_big": [
+   "4585",
+   "4557"
+  ],
+  "econ_small": [
+   "4637",
+   "4632",
+   "4631",
+   "4630"
+  ],
+  "intro_image": {
+   "slug": "malabo",
+   "widths": {
+    "420": "assets/img/posts/malabo-420.webp",
+    "860": "assets/img/posts/malabo-860.webp",
+    "1280": "assets/img/posts/malabo-860.webp"
+   },
+   "og": "assets/img/og/malabo.jpg",
+   "width": 600,
+   "height": 361,
+   "lqip": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAwBACdASoYAA4APxFysFAsJqSisAgBgCIJQBOmUGbaCTK2mKwzMj1dZAAA90ymElmpoShc0/BuHv+mSsSirLUNi+Kho279ZJ3SRWv8aXJQowCLPXhy2hScl9YOEz+saE1gAA=="
+  }
  }
 }
