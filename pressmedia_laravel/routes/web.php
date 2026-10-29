@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdZoneController;
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\HeroSlideController;
@@ -97,6 +98,14 @@ Route::prefix('admin')->group(function () {
         Route::get('analytics', [AnalyticsController::class, 'index'])->middleware('can:analytics.view')->name('analytics.index');
         Route::get('analytics/export/{format}', [AnalyticsController::class, 'export'])->middleware('can:analytics.view')->name('analytics.export');
 
+        Route::get('campaigns', [CampaignController::class, 'index'])->middleware('can:newsletter.view')->name('campaigns.index');
+        Route::get('campaigns/create', [CampaignController::class, 'create'])->middleware('can:newsletter.create')->name('campaigns.create');
+        Route::post('campaigns', [CampaignController::class, 'store'])->middleware('can:newsletter.create')->name('campaigns.store');
+        Route::get('campaigns/{campaign}/edit', [CampaignController::class, 'edit'])->middleware('can:newsletter.view')->name('campaigns.edit');
+        Route::put('campaigns/{campaign}', [CampaignController::class, 'update'])->middleware('can:newsletter.edit')->name('campaigns.update');
+        Route::post('campaigns/{campaign}/test', [CampaignController::class, 'test'])->middleware('can:newsletter.edit')->name('campaigns.test');
+        Route::post('campaigns/{campaign}/schedule', [CampaignController::class, 'schedule'])->middleware('can:newsletter.publish')->name('campaigns.schedule');
+        Route::post('campaigns/{campaign}/cancel', [CampaignController::class, 'cancel'])->middleware('can:newsletter.publish')->name('campaigns.cancel');
         Route::get('newsletter', [AdminNewsletterController::class, 'index'])->middleware('can:newsletter.view')->name('newsletter.index');
         Route::get('newsletter/export/{format}', [AdminNewsletterController::class, 'export'])->middleware('can:newsletter.view')->name('newsletter.export');
         Route::post('newsletter/import', [AdminNewsletterController::class, 'import'])->middleware('can:newsletter.create')->name('newsletter.import');

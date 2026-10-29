@@ -57,6 +57,8 @@ class Settings
         'commentBlacklist' => ['security', 'text', '', ['max:5000']],
         // Outbound "official site" links in the radio/TV directories (PRD EX-04). Shown as on the prototype until the owner answers Q5.
         'directoryLinks' => ['seo', 'bool', true, []],
+        // Newsletter e-mails sent per scheduler run (every minute): keep under the host's hourly mail limit / 60.
+        'newsletterBatch' => ['seo', 'int', 50, ['min:1', 'max:1000']],
         'newsSitemap' => ['seo', 'bool', true, []],
         'rssFeed' => ['seo', 'bool', true, []],
         'popup' => ['seo', 'bool', true, []],
