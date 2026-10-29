@@ -39,13 +39,25 @@ class SeedersTest extends TestCase
         $this->get('/fr/podcasts.html')->assertOk()->assertDontSee(__('proto.landing_title', [], 'fr'));
     }
 
-    public function test_demo_accounts_and_comments_are_never_seeded_in_production(): void
+    public function test_production_gets_the_staff_accounts_but_no_demo_comments(): void
     {
-        $this->seed(RolesSeeder::class);
+        $this->seed(\Database\Seeders\RolesSeeder::class);
         $this->app['env'] = 'production';
-        (new DemoUsersSeeder)->run();
-        (new DemoCommentsSeeder)->run();
-        $this->assertSame(0, User::count());
+        (new \Database\Seeders\DemoUsersSeeder)->run();
+        (new \Database\Seeders\DemoCommentsSeeder)->run();
+        $this->assertSame(4, User::count());
         $this->assertSame(0, Comment::count());
+    }
+
+    public function test_re_seeding_never_resets_a_changed_password_or_role(): void
+    {
+        $this->seed(\Database\Seeders\RolesSeeder::class);
+        (new \Database\Seeders\DemoUsersSeeder)->run();
+        $admin = User::where('email', 'admin@pressafrica.media')->sole();
+        $admin->update(['password' => 'Changed-Online-2026!', 'name' => 'Rédacteur en chef']);
+
+        (new \Database\Seeders\DemoUsersSeeder)->run();
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('Changed-Online-2026!', $admin->fresh()->password));
+        $this->assertSame('Rédacteur en chef', $admin->fresh()->name);
     }
 }
