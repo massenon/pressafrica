@@ -54,5 +54,10 @@ topic popup (Admin > Menus), first-party analytics + GA4 module (Admin > Analyti
 ad zones with CTR, contact form to SUPPORT_MAIL with an admin inbox. Demo staff accounts also in production
 (owner), never overwritten on re-seed.
 
-**Next:** phase 7 (security/GDPR: data export and erasure, backups, error pages, production checklist) and
-phase 8 (Lighthouse, UAT). Open: Q8 (DPO: GA4/AdSense consent categories, retention), Q9 (host checks).
+**Phases 7-8 (2026-10-29):** ad slots header/in-article, "Publicité" consent category (generator + app.js), newsletter
+campaigns by cron, personal-data export/erasure, encrypted backups with tested restore, error pages / maintenance /
+security headers, `docs/DEPLOY.md`, Lighthouse (gzip: 92-97 perf, 100 elsewhere) and PRD journeys R1-R10
+(`docs/RECETTE.md`). 151 tests green.
+
+**Next:** go-live with `docs/DEPLOY.md` once Q9 is checked; Firefox/Safari pass (R10); DPO review (Q8);
+real media content (Q4). Optional spec items: EX-49 carousel preview, EX-51 pinned answer.

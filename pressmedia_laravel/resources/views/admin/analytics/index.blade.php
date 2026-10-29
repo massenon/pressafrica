@@ -24,4 +24,5 @@
 @endif
 @endforeach
 </div>
+<section class="a-card mt-4"><div class="a-card-h"><h2 class="text-xl">Ad zones</h2></div><div class="a-card-b">@if ($report['ads'])<table class="a-table" aria-label="Ad zones"><thead><tr><th scope="col">Zone</th><th scope="col" class="text-right">Impressions</th><th scope="col" class="text-right">Clicks</th><th scope="col" class="text-right">CTR</th></tr></thead><tbody>@foreach ($report['ads'] as [$zone, $imp, $clicks, $ctr])<tr><td>{{ $zone }}</td><td class="text-right">{{ $imp }}</td><td class="text-right">{{ $clicks }}</td><td class="text-right">{{ number_format($ctr, 2) }} %</td></tr>@endforeach</tbody></table>@else<p class="a-muted">No ad served in this period.</p>@endif</div></section>
 @endsection

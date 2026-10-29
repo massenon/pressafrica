@@ -35,7 +35,17 @@ class AnalyticsReport
             'countries' => $top('country'),
             'devices' => $top('device', 3),
             'searches' => $top('search'),
+            'ads' => self::ads($from, $to),
         ];
+    }
+
+    /** Ad zones: impressions, clicks and CTR (%) per zone over the period (EX-20, PRD R6); same for both sources. */
+    public static function ads(Carbon $from, Carbon $to): array
+    {
+        return DB::table('ad_stats')->join('ad_zones', 'ad_zones.id', '=', 'ad_stats.ad_zone_id')
+            ->whereBetween('day', [$from->toDateString(), $to->toDateString()])
+            ->selectRaw('ad_zones.name as zone, sum(impressions) as impressions, sum(clicks) as clicks')->groupBy('ad_zones.name')->orderByDesc('clicks')->get()
+            ->map(fn ($r) => [$r->zone, (int) $r->impressions, (int) $r->clicks, $r->impressions ? round($r->clicks / $r->impressions * 100, 2) : 0.0])->all();
     }
 
     private static function ga4(Carbon $from, Carbon $to): array
@@ -55,6 +65,7 @@ class AnalyticsReport
             'countries' => $pairs('country'),
             'devices' => $pairs('deviceCategory', 3),
             'searches' => [],
+            'ads' => self::ads($from, $to),
         ];
     }
 }

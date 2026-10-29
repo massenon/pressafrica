@@ -49,7 +49,17 @@ class PersonalData
                 ]),
                 'newsletter_deleted' => NewsletterSubscriber::where('email', $email)->delete(),
                 'contact_messages_deleted' => ContactMessage::whereRaw('lower(email) = ?', [$email])->delete(),
+                'staff_account_anonymised' => 0,
             ];
+            // A staff account cannot be deleted while its articles exist: it becomes "Former author", without its
+            // e-mail, password or roles, and its articles stay published under that name (PRD R9).
+            if ($u = User::whereRaw('lower(email) = ?', [$email])->first()) {
+                $u->syncRoles([]);
+                $u->tokens()->delete();
+                $u->forceFill(['name' => __('site.former_author'), 'email' => 'former-'.$u->id.'@authors.invalid',
+                    'password' => Str::random(64), 'remember_token' => null])->save();
+                $done['staff_account_anonymised'] = 1;
+            }
             AuditLog::record('erase', 'privacy', 'subject:'.substr(hash('sha256', $email), 0, 12), json_encode($done));
 
             return $done;

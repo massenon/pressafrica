@@ -59,6 +59,7 @@ return [
     'cm_reply' => 'Reply',
     'cm_replying' => 'Replying to :name',
     'cm_cancel_reply' => 'Cancel reply',
+    'former_author' => 'Former author',
     'cm_anonymous' => 'Anonymous reader',
     'cm_staff' => 'Newsroom',
     'cm_notify' => 'Email me when the newsroom replies',

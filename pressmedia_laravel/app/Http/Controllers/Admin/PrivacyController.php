@@ -34,6 +34,6 @@ class PrivacyController extends Controller
         $data = $request->validate(['email' => ['required', 'email', 'max:150'], 'confirm' => ['required', 'same:email']]);
         $done = PersonalData::erase($data['email']);
 
-        return redirect()->route('admin.privacy.index')->with('status', "Erased: {$done['comments_anonymised']} comment(s) anonymised, {$done['newsletter_deleted']} subscription(s) and {$done['contact_messages_deleted']} message(s) deleted.");
+        return redirect()->route('admin.privacy.index')->with('status', "Erased: {$done['comments_anonymised']} comment(s) anonymised, {$done['newsletter_deleted']} subscription(s) and {$done['contact_messages_deleted']} message(s) deleted".($done['staff_account_anonymised'] ? ', staff account anonymised (its articles now show "former author").' : '.'));
     }
 }

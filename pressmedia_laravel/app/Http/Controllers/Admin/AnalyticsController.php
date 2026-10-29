@@ -39,6 +39,9 @@ class AnalyticsController extends Controller
                 fputcsv($out, [$block, $label, $n]);
             }
         }
+        foreach ($report['ads'] as [$zone, $imp, $clicks, $ctr]) {
+            fputcsv($out, ['ads', $zone, $imp, $clicks, $ctr]);
+        }
         rewind($out);
 
         return response(stream_get_contents($out), 200, ['Content-Type' => 'text/csv; charset=UTF-8', 'Content-Disposition' => "attachment; filename=$name"]);

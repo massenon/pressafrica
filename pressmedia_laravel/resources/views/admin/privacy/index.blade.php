@@ -7,7 +7,7 @@
 @if ($data)
 @php($found = count($data['comments']) + count($data['newsletter']) + count($data['contact_messages']) + ($data['staff_account'] ? 1 : 0))
 <section class="a-card a-card-b mb-4"><p class="a-eyebrow">Found for {{ $email }}</p>
-<ul class="a-list"><li>{{ count($data['comments']) }} comment(s)</li><li>{{ count($data['newsletter']) }} newsletter subscription(s)</li><li>{{ count($data['contact_messages']) }} contact message(s)</li><li>{{ $data['staff_account'] ? 'A staff account ('.implode(', ', $data['staff_account']['roles']).'): change or delete it in Authors & roles' : 'No staff account' }}</li></ul>
+<ul class="a-list"><li>{{ count($data['comments']) }} comment(s)</li><li>{{ count($data['newsletter']) }} newsletter subscription(s)</li><li>{{ count($data['contact_messages']) }} contact message(s)</li><li>{{ $data['staff_account'] ? 'A staff account ('.implode(', ', $data['staff_account']['roles']).'): erasure anonymises it, its articles stay under "former author"' : 'No staff account' }}</li></ul>
 @if ($found)
 <div class="flex flex-wrap gap-2 mt-3"><a class="a-btn" href="{{ route('admin.privacy.export', ['email' => $email]) }}">Export (JSON)</a></div>
 <form method="POST" action="{{ route('admin.privacy.erase') }}" class="mt-4" data-confirm="Erase this person's data? This cannot be undone.">@csrf<input type="hidden" name="email" value="{{ $email }}">
