@@ -234,7 +234,10 @@ class ImportContent extends Command
             $media = Media::create(['path' => $dest, 'mime' => 'image/webp', 'size' => filesize($file), 'width' => $w, 'height' => $h,
                 'alt_fr' => $this->cleanTitle($r['image']['alt'] ?? $r['title']), 'alt_en' => $this->enAlt[$r['id']] ?? $post->translations()->where('locale', 'en')->value('title')]);
         }
+        // Without touching updated_at: the page shows it as "updated on" and it must stay WordPress's date.
+        $post->timestamps = false;
         $post->update(['cover_id' => $media->id]);
+        $post->timestamps = true;
     }
 
     /** Authors keep their byline: one author account per name, with an undeliverable address and no usable password. */

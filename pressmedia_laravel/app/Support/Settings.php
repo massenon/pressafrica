@@ -47,6 +47,8 @@ class Settings
         'maxAttempts' => ['security', 'int', 5, ['min:3', 'max:20']],
         'lockMinutes' => ['security', 'int', 15, ['min:1', 'max:1440']],
         'nofollow' => ['security', 'bool', true, []],
+        // Comments marked as spam when the e-mail, its domain or a word of the text is listed here (one per line).
+        'commentBlacklist' => ['security', 'text', '', ['max:5000']],
         // Outbound "official site" links in the radio/TV directories (PRD EX-04). Shown as on the prototype until the owner answers Q5.
         'directoryLinks' => ['seo', 'bool', true, []],
         'newsSitemap' => ['seo', 'bool', true, []],

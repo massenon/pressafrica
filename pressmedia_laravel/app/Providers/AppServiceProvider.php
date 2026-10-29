@@ -42,7 +42,10 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         // Public comment form: per IP, generous enough for a shared office network, tight enough to stop a flood.
-        RateLimiter::for('comments', fn (Request $request) => Limit::perMinute(5)->by('comments:'.$request->ip()));
+        RateLimiter::for('comments', fn (Request $request) => [
+            Limit::perMinute(5)->by('comments:'.$request->ip()),
+            Limit::perDay(30)->by('comments-day:'.$request->ip()),   // scripted floods spread over the day (S5)
+        ]);
 
         Event::listen(Login::class, fn (Login $e) => AuditLog::record('login', 'auth', $e->user->email, null, $e->user));
         Event::listen(Logout::class, fn (Logout $e) => $e->user && AuditLog::record('logout', 'auth', $e->user->email, null, $e->user));

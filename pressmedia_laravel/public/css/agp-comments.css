@@ -1,0 +1,10 @@
+/* Replies under a comment (spec EX-46): the prototype has no reply styles; indentation and the newsroom accent
+   reuse its brand colour (#013079) so nothing else in the design changes. */
+.comment-list{list-style:none;padding:0;margin:0 0 1.5rem}
+.comment-list>.comment{padding:.75rem 0;border-bottom:1px solid rgba(0,0,0,.08)}
+.comment-replies{list-style:none;margin:.5rem 0 0 1.25rem;padding:0 0 0 .9rem;border-left:2px solid rgba(1,48,121,.25)}
+.comment-reply{padding:.5rem 0}
+.comment-reply.is-staff{border-left:3px solid #013079;margin-left:-1.05rem;padding-left:.9rem}
+.comment-reply-link{font-size:.85rem;text-decoration:underline}
+.comment-replying{font-size:.9rem;margin:.25rem 0 .5rem}
+[data-theme="dark"] .comment-reply.is-staff{border-left-color:#8fb2ff}

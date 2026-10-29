@@ -29,7 +29,10 @@
 @endif
 @push('jsonld')
 <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => collect($crumbs)->map(fn ($c, $i) => ['@type' => 'ListItem', 'position' => $i + 1, 'name' => $c[0], 'item' => $c[1]])->all()], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
-<script type="application/ld+json">{!! json_encode(array_filter(['@context' => 'https://schema.org', '@type' => 'NewsArticle', 'headline' => $t->title, 'description' => $meta['description'], 'image' => $post->cover ? [$post->cover->url()] : null, 'datePublished' => $post->published_at->toIso8601String(), 'dateModified' => $post->updated_at->toIso8601String(), 'inLanguage' => $lang, 'author' => ['@type' => 'Person', 'name' => $post->author?->name], 'publisher' => ['@id' => url('/').'/#org'], 'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $url], 'articleSection' => $post->sortedCategories($lang)->map(fn ($c) => $c->translation($lang)?->name)->all(), 'url' => $url]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+<script type="application/ld+json">{!! json_encode(array_filter(['@context' => 'https://schema.org', '@type' => 'NewsArticle', 'headline' => $t->title, 'description' => $meta['description'], 'image' => $post->cover ? [$post->cover->url()] : null, 'datePublished' => $post->published_at->toIso8601String(), 'dateModified' => $post->updated_at->toIso8601String(), 'inLanguage' => $lang, 'author' => ['@type' => 'Person', 'name' => $post->author?->name], 'publisher' => ['@id' => url('/').'/#org'], 'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $url], 'articleSection' => $post->sortedCategories($lang)->map(fn ($c) => $c->translation($lang)?->name)->all(), 'url' => $url,
+    'commentCount' => $comments->count() ? $comments->count() + $comments->sum(fn ($c) => $c->replies->count()) : null,
+    'comment' => $comments->isEmpty() ? null : $comments->map(fn ($c) => array_filter(['@type' => 'Comment', 'author' => ['@type' => 'Person', 'name' => $c->author], 'dateCreated' => $c->created_at->toIso8601String(), 'text' => $c->body,
+        'comment' => $c->replies->isEmpty() ? null : $c->replies->map(fn ($r) => ['@type' => 'Comment', 'author' => $r->isStaff() ? ['@type' => 'Person', 'name' => $r->staff?->name ?? $r->author, 'worksFor' => ['@id' => url('/').'/#org']] : ['@type' => 'Person', 'name' => $r->author], 'dateCreated' => $r->created_at->toIso8601String(), 'text' => $r->body])->all()]))->all()]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 @endpush
 
 @section('main')
@@ -87,15 +90,23 @@
 <section class="comment-box-wrap entry-sec" aria-labelledby="cm-t"><div class="comment-box-header"><h2 class="h3" id="cm-t"><svg class="i i-md" aria-hidden="true" focusable="false"><use href="#i-comment"/></svg>{{ __('site.leave_comment') }}</h2></div>
 <div class="comment-holder">
 @if ($comments->isNotEmpty())
-{{-- Published comments show the name and text only, never the e-mail (EX-26). --}}
-<ol class="comment-list" aria-label="{{ __('site.comments') }}">@foreach ($comments as $c)<li class="comment"><p class="meta"><b class="author">{{ $c->author }}</b><span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $c->created_at->toDateString() }}">{{ \App\Support\Seo::date($c->created_at) }}</time></p><p>{{ $c->body }}</p></li>@endforeach</ol>
+{{-- Published comments show the name and text only, never the e-mail (EX-26); newsroom answers carry a badge (EX-46). --}}
+<p class="meta">{{ __('site.cm_count', ['n' => $comments->count() + $comments->sum(fn ($c) => $c->replies->count())]) }}</p>
+<ol class="comment-list" aria-label="{{ __('site.comments') }}">@foreach ($comments as $c)<li class="comment" id="comment-{{ $c->id }}"><p class="meta"><b class="author">{{ $c->author }}</b><span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $c->created_at->toDateString() }}">{{ \App\Support\Seo::date($c->created_at) }}</time></p><p>{{ $c->body }}</p><a class="comment-reply-link" href="{{ $url }}?reply={{ $c->id }}#respond" data-reply-to="{{ $c->id }}" data-reply-name="{{ $c->author }}" rel="nofollow">{{ __('site.cm_reply') }}</a>
+@if ($c->replies->isNotEmpty())<ol class="comment-replies">@foreach ($c->replies as $r)<li class="comment comment-reply{{ $r->isStaff() ? ' is-staff' : '' }}" id="comment-{{ $r->id }}"><p class="meta"><b class="author">{{ $r->isStaff() ? ($r->staff?->name ?? $r->author) : $r->author }}</b>@if ($r->isStaff())<span class="chip chip-sm">{{ __('site.cm_staff') }}</span>@endif<span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $r->created_at->toDateString() }}">{{ \App\Support\Seo::date($r->created_at) }}</time></p><p>{{ $r->body }}</p></li>@endforeach</ol>@endif
+</li>@endforeach</ol>
 @endif
 <div id="respond" class="comment-respond"><form class="comment-form form" data-comment-server method="POST" action="{{ url("$lang/articles/{$t->slug}/comments") }}" novalidate>@csrf
+<input type="hidden" name="ft" value="{{ \App\Support\CommentGuard::token() }}">
+@php($replyComment = $replyTo ? $comments->firstWhere('id', $replyTo) : null)
+<input type="hidden" name="parent_id" value="{{ $replyComment?->id }}" data-reply-field>
+<p class="comment-replying" data-reply-label{!! $replyComment ? '' : ' hidden' !!}><span>{{ $replyComment ? __('site.cm_replying', ['name' => $replyComment->author]) : '' }}</span> <a href="#respond" data-reply-cancel data-template="{{ __('site.cm_replying', ['name' => ':name']) }}">{{ __('site.cm_cancel_reply') }}</a></p>
 <p class="comment-notes">{{ __('site.cm_notes') }}</p>
 <p class="comment-form-comment"><label for="cm-comment">{{ __('site.cm_comment') }} <span class="required" aria-hidden="true">*</span></label><textarea id="cm-comment" name="comment" rows="6" maxlength="2000" required placeholder="{{ __('site.cm_placeholder') }}"></textarea></p>
 <p class="comment-form-author"><label for="cm-author">{{ __('site.cm_name') }} <span class="required" aria-hidden="true">*</span></label><input id="cm-author" name="author" type="text" maxlength="80" required autocomplete="name"></p>
 <p class="comment-form-email"><label for="cm-email">{{ __('site.cm_email') }} <span class="required" aria-hidden="true">*</span></label><input id="cm-email" name="email" type="email" maxlength="100" required autocomplete="email"></p>
 <p class="comment-form-consent"><input id="cm-consent" name="consent" type="checkbox" value="1" required> <label for="cm-consent">{{ __('site.cm_consent') }}</label></p>
+<p class="comment-form-consent"><input id="cm-notify" name="notify" type="checkbox" value="1"> <label for="cm-notify">{{ __('site.cm_notify') }}</label></p>
 <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
 <p class="form-err" role="alert" hidden>{{ __('site.cm_err') }}</p><p class="form-submit"><button type="submit" class="btn btn-primary">{{ __('site.cm_submit') }}</button></p><p class="form-ok" role="status" hidden>{{ __('public.comment_pending') }}</p></form></div></div></section>
 </div>

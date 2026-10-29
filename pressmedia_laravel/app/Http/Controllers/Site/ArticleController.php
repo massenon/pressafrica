@@ -40,7 +40,10 @@ class ArticleController extends Controller
             'mustRead' => $others->take(5)->values(),
             'related' => ($related->isNotEmpty() ? $related : $sharing)->take(3)->values(),
             'crumbCat' => $crumbCat,
-            'comments' => $post->comments()->approved()->where('locale', $locale)->oldest()->get(),
+            // Questions oldest first; under each, the newsroom's answers first, then readers' replies (spec EX-46).
+            'comments' => $post->comments()->approved()->whereNull('parent_id')->where('locale', $locale)->oldest()
+                ->with(['replies' => fn ($q) => $q->approved()->orderByRaw('staff_user_id is null')->oldest(), 'replies.staff'])->get(),
+            'replyTo' => request()->integer('reply') ?: null,
             'minutes' => $t->minutes(),
         ]);
     }

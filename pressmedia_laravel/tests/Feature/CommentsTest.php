@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Support\Settings;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Crypt;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -29,7 +30,12 @@ class CommentsTest extends TestCase
 
     private function form(array $overrides = []): array
     {
-        return array_merge(['comment' => 'Très bon article', 'author' => 'Awa', 'email' => 'awa@example.test', 'consent' => '1'], $overrides);
+        // ft = signed render time of the form, 10 s ago (a person's typing time; see CommentGuard)
+        static $n = 0;
+        $n++;
+
+        return array_merge(['comment' => "Très bon article $n", 'author' => 'Awa', 'email' => 'awa@example.test', 'consent' => '1',
+            'ft' => Crypt::encryptString((string) now()->subSeconds(10)->getTimestamp())], $overrides);
     }
 
     /** PRD phase 2 exit criterion: a public comment arrives as pending. */

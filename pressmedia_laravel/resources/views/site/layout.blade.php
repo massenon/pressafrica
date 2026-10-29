@@ -39,6 +39,7 @@
 <link rel="preload" href="/assets/fonts/EncodeSans-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 @stack('preload')
 <link rel="stylesheet" href="/assets/css/app.min.css">
+<link rel="stylesheet" href="/css/agp-comments.css">
 {{-- Light by default; the visitor's saved choice wins; the OS preference is never read (INV-07). --}}
 <script>(function(d){try{var t=localStorage.getItem("agp-theme");d.setAttribute("data-theme",t==="dark"?"dark":"light")}catch(e){d.setAttribute("data-theme","light")}d.classList.add("js")})(document.documentElement)</script>
 <script src="/assets/js/vendor/turbo.min.js" defer></script>

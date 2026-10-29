@@ -13,6 +13,9 @@ def norm(s, base):
         v = v.replace('http://127.0.0.1:8123', '').replace('/storage/media/import/', '/assets/img/posts/')
         return f'{m.group(1)}="{v}"'
     s = re.sub(r'<!--.*?-->', '', s, flags=re.S)
+    # The comment section differs on purpose (server form, replies, newsroom answers; spec EX-43 to 46) and is
+    # covered by feature tests, so it is left out of the comparison on both sides.
+    s = re.sub(r'<section class="comment-box-wrap.*?</section>', '', s, flags=re.S)
     s = re.sub(r'(?<![\w-])(href|src|action|poster|data-poster|data-src|data-read)="([^"]*)"', ab, s)
     s = re.sub(r'\s(srcset|sizes|style|width|height)="[^"]*"', '', s)
     s = re.sub(r'-(420|860|1280)\.webp', '.webp', s)

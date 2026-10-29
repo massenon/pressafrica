@@ -3,6 +3,20 @@
 (function () {
   'use strict';
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  /* "Reply" under a published comment: one level only (spec EX-45). Without JS the link reloads with ?reply=ID. */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-reply-to], [data-reply-cancel]');
+    if (!a) return;
+    var f = document.querySelector('form[data-comment-server]');
+    if (!f) return;
+    e.preventDefault();
+    var field = f.querySelector('[data-reply-field]'), label = f.querySelector('[data-reply-label]'), cancel = f.querySelector('[data-reply-cancel]');
+    if (a.hasAttribute('data-reply-cancel')) { field.value = ''; label.hidden = true; return; }
+    field.value = a.getAttribute('data-reply-to');
+    label.querySelector('span').textContent = cancel.getAttribute('data-template').replace(':name', a.getAttribute('data-reply-name'));
+    label.hidden = false;
+    f.querySelector('textarea').focus();
+  });
   function token() { var m = document.querySelector('meta[name="csrf-token"]'); return m ? m.content : ''; }
   document.addEventListener('submit', function (e) {
     var f = e.target.closest && e.target.closest('form[data-comment-server]');
@@ -19,6 +33,7 @@
       .then(function (res) {
         if (!res.ok) { err.hidden = false; return; }
         ok.textContent = res.j.message || ok.textContent; ok.hidden = false; f.reset();
+        var lbl = f.querySelector('[data-reply-label]'); if (lbl) lbl.hidden = true;
       })
       .catch(function () { err.hidden = false; });
   });

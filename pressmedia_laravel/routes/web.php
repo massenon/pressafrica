@@ -68,6 +68,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('comments', [CommentController::class, 'index'])->middleware('can:comments.view')->name('comments.index');
         Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');   // right checked per status
+        Route::post('comments/{comment}/reply', [CommentController::class, 'reply'])->middleware('can:comments.publish')->name('comments.reply');
         Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->middleware('can:comments.delete')->name('comments.destroy');
 
         // Featured: home carousel (spec EX-41).
