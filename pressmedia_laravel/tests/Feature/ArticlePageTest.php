@@ -46,7 +46,7 @@ class ArticlePageTest extends TestCase
 
     public function test_the_article_renders_with_the_prototype_blocks(): void
     {
-        $r = $this->get('/fr/articles/tiktok.html')->assertOk();
+        $r = $this->get('/fr/articles/tiktok')->assertOk();
 
         $r->assertSee('<h1 class="article-title">Afrique : alerte sur TikTok</h1>', false)
             ->assertSee('<h2>Intertitre</h2>', false)                          // purified body printed as HTML
@@ -61,10 +61,10 @@ class ArticlePageTest extends TestCase
 
     public function test_seo_tags_and_structured_data(): void
     {
-        $html = $this->get('/fr/articles/tiktok.html')->getContent();
+        $html = $this->get('/fr/articles/tiktok')->getContent();
 
-        $this->assertStringContainsString('<link rel="canonical" href="'.url('fr/articles/tiktok.html').'">', $html);
-        $this->assertStringContainsString('hreflang="en" href="'.url('en/articles/tiktok-en.html').'"', $html);
+        $this->assertStringContainsString('<link rel="canonical" href="'.url('fr/articles/tiktok').'">', $html);
+        $this->assertStringContainsString('hreflang="en" href="'.url('en/articles/tiktok-en').'"', $html);
         $this->assertStringContainsString('<title>Afrique : alerte sur TikTok | Africa Global Press</title>', $html);
         $this->assertStringContainsString('<meta property="og:type" content="article">', $html);
         $this->assertStringContainsString('<meta property="og:locale" content="fr_FR">', $html);
@@ -80,10 +80,10 @@ class ArticlePageTest extends TestCase
 
     public function test_language_switch_and_unknown_or_unpublished_pages(): void
     {
-        $this->get('/en/articles/tiktok-en.html')->assertOk()->assertSee('<html lang="en"', false)->assertSee('href="'.url('fr/articles/tiktok.html').'"', false);
-        $this->get('/en/articles/tiktok.html')->assertNotFound();   // French slug on the English site
-        $this->get('/fr/articles/brouillon.html')->assertNotFound();
-        $this->get('/fr/articles/nope.html')->assertNotFound();
+        $this->get('/en/articles/tiktok-en')->assertOk()->assertSee('<html lang="en"', false)->assertSee('href="'.url('fr/articles/tiktok').'"', false);
+        $this->get('/en/articles/tiktok')->assertNotFound();   // French slug on the English site
+        $this->get('/fr/articles/brouillon')->assertNotFound();
+        $this->get('/fr/articles/nope')->assertNotFound();
     }
 
     public function test_only_approved_comments_show_and_never_their_email(): void
@@ -91,7 +91,7 @@ class ArticlePageTest extends TestCase
         foreach (['approved' => 'Bravo', 'pending' => 'En attente', 'spam' => 'Achetez maintenant'] as $status => $body) {
             Comment::create(['post_id' => $this->post->id, 'locale' => 'fr', 'author' => "Awa $status", 'email' => "$status@example.test", 'body' => $body, 'status' => $status, 'consent_at' => now()]);
         }
-        $this->get('/fr/articles/tiktok.html')->assertSee('Awa approved')->assertSee('Bravo')
+        $this->get('/fr/articles/tiktok')->assertSee('Awa approved')->assertSee('Bravo')
             ->assertDontSee('En attente')->assertDontSee('Achetez maintenant')->assertDontSee('@example.test');
     }
 

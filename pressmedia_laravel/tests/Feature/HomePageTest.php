@@ -33,9 +33,12 @@ class HomePageTest extends TestCase
         }
 
         HeroSlide::restoreDefaults();
-        $this->get('/')->assertRedirect('/fr/index.html');
-        $this->get('/fr')->assertRedirect('/fr/index.html');
-        $r = $this->get('/fr/index.html')->assertOk();
+        $this->get('/')->assertRedirect('/fr');
+        // The prototype's addresses still work: permanent redirect to the clean URL, query string kept.
+        $this->get('/fr/index.html')->assertStatus(301)->assertRedirect('/fr');
+        $this->get('/fr/politique.html?page=2')->assertStatus(301)->assertRedirect('/fr/politique?page=2');
+        $this->get('/en/articles/some-story.html')->assertStatus(301)->assertRedirect('/en/articles/some-story');
+        $r = $this->get('/fr')->assertOk();
 
         $r->assertSee('<title>'.e(__('seo.title.home', [], 'fr')).'</title>', false)
             ->assertSee('class="ticker"', false)

@@ -69,7 +69,7 @@ Elle déclenche : publication des articles planifiés (chaque minute), envoi des
 
 ## 7. Vérifications après mise en ligne
 
-- [ ] `https://pressafrica.media/` redirige vers `/fr/index.html` ; un article, une rubrique, `/en/index.html` s'affichent.
+- [ ] `https://pressafrica.media/` redirige vers `/fr` ; un article (`/fr/articles/…`), une rubrique (`/fr/politique`), `/en` s'affichent ; une ancienne adresse `…/index.html` ou `….html` redirige (301) vers l'adresse sans extension.
 - [ ] Le site répond en HTTPS uniquement ; `/robots.txt` et `/sitemap.xml` utilisent le bon domaine.
 - [ ] Une page inexistante affiche la page 404 du site, sans détail technique.
 - [ ] Commentaire de test → arrive « en attente » dans l'admin ; formulaire de contact → e-mail reçu sur `SUPPORT_MAIL`.

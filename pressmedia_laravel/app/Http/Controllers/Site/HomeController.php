@@ -47,9 +47,9 @@ class HomeController extends Controller
         return view('site.home', [
             'slides' => $slides, 'latest' => $latest, 'econPages' => $econPages, 'mostRead' => $mostRead, 'topics' => $topics,
             'ticker' => $all->take(10),
-            'meta' => ['title' => __('seo.title.home'), 'description' => __('seo.desc.home'), 'canonical' => url("$lang/index.html"),
+            'meta' => ['title' => __('seo.title.home'), 'description' => __('seo.desc.home'), 'canonical' => url($lang),
                 'image' => ($slides->first()['image'] ?? null)?->url()],
-            'alternates' => ['fr' => url('fr/index.html'), 'en' => url('en/index.html')],
+            'alternates' => ['fr' => url('fr'), 'en' => url('en')],
         ]);
     }
 }

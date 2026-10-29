@@ -52,7 +52,7 @@ return [
     'cm_consent' => 'J\'accepte que mon nom et mon commentaire soient conservés et publiés après modération (RGPD).',
     'cm_err' => 'Veuillez remplir les champs obligatoires et accepter les conditions.',
     'cm_submit' => 'Publier le commentaire',
-    'privacy_path' => 'politique-de-confidentialite.html',
+    'privacy_path' => 'politique-de-confidentialite',
     'og_locale' => 'fr_FR', 'og_locale_alt' => 'en_US',
     'site_suffix' => ' | Africa Global Press',
     // Comments: replies and newsroom answers (spec EX-43 to EX-46, S4).

@@ -36,8 +36,8 @@ class SeedersTest extends TestCase
             $this->assertTrue(User::where('email', "$role@pressafrica.media")->sole()->hasRole($role));
         }
 
-        $this->get('/fr/index.html')->assertOk();
-        $this->get('/fr/podcasts.html')->assertOk()->assertDontSee(__('proto.landing_title', [], 'fr'));
+        $this->get('/fr')->assertOk();
+        $this->get('/fr/podcasts')->assertOk()->assertDontSee(__('proto.landing_title', [], 'fr'));
     }
 
     public function test_production_gets_the_staff_accounts_but_no_demo_comments(): void

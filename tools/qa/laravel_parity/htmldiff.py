@@ -31,6 +31,9 @@ def norm(s, base):
     s = s.replace('&#x27;', "'").replace('&#039;', "'").replace('&quot;', '"')
     s = s.replace('https%3A%2F%2Fwww.africaglobalpress.example', 'HOST').replace('http%3A%2F%2F127.0.0.1%3A8123', 'HOST')
     s = s.replace('<br/>', '<br>').replace('<br />', '<br>').replace('\u00a0', ' ').replace('&nbsp;', ' ')
+    # Laravel URLs have no .html (2026-10-29): compare the prototype's links in that form, plain or URL-encoded.
+    s = re.sub(r'((?:/|%2F)(?:fr|en))(?:/|%2F)index\.html', r'\1', s)
+    s = re.sub(r'((?:/|%2F)(?:fr|en)(?:(?:/|%2F)[a-z0-9-]+)+)\.html', r'\1', s)
     s = re.sub(r'\s+', ' ', s).replace('> <', '><')
     return re.sub(r'>', '>\n', s).splitlines()
 a, b = norm(proto, path), norm(lara, path)

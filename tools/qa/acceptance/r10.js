@@ -2,8 +2,8 @@
 // need a machine with those browsers). Needs `php artisan serve --port=8123`. Usage: node r10.js
 const { chromium } = require('playwright');
 (async () => {
-  const pages = ['/fr/index.html', '/fr/articles/cap-vert-sous-le-diktat-des-catastrophes-naturelles.html', '/fr/politique.html',
-    '/fr/podcasts.html', '/en/index.html', '/admin/login'];
+  const pages = ['/fr', '/fr/articles/cap-vert-sous-le-diktat-des-catastrophes-naturelles', '/fr/politique',
+    '/fr/podcasts', '/en', '/admin/login'];
   const b = await chromium.launch(); let bad = 0;
   for (const w of [1440, 1024, 768, 390]) {
     const p = await b.newPage({ viewport: { width: w, height: 900 } });

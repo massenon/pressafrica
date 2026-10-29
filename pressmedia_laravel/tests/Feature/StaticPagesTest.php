@@ -15,11 +15,11 @@ class StaticPagesTest extends TestCase
     {
         foreach (['fr/qui-sommes-nous', 'fr/contact', 'fr/mentions-legales', 'fr/politique-de-confidentialite', 'fr/politique-cookies',
             'en/about-us', 'en/contact', 'en/legal-notices', 'en/privacy-policy', 'en/cookie-policy'] as $page) {
-            $html = $this->get("/$page.html")->assertOk()->assertSee('<link rel="canonical" href="'.url("$page.html").'">', false)->getContent();
+            $html = $this->get("/$page")->assertOk()->assertSee('<link rel="canonical" href="'.url("$page").'">', false)->getContent();
             $this->assertStringNotContainsString('africaglobalpress.example', $html, "$page: prototype host replaced");
             $this->assertStringContainsString('"@type":"BreadcrumbList"', $html);
         }
-        $this->get('/fr/mentions-legales.html')->assertSee('hreflang="en" href="'.url('en/legal-notices.html').'"', false)
+        $this->get('/fr/mentions-legales')->assertSee('hreflang="en" href="'.url('en/legal-notices').'"', false)
             ->assertSee('<title>'.e(__('seo.title.legal', [], 'fr')).'</title>', false);
     }
 
@@ -31,11 +31,11 @@ class StaticPagesTest extends TestCase
                 ->translations()->create(['locale' => 'fr', 'title' => "Titre $status", 'slug' => $status, 'excerpt' => 'Résumé', 'body' => '<p>x</p>']);
         }
 
-        $html = $this->get('/fr/recherche.html')->assertOk()->assertSee('<meta name="robots" content="noindex,follow">', false)->getContent();
+        $html = $this->get('/fr/recherche')->assertOk()->assertSee('<meta name="robots" content="noindex,follow">', false)->getContent();
         preg_match('#<script type="application/json" id="search-index">(.*?)</script>#s', $html, $m);
         $index = json_decode($m[1], true);
         $this->assertSame(['Titre published'], array_column($index, 't'));
-        $this->assertSame(url('fr/articles/published.html'), $index[0]['u']);
+        $this->assertSame(url('fr/articles/published'), $index[0]['u']);
         $this->assertSame('Pressafrica Media', $index[0]['a']);
     }
 }

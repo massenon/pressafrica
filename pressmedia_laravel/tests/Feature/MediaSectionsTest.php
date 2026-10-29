@@ -39,7 +39,7 @@ class MediaSectionsTest extends TestCase
 
     public function test_empty_sections_show_the_coming_soon_block(): void
     {
-        $this->get('/fr/magazine.html')->assertOk()->assertSee(__('proto.landing_title', [], 'fr'));
+        $this->get('/fr/magazine')->assertOk()->assertSee(__('proto.landing_title', [], 'fr'));
     }
 
     public function test_podcasts_page_with_latest_episode_player_and_shows(): void
@@ -49,7 +49,7 @@ class MediaSectionsTest extends TestCase
         $this->item('podcast', 'ep-001', ['show' => 'grand-format', 'duration' => 60], ['title' => 'Épisode ancien', 'file' => 'assets/audio/ep-001-fr.mp3'], 'published', '2026-10-10');
         $this->item('podcast', 'ep-003', ['show' => 'grand-format'], ['title' => 'Brouillon'], 'draft');
 
-        $html = $this->get('/fr/podcasts.html')->assertOk()
+        $html = $this->get('/fr/podcasts')->assertOk()
             ->assertSeeInOrder(['class="pod-hero', 'Épisode récent', 'src="'.url('assets/audio/ep-002-fr.mp3').'"', 'class="pod-ep', 'Épisode ancien'])
             ->assertSee('25 '.__('proto.pod_min', [], 'fr'))->assertDontSee('Brouillon')->assertDontSee(__('proto.landing_title', [], 'fr'))
             ->getContent();
@@ -59,11 +59,11 @@ class MediaSectionsTest extends TestCase
     public function test_directories_honour_the_outbound_links_setting(): void
     {
         $this->item('radio', 'rad-001', ['name' => 'RFI Afrique', 'country' => 'FR', 'language' => 'fr', 'genre' => 'public', 'website' => 'https://www.rfi.fr'], ['description' => 'Radio internationale'], 'published', null);
-        $this->get('/fr/radios-africaines.html')->assertOk()->assertSee('RFI Afrique')->assertSee(__('media.genres.public', [], 'fr'))
+        $this->get('/fr/radios-africaines')->assertOk()->assertSee('RFI Afrique')->assertSee(__('media.genres.public', [], 'fr'))
             ->assertSee('href="https://www.rfi.fr" target="_blank" rel="noopener noreferrer nofollow"', false);
 
         Settings::save(['directoryLinks' => false]);   // owner's answer to Q5 can switch them off
-        $this->get('/fr/radios-africaines.html')->assertDontSee('https://www.rfi.fr');
+        $this->get('/fr/radios-africaines')->assertDontSee('https://www.rfi.fr');
     }
 
     public function test_magazine_lists_issue_contents_in_order(): void
@@ -78,7 +78,7 @@ class MediaSectionsTest extends TestCase
         $mag = $this->item('magazine', 'mag-001', ['number' => 1], ['title' => 'Numéro un']);
         $mag->posts()->sync([$b->id => ['position' => 1], $a->id => ['position' => 2]]);
 
-        $this->get('/fr/magazine.html')->assertOk()->assertSee('Numéro un')->assertSeeInOrder(['mag-toc', 'Second', 'Premier'])->assertSee('"@type":"Periodical"', false);
+        $this->get('/fr/magazine')->assertOk()->assertSee('Numéro un')->assertSeeInOrder(['mag-toc', 'Second', 'Premier'])->assertSee('"@type":"Periodical"', false);
     }
 
     public function test_admin_creates_a_video_with_an_upload_and_it_is_journaled(): void
@@ -98,7 +98,7 @@ class MediaSectionsTest extends TestCase
         $this->assertSame(['economy', 75], [$v->get('topic'), $v->get('duration')]);
         Storage::disk('public')->assertExists($v->get('poster'));
         $this->assertTrue(AuditLog::where(['module' => 'videos', 'action' => 'create'])->exists());
-        $this->get('/fr/videos.html')->assertOk()->assertSee('Nouvelle vidéo')->assertSee('1:15');
+        $this->get('/fr/videos')->assertOk()->assertSee('Nouvelle vidéo')->assertSee('1:15');
     }
 
     public function test_upload_types_rights_and_publish_rule(): void

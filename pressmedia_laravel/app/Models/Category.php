@@ -23,10 +23,10 @@ class Category extends Model
         return $this->translations->firstWhere('locale', $locale) ?? $this->translations->firstWhere('locale', config('app.content_locale'));
     }
 
-    /** Section page URL as in the prototype: /{locale}/{slug}.html. */
+    /** Section page URL as in the prototype: /{locale}/{slug} (clean URL; the prototype path ended in .html). */
     public function url(string $locale): string
     {
-        return url("$locale/".$this->translation($locale)?->slug.'.html');
+        return url("$locale/".$this->translation($locale)?->slug);
     }
 
     public function posts(): BelongsToMany

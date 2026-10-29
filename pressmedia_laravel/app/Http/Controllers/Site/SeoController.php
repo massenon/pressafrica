@@ -31,13 +31,13 @@ class SeoController extends Controller
         };
         $today = now()->toDateString();
 
-        $add(['fr' => url('fr/index.html'), 'en' => url('en/index.html')], $today);
+        $add(['fr' => url('fr'), 'en' => url('en')], $today);
         foreach (Category::with('translations')->orderBy('position')->get() as $c) {
             $add(['fr' => $c->url('fr'), 'en' => $c->url('en')], $today);
         }
         foreach (Chrome::pages()['fr'] as $slug => $key) {
             if ($key !== 'search') {   // search results are noindex
-                $add(['fr' => url("fr/$slug.html"), 'en' => url('en/'.array_search($key, Chrome::pages()['en'], true).'.html')], $today);
+                $add(['fr' => url("fr/$slug"), 'en' => url('en/'.array_search($key, Chrome::pages()['en'], true))], $today);
             }
         }
         Post::published()->with(['translations', 'cover'])->orderByDesc('published_at')->get()->each(function ($p) use ($add) {

@@ -38,7 +38,7 @@ class AdsTest extends TestCase
 
     public function test_inactive_zones_keep_the_reserved_placeholder(): void
     {
-        $this->get('/fr/articles/benin.html')->assertSee(__('site.ad_reserved', [], 'fr'));
+        $this->get('/fr/articles/benin')->assertSee(__('site.ad_reserved', [], 'fr'));
         $this->assertSame(0, DB::table('ad_stats')->count());
     }
 
@@ -47,7 +47,7 @@ class AdsTest extends TestCase
         $m = Media::create(['path' => 'media/ban.webp', 'mime' => 'image/webp', 'size' => 1, 'width' => 300, 'height' => 250, 'alt_fr' => 'Sponsor']);
         $zone = $this->configure(['type' => 'banner', 'media_id' => $m->id, 'url' => 'https://sponsor.example/offre']);
 
-        $this->get('/fr/articles/benin.html')->assertDontSee(__('site.ad_reserved', [], 'fr'))->assertSee('rel="sponsored noopener"', false);
+        $this->get('/fr/articles/benin')->assertDontSee(__('site.ad_reserved', [], 'fr'))->assertSee('rel="sponsored noopener"', false);
         $this->get("/ad/{$zone->id}/desktop")->assertRedirect('https://sponsor.example/offre');
         $this->assertSame([1, 1], [(int) DB::table('ad_stats')->sum('impressions'), (int) DB::table('ad_stats')->sum('clicks')]);
 
@@ -58,13 +58,13 @@ class AdsTest extends TestCase
 
     public function test_header_and_in_article_zones_appear_only_when_active(): void
     {
-        $this->get('/fr/articles/benin.html')->assertDontSee('data-ad-zone="header_top"', false)->assertDontSee('data-ad-zone="in_article"', false);
+        $this->get('/fr/articles/benin')->assertDontSee('data-ad-zone="header_top"', false)->assertDontSee('data-ad-zone="in_article"', false);
         Post::first()->translations()->update(['body' => '<p>Un</p><p>Deux</p><p>Trois</p><p>Quatre</p>']);
         $m = Media::create(['path' => 'media/ban.webp', 'mime' => 'image/webp', 'size' => 1, 'width' => 728, 'height' => 90, 'alt_fr' => 'Sponsor']);
         foreach (['header_top', 'in_article'] as $key) {
             AdZone::where('key', $key)->update(['active' => true, 'desktop' => ['enabled' => true, 'type' => 'banner', 'media_id' => $m->id, 'url' => 'https://s.example'], 'mobile' => ['enabled' => false, 'type' => 'banner']]);
         }
-        $html = $this->get('/fr/articles/benin.html')->getContent();
+        $html = $this->get('/fr/articles/benin')->getContent();
         $this->assertStringContainsString('data-ad-zone="header_top"', $html);
         $this->assertMatchesRegularExpression('#<p>Trois</p><div class="ad-in-article" data-ad-zone="in_article">.*?</div><p>Quatre</p>#s', $html);
     }
@@ -72,7 +72,7 @@ class AdsTest extends TestCase
     public function test_adsense_waits_for_consent_and_bad_codes_are_refused(): void
     {
         $this->configure(['type' => 'adsense', 'client' => 'ca-pub-1234567890123456', 'slot' => '1234567890']);
-        $html = $this->get('/fr/articles/benin.html')->getContent();
+        $html = $this->get('/fr/articles/benin')->getContent();
         $this->assertStringContainsString('<script type="text/plain" data-consent-cat="ads" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456">', $html);
 
         $this->actingAs(User::factory()->create()->assignRole('admin'));

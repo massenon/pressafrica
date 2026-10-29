@@ -48,7 +48,7 @@ class PersonalDataTest extends TestCase
         $this->assertStringEndsWith('@invalid', $c->email);
         $this->assertSame(['other@example.test'], NewsletterSubscriber::pluck('email')->all());
         $this->assertSame(0, ContactMessage::count());
-        $this->get('/fr/articles/benin.html')->assertDontSee('Awa Diallo')->assertSee('Bravo');
+        $this->get('/fr/articles/benin')->assertDontSee('Awa Diallo')->assertSee('Bravo');
     }
 
     public function test_only_administrators_handle_requests(): void

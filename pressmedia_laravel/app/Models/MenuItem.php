@@ -34,7 +34,7 @@ class MenuItem extends Model
     {
         $own = $this->translations->firstWhere('locale', $lang)?->url;
 
-        return $own ? url($own) : ($this->category?->url($lang) ?? url("$lang/index.html"));
+        return $own ? url($own) : ($this->category?->url($lang) ?? url($lang));
     }
 
     /** The prototype's main menu (build_site.py mainnav()); used by the first import and Admin > Menus "restore". */

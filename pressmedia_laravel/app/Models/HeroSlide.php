@@ -86,7 +86,7 @@ class HeroSlide extends Model
                     foreach (['fr', 'en'] as $l) {
                         $slide->translations()->create([
                             'locale' => $l, 'title' => __('proto.hero_intro_title', [], $l), 'text' => __('proto.hero_intro_text', [], $l),
-                            'cta' => __('proto.hero_intro_cta', [], $l), 'url' => "/$l/".($l === 'fr' ? 'presse-en-ligne' : 'online-press').'.html',
+                            'cta' => __('proto.hero_intro_cta', [], $l), 'url' => "/$l/".($l === 'fr' ? 'presse-en-ligne' : 'online-press'),
                             'alt' => $l === 'fr' ? "Panorama urbain d'une capitale africaine" : 'Urban skyline of an African capital',
                         ]);
                     }

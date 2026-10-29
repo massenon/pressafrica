@@ -42,12 +42,12 @@ class RecordPageView
         $path = '/'.ltrim($request->path(), '/');
         $postId = null;
         $section = null;
-        if (preg_match('#^/(fr|en)/articles/([a-z0-9-]+)\.html$#', $path, $m)) {
+        if (preg_match('#^/(fr|en)/articles/([a-z0-9-]+)$#', $path, $m)) {
             $postId = PostTranslation::where('locale', $m[1])->where('slug', $m[2])->value('post_id');
             if ($postId) {
                 Post::whereKey($postId)->increment('views');
             }
-        } elseif (preg_match('#^/(fr|en)/([a-z0-9-]+)\.html$#', $path, $m)) {
+        } elseif (preg_match('#^/(fr|en)/([a-z0-9-]+)$#', $path, $m)) {
             $section = $m[2];
         }
         $ref = parse_url((string) $request->headers->get('referer'), PHP_URL_HOST);

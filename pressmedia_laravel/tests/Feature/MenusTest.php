@@ -32,7 +32,7 @@ class MenusTest extends TestCase
 
     public function test_the_default_menu_lists_the_latest_articles_in_its_panels(): void
     {
-        $html = $this->get('/fr/index.html')->assertOk()->getContent();
+        $html = $this->get('/fr')->assertOk()->getContent();
         $nav = substr($html, strpos($html, '<ul class="nav-list">'), 6000);
         $this->assertStringContainsString('id="mega-top"', $nav);
         $this->assertStringContainsString('Article 1', $nav);
@@ -49,12 +49,12 @@ class MenusTest extends TestCase
         $this->actingAs(User::factory()->create()->assignRole('admin'));
         $vid = MenuItem::where('key', 'vid')->sole();
 
-        $this->put("/admin/menus/{$vid->id}", ['key' => 'vid', 'panel' => 'none', 'active' => '1', 'translations' => ['fr' => ['label' => 'Nos vidéos', 'url' => '/fr/videos.html']]])->assertRedirect();
+        $this->put("/admin/menus/{$vid->id}", ['key' => 'vid', 'panel' => 'none', 'active' => '1', 'translations' => ['fr' => ['label' => 'Nos vidéos', 'url' => '/fr/videos']]])->assertRedirect();
         $this->post("/admin/menus/{$vid->id}/move", ['dir' => 'up'])->assertRedirect();
-        $this->get('/fr/index.html')->assertSeeInOrder(['nav-list', 'Nos vidéos', 'Podcasts']);
+        $this->get('/fr')->assertSeeInOrder(['nav-list', 'Nos vidéos', 'Podcasts']);
 
         $this->post('/admin/menus', ['key' => 'pol', 'panel' => 'articles', 'category_id' => Category::where('key', 'politics')->value('id'), 'from_category' => '1', 'active' => '0', 'translations' => ['fr' => ['label' => 'Politique']]])->assertRedirect();
-        $this->get('/fr/index.html')->assertDontSee('id="mega-pol"', false);   // hidden entry
+        $this->get('/fr')->assertDontSee('id="mega-pol"', false);   // hidden entry
 
         $this->post('/admin/menus/restore')->assertRedirect();
         $this->assertSame(['top', 'pod', 'vid', 'press'], MenuItem::orderBy('position')->pluck('key')->all());

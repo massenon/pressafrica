@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
 <channel>
 <title>Africa Global Press</title>
-<link>{{ url("$lang/index.html") }}</link>
+<link>{{ url($lang) }}</link>
 <description>{{ __('seo.desc.home') }}</description>
 <language>{{ $lang }}</language>
 <atom:link href="{{ url("$lang/feed.xml") }}" rel="self" type="application/rss+xml"/>

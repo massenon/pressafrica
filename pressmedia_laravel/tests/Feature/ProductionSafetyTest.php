@@ -15,8 +15,8 @@ class ProductionSafetyTest extends TestCase
 
     public function test_error_pages_are_branded_bilingual_and_hide_details(): void
     {
-        $this->get('/fr/nope.html')->assertNotFound()->assertSee('Page introuvable')->assertSee('/fr/recherche.html', false);
-        $this->get('/en/nope.html')->assertNotFound()->assertSee('Page not found')->assertSee('<html lang="en"', false);
+        $this->get('/fr/nope')->assertNotFound()->assertSee('Page introuvable')->assertSee('/fr/recherche', false);
+        $this->get('/en/nope')->assertNotFound()->assertSee('Page not found')->assertSee('<html lang="en"', false);
 
         config(['app.debug' => false]);
         Route::get('/_boom', fn () => throw new \RuntimeException('secret stack detail'));
@@ -27,16 +27,16 @@ class ProductionSafetyTest extends TestCase
     {
         $this->seed(RolesSeeder::class);
         Settings::save(['maintenance' => true, 'maintenanceMsg' => 'Retour à 18 h.', 'maintenanceIps' => '10.0.0.9']);
-        $this->get('/fr/index.html')->assertStatus(503)->assertSee('Retour à 18 h.');
-        $this->get('/fr/index.html', ['REMOTE_ADDR' => '10.0.0.9'])->assertOk();
-        $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.9'])->get('/fr/index.html')->assertOk();
+        $this->get('/fr')->assertStatus(503)->assertSee('Retour à 18 h.');
+        $this->get('/fr', ['REMOTE_ADDR' => '10.0.0.9'])->assertOk();
+        $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.9'])->get('/fr')->assertOk();
         $this->get('/admin/login')->assertOk();
-        $this->actingAs(User::factory()->create()->assignRole('editor'))->get('/fr/index.html')->assertOk();
+        $this->actingAs(User::factory()->create()->assignRole('editor'))->get('/fr')->assertOk();
     }
 
     public function test_security_headers(): void
     {
-        $this->get('/fr/index.html')->assertHeader('X-Content-Type-Options', 'nosniff')->assertHeader('X-Frame-Options', 'SAMEORIGIN')
+        $this->get('/fr')->assertHeader('X-Content-Type-Options', 'nosniff')->assertHeader('X-Frame-Options', 'SAMEORIGIN')
             ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
         $this->get('/admin/login')->assertHeader('X-Frame-Options', 'SAMEORIGIN');
     }

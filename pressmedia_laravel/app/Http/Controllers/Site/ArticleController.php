@@ -54,7 +54,7 @@ class ArticleController extends Controller
         $out = [];
         foreach (['fr', 'en'] as $l) {
             $tr = $post->translations->firstWhere('locale', $l);
-            $out[$l] = $tr ? url("$l/articles/{$tr->slug}.html") : url("$l/index.html");
+            $out[$l] = $tr ? url("$l/articles/{$tr->slug}") : url($l);
         }
 
         return $out;

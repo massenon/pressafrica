@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function (Request $request) {
     $saved = $request->cookie('locale');
 
-    return redirect('/'.(in_array($saved, SetLocale::LOCALES, true) ? $saved : Settings::get('defaultLang')).'/index.html');
+    return redirect('/'.(in_array($saved, SetLocale::LOCALES, true) ? $saved : Settings::get('defaultLang')));
 });
 
 Route::get('ad/{zone}/{device}', AdClickController::class)->middleware('throttle:60,1')->name('ads.click');
@@ -51,15 +51,20 @@ Route::get('sitemap.xml', [SeoController::class, 'sitemap']);
 Route::get('news-sitemap.xml', [SeoController::class, 'newsSitemap']);
 
 Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['locale', 'maintenance', 'count'])->group(function () {
-    Route::get('/', fn () => redirect('/'.app()->getLocale().'/index.html', 301));
-    Route::get('index.html', [HomeController::class, 'show'])->name('home');
+    // Clean URLs (owner decision 2026-10-29); the prototype's *.html addresses answer with a permanent redirect.
+    // The locale middleware removes {locale} from the route parameters, hence app()->getLocale().
+    $legacy = fn (string $path) => fn (Request $request) => redirect(rtrim('/'.app()->getLocale()."/$path", '/').($request->getQueryString() ? '?'.$request->getQueryString() : ''), 301);
+    Route::get('/', [HomeController::class, 'show'])->name('home');
+    Route::get('index.html', $legacy(''));
     Route::get('feed.xml', [SeoController::class, 'feed'])->name('feed');
-    Route::get('articles/{slug}.html', [ArticleController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('articles.show');
-    Route::get('{slug}.html', [SectionController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('sections.show');   // keep last: catches /{locale}/*.html
+    Route::get('articles/{slug}.html', fn (Request $request) => $legacy('articles/'.$request->route('slug'))($request))->where('slug', '[a-z0-9-]+');
+    Route::get('articles/{slug}', [ArticleController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('articles.show');
+    Route::get('{slug}.html', fn (Request $request) => $legacy($request->route('slug'))($request))->where('slug', '[a-z0-9-]+');
     Route::post('contact', [ContactController::class, 'store'])->middleware('throttle:comments')->name('contact.store');
     Route::post('newsletter', [NewsletterController::class, 'store'])->middleware('throttle:comments')->name('newsletter.store');
     Route::get('newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->where('token', '[A-Za-z0-9]+')->name('newsletter.confirm');
     Route::get('newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->where('token', '[A-Za-z0-9]+')->name('newsletter.unsubscribe');
+    Route::get('{slug}', [SectionController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('sections.show');   // keep last: catches /{locale}/{slug}
     Route::post('articles/{slug}/comments', [PublicCommentController::class, 'store'])->middleware('throttle:comments')->name('comments.store');
 });
 

@@ -52,7 +52,7 @@ return [
     'cm_consent' => 'I agree that my name and comment are stored and published after moderation (GDPR).',
     'cm_err' => 'Please fill in the required fields and accept the terms.',
     'cm_submit' => 'Post Comment',
-    'privacy_path' => 'privacy-policy.html',
+    'privacy_path' => 'privacy-policy',
     'og_locale' => 'en_US', 'og_locale_alt' => 'fr_FR',
     'site_suffix' => ' | Africa Global Press',
     // Comments: replies and newsroom answers (spec EX-43 to EX-46, S4).

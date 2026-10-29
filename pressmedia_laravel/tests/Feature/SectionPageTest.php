@@ -34,7 +34,7 @@ class SectionPageTest extends TestCase
 
     public function test_archive_layout_with_feature_side_story_pages_and_faq(): void
     {
-        $html = $this->get('/fr/societe.html')->assertOk()
+        $html = $this->get('/fr/societe')->assertOk()
             ->assertSee('<h1 class="page-title">Société</h1>', false)
             ->assertSee('<title>Société | Africa Global Press</title>', false)
             ->assertSeeInOrder(['class="feat reveal"', 'Article 1', 'class="feat-side reveal"', 'Article 2', 'data-page="0"', 'Article 3', 'data-page="1"', 'Article 9'])
@@ -46,12 +46,12 @@ class SectionPageTest extends TestCase
         $types = collect($m[1])->map(fn ($j) => json_decode($j, true)['@type'] ?? null)->all();
         $this->assertContains('FAQPage', $types);
         $this->assertStringContainsString('"name":"Presse en ligne"', $html, 'archive sections sit under Online press in the breadcrumb');
-        $this->assertStringContainsString('hreflang="en" href="'.url('en/en-societe.html').'"', $html);
+        $this->assertStringContainsString('hreflang="en" href="'.url('en/en-societe').'"', $html);
     }
 
     public function test_thematic_layout_with_heading_and_show_more(): void
     {
-        $this->get('/fr/politique.html')->assertOk()
+        $this->get('/fr/politique')->assertOk()
             ->assertSee('<h1 class="thematic-title">Actualités Politiques</h1>', false)
             ->assertSee('class="strip"', false)
             ->assertSee('<div class="grid-cell" hidden data-more>', false)   // items 10-12 behind "show more"
@@ -60,9 +60,9 @@ class SectionPageTest extends TestCase
 
     public function test_empty_landing_and_unknown_sections(): void
     {
-        $this->get('/fr/sport.html')->assertOk()->assertSee(__('site.empty', [], 'fr'));
-        $this->get('/fr/podcasts.html')->assertOk()->assertSee(__('proto.landing_title', [], 'fr'));   // empty media section: coming soon
-        $this->get('/fr/nope.html')->assertNotFound();
-        $this->get('/en/societe.html')->assertNotFound();    // French slug on the English site
+        $this->get('/fr/sport')->assertOk()->assertSee(__('site.empty', [], 'fr'));
+        $this->get('/fr/podcasts')->assertOk()->assertSee(__('proto.landing_title', [], 'fr'));   // empty media section: coming soon
+        $this->get('/fr/nope')->assertNotFound();
+        $this->get('/en/societe')->assertNotFound();    // French slug on the English site
     }
 }

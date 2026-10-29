@@ -55,7 +55,7 @@ class CommentRepliesTest extends TestCase
         $this->assertNotNull($q->fresh()->notified_at);
         $this->assertSame(['approve', 'reply'], AuditLog::where('module', 'comments')->orderBy('id')->pluck('action')->all());
 
-        $html = $this->get('/fr/articles/benin.html')->assertOk()
+        $html = $this->get('/fr/articles/benin')->assertOk()
             ->assertSeeInOrder(['Quand aura lieu le scrutin ?', 'Aïcha Bello', __('site.cm_staff', [], 'fr'), 'Le 12 avril, selon la CENA.'])
             ->assertDontSee('awa@example.test')->getContent();
         preg_match('#"@type":"NewsArticle".*?</script>#s', $html, $m);
@@ -98,7 +98,7 @@ class CommentRepliesTest extends TestCase
 
         $this->postJson('/fr/articles/benin/comments', $this->form(['parent_id' => $r->id, 'comment' => 'Réponse à une réponse']))->assertJsonValidationErrors('parent_id');
         $this->actingAs(User::factory()->create()->assignRole('moderator'))->post("/admin/comments/{$r->id}/reply", ['body' => 'x'])->assertStatus(422);
-        $this->get('/fr/articles/benin.html?reply='.$q->id)->assertSee('name="parent_id" value="'.$q->id.'"', false);
+        $this->get('/fr/articles/benin?reply='.$q->id)->assertSee('name="parent_id" value="'.$q->id.'"', false);
     }
 
     public function test_bots_and_floods_are_stopped(): void
@@ -125,8 +125,8 @@ class CommentRepliesTest extends TestCase
         $q = $this->question();
         Comment::create(['post_id' => $this->post->id, 'parent_id' => $q->id, 'locale' => 'fr', 'author' => 'Kofi', 'email' => 'k@example.test',
             'body' => 'Réponse visible ?', 'status' => 'approved', 'consent_at' => now()]);
-        $this->get('/fr/articles/benin.html')->assertSee('Réponse visible ?');
+        $this->get('/fr/articles/benin')->assertSee('Réponse visible ?');
         $q->update(['status' => 'spam']);
-        $this->get('/fr/articles/benin.html')->assertDontSee('Réponse visible ?');
+        $this->get('/fr/articles/benin')->assertDontSee('Réponse visible ?');
     }
 }

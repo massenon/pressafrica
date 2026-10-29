@@ -10,9 +10,9 @@ ajoute la compression et les en-têtes de cache qu'Apache appliquera en producti
 
 | Page | Perf. (sans gzip) | **Perf. (avec gzip)** | Accessibilité | Bonnes pratiques | SEO | LCP (gzip) | CLS |
 |---|---|---|---|---|---|---|---|
-| Accueil `/fr/index.html` | 78 | **92** | 100 | 100 | 100 | 3,3 s | 0,000 |
+| Accueil `/fr` | 78 | **92** | 100 | 100 | 100 | 3,3 s | 0,000 |
 | Article (Cap-Vert) | 87 | **96** | 100 | 100 | 100 | 2,7 s | 0,000 |
-| Rubrique `/fr/politique.html` | 85 | **94** | 100 | 100 | 100 | 2,9 s | 0,000 |
+| Rubrique `/fr/politique` | 85 | **94** | 100 | 100 | 100 | 2,9 s | 0,000 |
 | Podcasts | 91 | **97** | 100 | 100 | 100 | 2,4 s | 0,004 |
 
 Corrigé pendant la mesure : rôle ARIA du bandeau cookies (`<aside role=dialog>` interdit), requête 404 du service

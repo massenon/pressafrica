@@ -38,12 +38,12 @@ class Post extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    /** Public URL in $locale (prototype path /{locale}/articles/{slug}.html), or null without a translation. */
+    /** Public URL in $locale (/{locale}/articles/{slug}; the prototype path ended in .html), or null without a translation. */
     public function url(string $locale): ?string
     {
         $t = $this->translations->firstWhere('locale', $locale);
 
-        return $t ? url("$locale/articles/{$t->slug}.html") : null;
+        return $t ? url("$locale/articles/{$t->slug}") : null;
     }
 
     /** Categories in label order for $locale, accents ignored (build_site.py mk(): the prototype's chip order). */

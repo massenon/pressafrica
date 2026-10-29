@@ -11,7 +11,7 @@ use App\Support\MediaPages;
 use App\Support\Seo;
 use Illuminate\View\View;
 
-/** Section pages /{locale}/{slug}.html with the prototype's layouts (build_site.py build_category()). */
+/** Section and fixed pages /{locale}/{slug} with the prototype's layouts (build_site.py build_category()). */
 class SectionController extends Controller
 {
     public function show(string $slug): View
@@ -31,7 +31,7 @@ class SectionController extends Controller
             ->orderByDesc('published_at')->orderByDesc('id')->get();
 
         $t = $category->translation($lang);
-        $crumbs = [[__('site.home_crumb'), url("$lang/index.html")]];
+        $crumbs = [[__('site.home_crumb'), url($lang)]];
         if ($category->layout === 'archive' && $category->key !== 'online-press' && ($parent = Category::where('key', 'online-press')->first())) {
             $crumbs[] = [$parent->translation($lang)->name, $parent->url($lang)];   // prototype crumbs(): archive sections sit under Online press
         }
@@ -74,10 +74,10 @@ class SectionController extends Controller
             'html' => Chrome::render("page-$key", $lang, [], $extra),
             'jsonld' => Chrome::render("page-$key", "$lang.jsonld"),
             'bodyClass' => ['about' => 'page-about', 'contact' => 'page-contact', 'search' => 'page-search'][$key] ?? 'page-legal',
-            'meta' => ['title' => __("seo.title.$key"), 'description' => __("seo.desc.$key"), 'canonical' => url("$lang/{$slugs[$lang]}.html"),
+            'meta' => ['title' => __("seo.title.$key"), 'description' => __("seo.desc.$key"), 'canonical' => url("$lang/{$slugs[$lang]}"),
                 // Search result pages are not indexed (crawl budget), as on the prototype.
                 'robots' => $key === 'search' ? 'noindex,follow' : null],
-            'alternates' => $slugs->map(fn ($s, $l) => url("$l/$s.html"))->all(),
+            'alternates' => $slugs->map(fn ($s, $l) => url("$l/$s"))->all(),
         ]);
     }
 

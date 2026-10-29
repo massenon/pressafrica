@@ -32,11 +32,11 @@ class AnalyticsTest extends TestCase
 
     public function test_public_visits_are_logged_without_ip_or_cookie(): void
     {
-        $this->visit('/fr/articles/benin.html', ['CF-IPCountry' => 'BJ']);
-        $this->visit('/fr/recherche.html?q=Pétrole');
+        $this->visit('/fr/articles/benin', ['CF-IPCountry' => 'BJ']);
+        $this->visit('/fr/recherche?q=Pétrole');
 
         $v = PageView::orderBy('id')->first();
-        $this->assertSame(['/fr/articles/benin.html', $this->post->id, 'www.google.com', 'BJ', 'mobile'], [$v->path, $v->post_id, $v->referrer_host, $v->country, $v->device]);
+        $this->assertSame(['/fr/articles/benin', $this->post->id, 'www.google.com', 'BJ', 'mobile'], [$v->path, $v->post_id, $v->referrer_host, $v->country, $v->device]);
         $this->assertSame(16, strlen($v->visitor));
         $this->assertStringNotContainsString('127.0.0.1', json_encode(PageView::all()));
         $this->assertSame('pétrole', PageView::orderByDesc('id')->first()->search);
@@ -45,17 +45,17 @@ class AnalyticsTest extends TestCase
 
     public function test_bots_prefetches_staff_and_errors_are_not_counted(): void
     {
-        $this->get('/fr/articles/benin.html', ['User-Agent' => 'Googlebot/2.1']);
-        $this->get('/fr/articles/benin.html', ['User-Agent' => 'Mozilla/5.0', 'X-Sec-Purpose' => 'prefetch']);
-        $this->get('/fr/articles/nope.html', ['User-Agent' => 'Mozilla/5.0']);
-        $this->actingAs(User::factory()->create()->assignRole('editor'))->get('/fr/articles/benin.html', ['User-Agent' => 'Mozilla/5.0']);
+        $this->get('/fr/articles/benin', ['User-Agent' => 'Googlebot/2.1']);
+        $this->get('/fr/articles/benin', ['User-Agent' => 'Mozilla/5.0', 'X-Sec-Purpose' => 'prefetch']);
+        $this->get('/fr/articles/nope', ['User-Agent' => 'Mozilla/5.0']);
+        $this->actingAs(User::factory()->create()->assignRole('editor'))->get('/fr/articles/benin', ['User-Agent' => 'Mozilla/5.0']);
         $this->assertSame(0, PageView::count());
     }
 
     public function test_screen_and_exports_show_the_same_totals(): void
     {
         foreach (range(1, 3) as $_) {
-            $this->visit('/fr/articles/benin.html');
+            $this->visit('/fr/articles/benin');
         }
         $this->actingAs(User::factory()->create()->assignRole('editor'));
         $this->get('/admin/analytics')->assertOk()->assertSee('first-party visit log')->assertSee('Bénin');
@@ -70,9 +70,9 @@ class AnalyticsTest extends TestCase
 
     public function test_ga4_is_off_by_default_and_consent_gated_when_on(): void
     {
-        $this->get('/fr/index.html')->assertDontSee('googletagmanager');
+        $this->get('/fr')->assertDontSee('googletagmanager');
         Settings::save(['ga4Enabled' => true, 'ga4MeasurementId' => 'G-TEST1234']);
-        $html = $this->get('/fr/index.html')->getContent();
+        $html = $this->get('/fr')->getContent();
         $this->assertStringContainsString('<script type="text/plain" data-consent-cat="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-TEST1234">', $html);
         $this->assertStringContainsString("analytics_storage:'denied'", $html);
     }

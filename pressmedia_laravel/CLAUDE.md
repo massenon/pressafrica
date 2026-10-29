@@ -25,7 +25,7 @@ Build assets before deploy (`npm run build` locally or in CI), web root = `publi
 - Check a ported page with `tools/qa/laravel_parity/sweep.sh` (normalised HTML diff, cheap) before any screenshot; look at an image only where the HTML differs.
 
 ## Rules
-- Locales: `fr` (default) and `en`. Text lives in `*_translations` tables. URLs mirror the prototype (`/fr/...`, `/en/...`).
+- Locales: `fr` (default) and `en`. Text lives in `*_translations` tables. Public URLs have no extension (owner decision 2026-10-29): `/fr`, `/fr/{section}`, `/fr/articles/{slug}`; the prototype's `*.html` paths answer 301. Chrome exported from the prototype is cleaned by `export_chrome.py` (`clean_urls`).
 - Sanitise every HTML body with Purifier before saving. Never render user HTML unescaped otherwise.
 - Permissions are `<module>.<action>` (`RolesSeeder`). Check with policies or `can()`, never by role name.
 - Tailwind everywhere (owner decision 2026-10-28, public and admin). Keep the prototype look: tokens from `../prototype_html/assets/css/src.css`. No redesign.

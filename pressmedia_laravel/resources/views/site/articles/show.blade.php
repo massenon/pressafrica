@@ -15,7 +15,7 @@
         'image' => $post->cover?->url(),
         'image_alt' => $alt,
     ];
-    $crumbs = array_values(array_filter([['Africa Global Press', url("$lang/index.html")], $cat ? [$catName, $cat->url($lang)] : null, [$t->title, $url]]));
+    $crumbs = array_values(array_filter([['Africa Global Press', url($lang)], $cat ? [$catName, $cat->url($lang)] : null, [$t->title, $url]]));
 @endphp
 @push('meta')
 <meta property="article:published_time" content="{{ $post->published_at->toIso8601String() }}">

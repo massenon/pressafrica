@@ -16,7 +16,7 @@ class PwaController extends Controller
 
         return response()->json([
             'name' => Settings::get('pwaName'), 'short_name' => Settings::get('pwaShort'),
-            'description' => __('seo.desc.home', [], 'fr'), 'start_url' => '/fr/index.html', 'scope' => '/', 'display' => 'standalone',
+            'description' => __('seo.desc.home', [], 'fr'), 'start_url' => '/fr', 'scope' => '/', 'display' => 'standalone',
             'background_color' => '#ffffff', 'theme_color' => Settings::get('pwaTheme'), 'lang' => 'fr',
             'icons' => [['src' => '/assets/icons/icon-192.png', 'sizes' => '192x192', 'type' => 'image/png', 'purpose' => 'any'],
                 ['src' => '/assets/icons/icon-512.png', 'sizes' => '512x512', 'type' => 'image/png', 'purpose' => 'any']],
@@ -33,7 +33,7 @@ class PwaController extends Controller
         $version = substr(md5((string) @filemtime(public_path('assets/css/app.min.css')).config('app.key')), 0, 8);
         $js = <<<JS
 const CACHE = 'agp-$version';
-const CORE = ['/fr/index.html', '/en/index.html', '/assets/css/app.min.css', '/assets/js/app.js', '/assets/js/vendor/turbo.min.js', '/assets/icons/favicon.svg'];
+const CORE = ['/fr', '/en', '/assets/css/app.min.css', '/assets/js/app.js', '/assets/js/vendor/turbo.min.js', '/assets/icons/favicon.svg'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== CACHE).map(x => caches.delete(x)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
@@ -45,7 +45,7 @@ self.addEventListener('fetch', e => {
   }
   if (e.request.mode === 'navigate') {
     e.respondWith(fetch(e.request).then(res => { const c = res.clone(); caches.open(CACHE).then(x => x.put(e.request, c)); return res; })
-      .catch(() => caches.match(e.request).then(hit => hit || caches.match('/fr/index.html'))));
+      .catch(() => caches.match(e.request).then(hit => hit || caches.match('/fr'))));
   }
 });
 JS;

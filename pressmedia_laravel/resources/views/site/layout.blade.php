@@ -47,7 +47,7 @@
 <meta name="turbo-prefetch" content="true">
 <meta name="view-transition" content="same-origin">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'WebSite', '@id' => url('/').'/#website', 'url' => url("$lang/index.html"), 'name' => 'Africa Global Press', 'inLanguage' => $lang, 'publisher' => ['@id' => url('/').'/#org']], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+<script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'WebSite', '@id' => url('/').'/#website', 'url' => url($lang), 'name' => 'Africa Global Press', 'inLanguage' => $lang, 'publisher' => ['@id' => url('/').'/#org']], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'Organization', '@id' => url('/').'/#org', 'name' => 'Africa Global Press', 'url' => url('/').'/', 'logo' => url('assets/img/site/logo-420.webp')], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 @stack('jsonld')
 @if (\App\Support\Settings::get('ga4Enabled') && ($ga = \App\Support\Settings::get('ga4MeasurementId')))
@@ -60,7 +60,7 @@ document.addEventListener('turbo:load',function(){if(on)pv()})})();</script>
 <script type="text/plain" data-consent-cat="analytics" data-src="https://www.googletagmanager.com/gtag/js?id={{ $ga }}"></script>
 @endif
 </head>
-<body class="{{ $bodyClass ?? '' }}" id="top" data-lang="{{ $lang }}" data-home="/{{ $lang }}/index.html"@if (\App\Support\Settings::get('pwa')) data-sw="/sw.js"@endif>
+<body class="{{ $bodyClass ?? '' }}" id="top" data-lang="{{ $lang }}" data-home="/{{ $lang }}"@if (\App\Support\Settings::get('pwa')) data-sw="/sw.js"@endif>
 {!! \App\Support\Chrome::render('sprite', $lang) !!}
 @php($navMarkers = \App\Support\Navigation::markers($lang))
 {!! \App\Support\Chrome::render('header', $lang, $alternates, $navMarkers) !!}

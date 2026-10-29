@@ -49,7 +49,7 @@ class HeroSlidesTest extends TestCase
     public function test_default_carousel_is_the_prototype_order_with_the_intro_slide(): void
     {
         $this->assertSame(4, HeroSlide::count());
-        $this->get('/fr/index.html')->assertOk()->assertSeeInOrder([
+        $this->get('/fr')->assertOk()->assertSeeInOrder([
             'data-slide', 'Article 2', 'data-slide', __('proto.hero_intro_title', [], 'fr'), 'data-slide', 'Article 1', 'data-slide', 'Article 3',
         ])->assertSee('aria-label="'.__('proto.slide', [], 'fr').' 4 / 4"', false);
     }
@@ -59,13 +59,13 @@ class HeroSlidesTest extends TestCase
         $this->editor();
         $this->post('/admin/featured', [
             'kind' => 'free', 'status' => 'published', 'upload' => UploadedFile::fake()->image('une.jpg', 1600, 900),
-            'translations' => ['fr' => ['title' => 'Élections 2026', 'text' => 'Notre dossier', 'cta' => 'Lire le dossier', 'url' => '/fr/politique.html', 'alt' => 'Urne']],
+            'translations' => ['fr' => ['title' => 'Élections 2026', 'text' => 'Notre dossier', 'cta' => 'Lire le dossier', 'url' => '/fr/politique', 'alt' => 'Urne']],
         ])->assertRedirect('/admin/featured');
 
         $slide = HeroSlide::latest('id')->first();
         $this->assertSame('image/webp', $slide->media->mime);
-        $this->get('/fr/index.html')->assertSee('Élections 2026')->assertSee('href="'.url('/fr/politique.html').'"', false)->assertSee('5 / 5');
-        $this->get('/en/index.html')->assertSee('Élections 2026', false);   // no English text: French shown (INV-10)
+        $this->get('/fr')->assertSee('Élections 2026')->assertSee('href="'.url('/fr/politique').'"', false)->assertSee('5 / 5');
+        $this->get('/en')->assertSee('Élections 2026', false);   // no English text: French shown (INV-10)
         $this->assertTrue(AuditLog::where(['module' => 'featured', 'action' => 'create'])->exists());
     }
 
@@ -74,7 +74,7 @@ class HeroSlidesTest extends TestCase
         $this->editor();
         $this->post('/admin/featured', ['kind' => 'article', 'post_id' => $this->posts[3]->id, 'status' => 'published',
             'translations' => ['fr' => ['text' => 'Accroche maison']]])->assertRedirect();
-        $this->get('/fr/index.html')->assertSee('Article 4')->assertSee('<p class="hero-text">Accroche maison</p>', false)->assertDontSee('<p class="hero-text">Résumé 4</p>', false);
+        $this->get('/fr')->assertSee('Article 4')->assertSee('<p class="hero-text">Accroche maison</p>', false)->assertDontSee('<p class="hero-text">Résumé 4</p>', false);
     }
 
     public function test_reorder_hide_schedule_and_delete(): void
@@ -85,13 +85,13 @@ class HeroSlidesTest extends TestCase
         $this->assertSame(2, $first->fresh()->position);
 
         $this->put("/admin/featured/{$first->id}", ['kind' => 'article', 'post_id' => $first->post_id, 'status' => 'draft'])->assertRedirect();
-        $this->get('/fr/index.html')->assertSee('3 / 3');
+        $this->get('/fr')->assertSee('3 / 3');
 
         $this->put("/admin/featured/{$first->id}", ['kind' => 'article', 'post_id' => $first->post_id, 'status' => 'published',
             'starts_at' => now()->addDay()->format('Y-m-d H:i')])->assertRedirect();
-        $this->get('/fr/index.html')->assertSee('3 / 3');   // scheduled for tomorrow (Benin time)
+        $this->get('/fr')->assertSee('3 / 3');   // scheduled for tomorrow (Benin time)
         $this->travel(2)->days();
-        $this->get('/fr/index.html')->assertSee('4 / 4');
+        $this->get('/fr')->assertSee('4 / 4');
 
         $this->delete("/admin/featured/{$first->id}")->assertRedirect();
         $this->assertSame(['reorder', 'update', 'update', 'delete'], AuditLog::where('module', 'featured')->orderBy('id')->pluck('action')->all());
@@ -127,6 +127,6 @@ class HeroSlidesTest extends TestCase
     public function test_a_slide_whose_article_is_unpublished_is_hidden(): void
     {
         $this->posts[1]->update(['status' => 'draft']);
-        $this->get('/fr/index.html')->assertSee('3 / 3')->assertDontSee('Article 2');
+        $this->get('/fr')->assertSee('3 / 3')->assertDontSee('Article 2');
     }
 }

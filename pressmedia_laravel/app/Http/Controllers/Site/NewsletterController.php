@@ -69,7 +69,7 @@ class NewsletterController extends Controller
         $lang = app()->getLocale();
 
         return view('site.message', ['message' => $message, 'bodyClass' => 'page-legal',
-            'meta' => ['title' => 'Newsletter'.Seo::SUFFIX, 'description' => $message, 'canonical' => url("$lang/index.html"), 'robots' => 'noindex,nofollow'],
-            'alternates' => ['fr' => url('fr/index.html'), 'en' => url('en/index.html')]]);
+            'meta' => ['title' => 'Newsletter'.Seo::SUFFIX, 'description' => $message, 'canonical' => url($lang), 'robots' => 'noindex,nofollow'],
+            'alternates' => ['fr' => url('fr'), 'en' => url('en')]]);
     }
 }

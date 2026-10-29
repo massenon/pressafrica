@@ -61,33 +61,33 @@ class AcceptanceJourneysTest extends TestCase
         $this->as('editor');
         $this->post('/admin/media-items/radio', ['key' => 'rad-100', 'status' => 'published', 'data' => ['name' => 'Radio Test', 'country' => 'BJ', 'language' => 'fr', 'genre' => 'news'],
             'translations' => ['fr' => ['description' => 'Radio béninoise'], 'en' => ['description' => 'Beninese radio']]])->assertRedirect();
-        $this->get('/fr/radios-africaines.html')->assertSee('Radio Test')->assertDontSee(__('proto.landing_title', [], 'fr'));
-        $this->get('/en/en-radios-africaines.html')->assertSee('Beninese radio');
-        $this->assertStringContainsString(url('fr/radios-africaines.html'), $this->get('/sitemap.xml')->getContent());
+        $this->get('/fr/radios-africaines')->assertSee('Radio Test')->assertDontSee(__('proto.landing_title', [], 'fr'));
+        $this->get('/en/en-radios-africaines')->assertSee('Beninese radio');
+        $this->assertStringContainsString(url('fr/radios-africaines'), $this->get('/sitemap.xml')->getContent());
 
         $item = MediaItem::where('key', 'rad-100')->sole();
         $this->put("/admin/media-items/radio/{$item->id}", ['key' => 'rad-100', 'status' => 'archived', 'data' => ['name' => 'Radio Test'], 'translations' => ['fr' => ['description' => 'x']]])->assertRedirect();
-        $this->get('/fr/radios-africaines.html')->assertDontSee('Radio Test');
-        $this->get('/en/en-radios-africaines.html')->assertDontSee('Radio Test');
+        $this->get('/fr/radios-africaines')->assertDontSee('Radio Test');
+        $this->get('/en/en-radios-africaines')->assertDontSee('Radio Test');
         $this->assertSame(['create', 'update'], AuditLog::where('module', 'radios')->orderBy('id')->pluck('action')->all());
     }
 
     public function test_r2_measurement_waits_for_consent_and_stops_when_the_id_is_removed(): void
     {
         $this->article();
-        $this->get('/fr/articles/benin.html')->assertDontSee('googletagmanager');                        // GA4 off by default (Q7)
+        $this->get('/fr/articles/benin')->assertDontSee('googletagmanager');                        // GA4 off by default (Q7)
         Settings::save(['ga4Enabled' => true, 'ga4MeasurementId' => 'G-R2TEST99']);
-        $html = $this->get('/fr/articles/benin.html')->getContent();
+        $html = $this->get('/fr/articles/benin')->getContent();
         $this->assertStringContainsString('type="text/plain" data-consent-cat="analytics" data-src="https://www.googletagmanager.com/gtag/js?id=G-R2TEST99"', $html);
         $this->assertStringContainsString('id="cookie-banner"', $html);                                   // banner present; inert until consent
         Settings::save(['ga4MeasurementId' => '']);
-        $this->get('/fr/articles/benin.html')->assertDontSee('googletagmanager');
+        $this->get('/fr/articles/benin')->assertDontSee('googletagmanager');
     }
 
     public function test_r3_visits_to_report_with_matching_export(): void
     {
         $this->article();
-        foreach (['/fr/articles/benin.html', '/fr/politique.html', '/fr/recherche.html?q=elections'] as $u) {
+        foreach (['/fr/articles/benin', '/fr/politique', '/fr/recherche?q=elections'] as $u) {
             $this->get($u, ['User-Agent' => 'Mozilla/5.0', 'CF-IPCountry' => 'BJ'])->assertOk();
         }
         $this->as('editor');
@@ -110,7 +110,7 @@ class AcceptanceJourneysTest extends TestCase
         $this->get('/admin/comments')->assertSee('Merci pour ce dossier');
         $this->put("/admin/comments/{$c->id}", ['status' => 'approved'])->assertRedirect();
         auth()->logout();
-        $this->get('/fr/articles/benin.html')->assertSee('Merci pour ce dossier')->assertDontSee('awa@x.test');
+        $this->get('/fr/articles/benin')->assertSee('Merci pour ce dossier')->assertDontSee('awa@x.test');
         $this->assertTrue(AuditLog::where(['module' => 'comments', 'action' => 'approve'])->exists());
     }
 
@@ -123,10 +123,10 @@ class AcceptanceJourneysTest extends TestCase
         $this->put("/admin/posts/{$post->id}", ['status' => 'scheduled', 'published_at' => now()->addHour()->format('Y-m-d H:i'), 'categories' => [Category::where('key', 'politics')->value('id')],
             'translations' => ['fr' => ['title' => 'Programmé', 'body' => '<p>x</p>']]])->assertRedirect();
         auth()->logout();
-        $this->get('/fr/politique.html')->assertDontSee('Programmé');
+        $this->get('/fr/politique')->assertDontSee('Programmé');
         $this->travel(2)->hours();
         $this->artisan('posts:publish-scheduled');
-        $this->get('/fr/politique.html')->assertSee('Programmé');
+        $this->get('/fr/politique')->assertSee('Programmé');
         $this->assertStringContainsString('programme', $this->get('/sitemap.xml')->getContent());
         $this->assertSame(['create', 'update', 'publish'], AuditLog::where('module', 'posts')->orderBy('id')->pluck('action')->all());
     }
@@ -138,7 +138,7 @@ class AcceptanceJourneysTest extends TestCase
         $m = Media::create(['path' => 'media/b.webp', 'mime' => 'image/webp', 'size' => 1, 'width' => 300, 'height' => 250, 'alt_fr' => 'Sponsor']);
         $zone = AdZone::where('key', 'sidebar_article')->sole();
         $zone->update(['active' => true, 'desktop' => ['enabled' => true, 'type' => 'banner', 'media_id' => $m->id, 'url' => 'https://s.example'], 'mobile' => ['enabled' => false, 'type' => 'banner']]);
-        $this->get('/fr/articles/benin.html');
+        $this->get('/fr/articles/benin');
         $this->get("/ad/{$zone->id}/desktop")->assertRedirect('https://s.example');
         $this->as('admin');
         $this->get('/admin/ads')->assertSee('100.00 %');
@@ -188,7 +188,7 @@ class AcceptanceJourneysTest extends TestCase
         $writer->refresh();
         $this->assertSame([__('site.former_author'), [], false], [$writer->name, $writer->getRoleNames()->all(), str_contains($writer->email, 'koffi')]);
         auth()->logout();
-        $this->get('/fr/articles/benin.html')->assertOk()->assertSee(__('site.former_author', [], 'fr'))->assertDontSee('Koffi Auteur');
+        $this->get('/fr/articles/benin')->assertOk()->assertSee(__('site.former_author', [], 'fr'))->assertDontSee('Koffi Auteur');
         $this->assertStringNotContainsString('koffi', (string) AuditLog::where('module', 'privacy')->pluck('target')->implode(' '));
     }
 }
