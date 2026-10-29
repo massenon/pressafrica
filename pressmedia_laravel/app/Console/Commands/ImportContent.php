@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\AuditLog;
 use App\Models\Category;
+use App\Models\HeroSlide;
 use App\Models\HomeSlot;
 use App\Models\Media;
 use App\Models\Post;
@@ -125,6 +126,10 @@ class ImportContent extends Command
         });
 
         $this->homeSlots($rules['home'] ?? []);
+        // Default carousel only on a first import: a re-import must not undo what the newsroom set in Admin > Featured.
+        if (! HeroSlide::exists()) {
+            HeroSlide::restoreDefaults();
+        }
         $sourceFr = $raw->count() - count($enNative);
         $this->table(['', 'source', 'imported'], [['FR', $sourceFr, $count['fr']], ['EN', $sourceFr, $count['en']]]);
         Storage::disk('local')->put('import-report.json', json_encode(['counts' => $count, 'anomalies' => $this->anomalies], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

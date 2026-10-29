@@ -1,6 +1,6 @@
 # Spécification — Carrousel d'accueil administrable, questions-réponses sous les articles, administration au look du prototype
 
-Date : 2026-10-29 · Statut : **PROPOSÉ**, à valider par le propriétaire · Suite du PRD (`docs/PRD.md`) : les exigences continuent sa numérotation (EX-40 à EX-52).
+Date : 2026-10-29 · Statut : **ARBITRÉ** — propriétaire, 2026-10-29 (toutes les exigences P0 validées) · Suite du PRD (`docs/PRD.md`) : les exigences continuent sa numérotation (EX-40 à EX-52).
 Source : demande du propriétaire du 2026-10-29 (« gestion des images du carrousel depuis l'admin, par défaut ce qui est là, CRUD » ; « section questions-réponses admin/utilisateur pour les blog details du système de commentaires »), et l'étape suivante du plan (admin au look du prototype, Livewire, Quill, sélecteur de médias, écran « Mise en avant »).
 
 ---
@@ -142,6 +142,16 @@ Quill pour le corps des articles (intertitres H2/H3, gras, italique, listes, cit
 | S3 | Fuseau horaire des programmations (début/fin des diapositives, publication planifiée) : Africa/Abidjan (UTC), Europe/Paris ? | Propriétaire | Non (défaut : configuration de l'application) |
 | S4 | Les réponses de la rédaction doivent-elles aussi être envoyées par e-mail au lecteur ? Dépend de l'envoi d'e-mails (Q9) et du RGPD (Q8). | Propriétaire + DPO | Non (hors périmètre v1) |
 | S5 | Durée de conservation des commentaires et réponses (RGPD). | DPO (Q8) | Non pour la construction, oui pour la mise en ligne |
+
+### Décisions du propriétaire (2026-10-29)
+
+| # | Décision |
+|---|---|
+| S1 | Les lecteurs peuvent répondre aux commentaires (un niveau) **et** la rédaction répond publiquement. |
+| S2 | Réponse de la rédaction signée du **nom de la personne + badge « Rédaction »**. |
+| S3 | Fuseau horaire du **Bénin** (`Africa/Porto-Novo`, UTC+1) pour toute l'application (programmation des diapositives et des articles, dates affichées). |
+| S4 | **E-mail au lecteur** quand la rédaction répond à son commentaire, s'il l'a demandé (case « m'avertir par e-mail » au moment de commenter, consentement horodaté). |
+| S5 | **Pas de durée de conservation** fixée ; l'administration supprime les commentaires. **Protections anti-robots / anti-IA renforcées** : piège à robots (existant), délai minimal de saisie signé, limites par IP (minute et jour), refus des doublons, liens multiples = spam, liste noire (e-mails, domaines, mots) réglable dans les paramètres. |
 
 ## 8. Phasage et dépendances
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\HeroSlideController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MediaItemController;
 use App\Http\Controllers\Admin\PostController;
@@ -68,6 +69,16 @@ Route::prefix('admin')->group(function () {
         Route::get('comments', [CommentController::class, 'index'])->middleware('can:comments.view')->name('comments.index');
         Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');   // right checked per status
         Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->middleware('can:comments.delete')->name('comments.destroy');
+
+        // Featured: home carousel (spec EX-41).
+        Route::get('featured', [HeroSlideController::class, 'index'])->middleware('can:featured.view')->name('featured.index');
+        Route::get('featured/create', [HeroSlideController::class, 'create'])->middleware('can:featured.create')->name('featured.create');
+        Route::post('featured', [HeroSlideController::class, 'store'])->middleware('can:featured.create')->name('featured.store');
+        Route::post('featured/restore', [HeroSlideController::class, 'restore'])->middleware('can:featured.restore')->name('featured.restore');
+        Route::get('featured/{slide}/edit', [HeroSlideController::class, 'edit'])->middleware('can:featured.edit')->name('featured.edit');
+        Route::put('featured/{slide}', [HeroSlideController::class, 'update'])->middleware('can:featured.edit')->name('featured.update');
+        Route::post('featured/{slide}/move', [HeroSlideController::class, 'move'])->middleware('can:featured.edit')->name('featured.move');
+        Route::delete('featured/{slide}', [HeroSlideController::class, 'destroy'])->middleware('can:featured.delete')->name('featured.destroy');
 
         // Media sections (podcasts, videos, magazine, radios, TV); rights checked per type in the controller.
         Route::prefix('media-items/{type}')->whereIn('type', array_keys(\App\Models\MediaItem::TYPES))->name('media-items.')->group(function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Models\HeroSlide;
 use App\Models\HomeSlot;
 use App\Models\Post;
 use Illuminate\View\View;
@@ -20,7 +21,8 @@ class HomeController extends Controller
         $slot = fn (string $name) => HomeSlot::where('slot', $name)->orderBy('position')->pluck('post_id')
             ->map(fn ($id) => $byId[$id] ?? null)->filter()->values();
 
-        $hero = $slot('hero');
+        $slides = HeroSlide::live()->with(['translations', 'media', 'post.translations', 'post.cover', 'post.author'])
+            ->take(HeroSlide::MAX_LIVE)->get()->map(fn ($s) => $s->view($lang));
         $latest = $slot('latest');
         [$econBig, $econSmall] = [$slot('econ_big'), $slot('econ_small')];
         $inCat = fn (string $key) => $all->filter(fn ($p) => $p->categories->contains('key', $key))->values();
@@ -43,10 +45,10 @@ class HomeController extends Controller
         }
 
         return view('site.home', [
-            'hero' => $hero, 'latest' => $latest, 'econPages' => $econPages, 'mostRead' => $mostRead, 'topics' => $topics,
+            'slides' => $slides, 'latest' => $latest, 'econPages' => $econPages, 'mostRead' => $mostRead, 'topics' => $topics,
             'ticker' => $all->take(10),
             'meta' => ['title' => __('seo.title.home'), 'description' => __('seo.desc.home'), 'canonical' => url("$lang/index.html"),
-                'image' => $hero->get(1)?->cover?->url()],
+                'image' => ($slides->first()['image'] ?? null)?->url()],
             'alternates' => ['fr' => url('fr/index.html'), 'en' => url('en/index.html')],
         ]);
     }

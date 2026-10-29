@@ -46,7 +46,9 @@
 | Laravel port of the new modules (analytics source GA4 API or first-party log, audit table append-only, scheduled backups, tags, channel directories) | todo, blocked on PRD Q2, Q3, Q7 |
 | Prototype "Explore by topic" popup (Foxiz template popup, top panel, template cloned on first open) | done 2026-10-28; port to a Blade partial + `<template>` |
 | Implementation plan (phases, FR and NFR tables): `docs/IMPLEMENTATION-PLAN.md` | done 2026-10-28; phase 0 blocked on Q9 (owner checks host and PHP) |
-| Spec `docs/specs/SPEC-2026-10-29-carrousel-questions-reponses-admin.md` (EX-40 to EX-52): admin-managed hero carousel with current slides as default, public Q&A replies under articles, admin in the prototype look (Livewire, Quill, media picker) | spec PROPOSED 2026-10-29; step A (carousel) next; step B waits on S1 (may readers reply to readers?) |
+| Spec `docs/specs/SPEC-2026-10-29-carrousel-questions-reponses-admin.md` (EX-40 to EX-52) | ARBITRATED by the owner 2026-10-29 (S1-S5 answered); app timezone = Benin (`Africa/Porto-Novo`) |
+| Step A — home carousel in Admin > Featured (EX-40 to 42): `hero_slides` (+ translations), article or free slides, image from library or upload (WebP), FR/EN texts with field-by-field fallback (EN → FR → article), schedule (Benin time), max 6 published, reorder up/down, delete, "Restore default carousel" (`featured.restore`, admin only), all journaled; defaults = the 4 prototype slides (`HeroSlide::restoreDefaults()`, run by the first import/seed) | done 2026-10-29, `tests/Feature/HeroSlidesTest.php`; FR home still identical to the prototype (parity sweep) |
+| Step B — public Q&A under articles (EX-43 to 46), reply e-mails (S4), anti-bot hardening (S5) | todo, next |
 | Tests and UAT | todo |
 
 Notes: Livewire resolved to 3.8 (3.6 line requested, `^3.6` allows it). Vue bundle is 45 kB gzip; split i18n per island if it matters in Lighthouse.

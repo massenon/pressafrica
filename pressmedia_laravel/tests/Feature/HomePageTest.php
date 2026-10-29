@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Category;
+use App\Models\HeroSlide;
 use App\Models\HomeSlot;
 use App\Models\Post;
 use App\Models\User;
@@ -31,6 +32,7 @@ class HomePageTest extends TestCase
             }
         }
 
+        HeroSlide::restoreDefaults();
         $this->get('/')->assertRedirect('/fr/index.html');
         $this->get('/fr')->assertRedirect('/fr/index.html');
         $r = $this->get('/fr/index.html')->assertOk();

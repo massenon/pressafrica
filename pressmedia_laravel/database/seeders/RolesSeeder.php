@@ -27,13 +27,16 @@ class RolesSeeder extends Seeder
                 Permission::findOrCreate("$m.$a", 'web');
             }
         }
+        // Extra rights outside the module x action grid. Granted to admin only (below), like the prototype's
+        // administrator-only actions: restoring the default home carousel (spec EX-41).
+        Permission::findOrCreate('featured.restore', 'web');
         $all = Permission::pluck('name')->all();
         $only = fn (array $mods, array $acts) => collect($mods)->flatMap(fn ($m) => collect($acts)->map(fn ($a) => "$m.$a"))->all();
 
         Role::findOrCreate('admin', 'web')->syncPermissions($all);
         // The audit trail and backups are administrator-only (prototype defaults(), PRD phase 1 exit criterion).
         Role::findOrCreate('editor', 'web')->syncPermissions(array_merge(
-            $only(array_diff(self::MODULES, ['settings', 'users', 'ads', 'menus', 'analytics', 'audit', 'backups']), self::ACTIONS),
+            $only(array_diff(self::MODULES, ['settings', 'users', 'ads', 'menus', 'analytics', 'audit', 'backups']), self::ACTIONS),   // never featured.restore
             $only(['settings', 'users', 'ads', 'menus', 'analytics'], ['view'])
         ));
         Role::findOrCreate('author', 'web')->syncPermissions(array_merge(

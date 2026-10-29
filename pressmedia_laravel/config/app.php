@@ -65,7 +65,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // Benin time (owner decision 2026-10-29): scheduling of posts and carousel slides, dates shown on the site.
+    'timezone' => 'Africa/Porto-Novo',
 
     /*
     |--------------------------------------------------------------------------

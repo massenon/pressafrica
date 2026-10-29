@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\AuditLog;
+use App\Models\HeroSlide;
 use App\Models\Media;
 use App\Models\Post;
 use Database\Seeders\RolesSeeder;
@@ -115,8 +116,8 @@ class ImportContentTest extends TestCase
         $this->import();
         $this->import();
 
-        $this->assertSame(1, Media::count());
-        $m = Media::sole();
+        $this->assertSame(1, Media::where('path', '!=', HeroSlide::INTRO_IMAGE)->count());
+        $m = Media::where('path', '!=', HeroSlide::INTRO_IMAGE)->sole();
         Storage::disk('public')->assertExists($m->path);
         $this->assertSame(['Puits', 'Benin: oil'], [$m->alt_fr, $m->alt_en]);
         $this->assertSame($m->id, Post::where('legacy_id', 10)->value('cover_id'));
