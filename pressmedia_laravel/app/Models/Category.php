@@ -20,7 +20,7 @@ class Category extends Model
     {
         $locale ??= app()->getLocale();
 
-        return $this->translations->firstWhere('locale', $locale) ?? $this->translations->firstWhere('locale', config('app.fallback_locale'));
+        return $this->translations->firstWhere('locale', $locale) ?? $this->translations->firstWhere('locale', config('app.content_locale'));
     }
 
     public function posts(): BelongsToMany

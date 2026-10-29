@@ -13,7 +13,10 @@
 | Light theme by default (EX-36): server renders `data-theme` from the `theme` cookie, `prefers-color-scheme` ignored, Tailwind `dark:` bound to `data-theme`, toggle in public and admin layouts (`resources/js/theme.js`) | done 2026-10-29. **Phase 1 complete.** |
 | Import of the 64 articles per language from the prototype/WordPress dump | todo |
 | Public pages (home, category, article, podcasts) in Blade | todo |
-| Admin Livewire: posts, categories, media | todo |
+| Admin posts `/admin/posts` (FR required, EN optional per INV-10; statuses draft/pending/published/scheduled, publish needs `posts.publish`; authors see and edit only their own via `PostPolicy`; Purifier on bodies; auto slug with -2 suffix; soft delete) | done 2026-10-29, `tests/Feature/PostsTest.php`; plain controllers + Blade, Quill/Livewire with the admin layout module |
+| Scheduling (EX-25): `posts:publish-scheduled` every minute via `schedule:run`; published + future date = scheduled; journaled as System | done 2026-10-29 (phase 2 exit criterion 1) |
+| Categories `/admin/categories` (unlimited nesting, cycle check, FR/EN names and slugs, delete refused while it has posts or children) and tags `/admin/tags` (EX-23: create, rename, merge, delete, usage counts; tags typed in the editor) | done 2026-10-29, `tests/Feature/TaxonomyTest.php` |
+| Admin media library (upload, WebP, alt FR/EN) | todo, next (phase 2b) |
 | Admin Livewire: podcasts, comments, ads, newsletter, menus, settings, users | todo |
 | SEO on-page: unique meta title, meta description from the article lead, canonical, hreflang | todo |
 | SEO social: Open Graph (og:image large for Facebook/WhatsApp), Twitter Card, via `@section` in the layout | todo |

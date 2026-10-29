@@ -14,6 +14,9 @@
     <a href="{{ route('admin.dashboard') }}" class="font-serif text-lg font-bold">{{ config('app.name') }}</a>
     <nav class="flex items-center gap-4 text-sm">
         @include('partials.theme-toggle')
+        @can('posts.view')<a href="{{ route('admin.posts.index') }}">Posts</a>@endcan
+        @can('categories.view')<a href="{{ route('admin.categories.index') }}">Categories</a>@endcan
+        @can('tags.view')<a href="{{ route('admin.tags.index') }}">Tags</a>@endcan
         @can('settings.view')<a href="{{ route('admin.settings.edit') }}">Settings</a>@endcan
         @can('users.view')<a href="{{ route('admin.roles.index') }}">Roles</a>@endcan
         @can('audit.view')<a href="{{ route('admin.audit.index') }}">Audit log</a>@endcan

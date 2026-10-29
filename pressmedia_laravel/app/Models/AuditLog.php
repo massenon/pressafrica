@@ -25,8 +25,18 @@ class AuditLog extends Model
     /** Records an action by $user (or the signed-in user). Never lets a logging failure break the action it records. */
     public static function record(string $action, string $module, ?string $target = null, ?string $detail = null, ?User $user = null): void
     {
+        static::write($action, $module, $target, $detail, $user ?? auth()->user());
+    }
+
+    /** Records an action taken by the system itself (scheduler, imports), whoever happens to be signed in. */
+    public static function system(string $action, string $module, ?string $target = null, ?string $detail = null): void
+    {
+        static::write($action, $module, $target, $detail, null);
+    }
+
+    private static function write(string $action, string $module, ?string $target, ?string $detail, ?User $user): void
+    {
         try {
-            $user ??= auth()->user();
             static::create([
                 'user_id' => $user?->id,
                 'user_name' => $user?->name ?? 'System',

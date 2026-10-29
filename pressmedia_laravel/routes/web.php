@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\SetLocale;
 use App\Support\Settings;
@@ -30,6 +33,21 @@ Route::prefix('admin')->group(function () {
         Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
         Route::view('/', 'admin.dashboard')->name('dashboard');
         Route::get('audit', [AuditLogController::class, 'index'])->middleware('can:audit.view')->name('audit.index');
+
+        // Posts: fine-grained checks (own posts vs all) live in PostPolicy.
+        Route::resource('posts', PostController::class)->except('show');
+
+        Route::get('categories', [CategoryController::class, 'index'])->middleware('can:categories.view')->name('categories.index');
+        Route::post('categories', [CategoryController::class, 'store'])->middleware('can:categories.create')->name('categories.store');
+        Route::get('categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('can:categories.edit')->name('categories.edit');
+        Route::put('categories/{category}', [CategoryController::class, 'update'])->middleware('can:categories.edit')->name('categories.update');
+        Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->middleware('can:categories.delete')->name('categories.destroy');
+
+        Route::get('tags', [TagController::class, 'index'])->middleware('can:tags.view')->name('tags.index');
+        Route::post('tags', [TagController::class, 'store'])->middleware('can:tags.create')->name('tags.store');
+        Route::put('tags/{tag}', [TagController::class, 'update'])->middleware('can:tags.edit')->name('tags.update');
+        Route::post('tags/{tag}/merge', [TagController::class, 'merge'])->middleware('can:tags.edit')->name('tags.merge');
+        Route::delete('tags/{tag}', [TagController::class, 'destroy'])->middleware('can:tags.delete')->name('tags.destroy');
 
         Route::get('settings', [SettingsController::class, 'edit'])->middleware('can:settings.view')->name('settings.edit');
         Route::put('settings', [SettingsController::class, 'update'])->middleware('can:settings.edit')->name('settings.update');

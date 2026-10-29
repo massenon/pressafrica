@@ -13,6 +13,9 @@ class Post extends Model
 {
     use SoftDeletes;
 
+    /** Same workflow as the prototype editor; published and scheduled need posts.publish. */
+    public const STATUSES = ['draft', 'pending', 'published', 'scheduled'];
+
     protected $guarded = [];
 
     protected $casts = ['published_at' => 'datetime', 'featured' => 'boolean'];
@@ -26,12 +29,17 @@ class Post extends Model
     {
         $locale ??= app()->getLocale();
 
-        return $this->translations->firstWhere('locale', $locale) ?? $this->translations->firstWhere('locale', config('app.fallback_locale'));
+        return $this->translations->firstWhere('locale', $locale) ?? $this->translations->firstWhere('locale', config('app.content_locale'));
     }
 
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
     }
 
     public function author(): BelongsTo
