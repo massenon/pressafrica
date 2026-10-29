@@ -1,0 +1,388 @@
+{
+ "categories": [
+  {
+   "key": "society",
+   "fr": "Société",
+   "en": "Society",
+   "slug_fr": "societe",
+   "slug_en": "society",
+   "db": [
+    "societe",
+    "social-news"
+   ]
+  },
+  {
+   "key": "politics",
+   "fr": "Politique",
+   "en": "Politics",
+   "slug_fr": "politique",
+   "slug_en": "politics",
+   "db": [
+    "politique-fr",
+    "political-news"
+   ]
+  },
+  {
+   "key": "finance",
+   "fr": "Finance",
+   "en": "Finance",
+   "slug_fr": "finance",
+   "slug_en": "finance",
+   "db": [
+    "finance-fr",
+    "finance-en"
+   ]
+  },
+  {
+   "key": "economy",
+   "fr": "Économie",
+   "en": "Economy",
+   "slug_fr": "economie",
+   "slug_en": "economy",
+   "db": [
+    "economie-africaine",
+    "african-economy"
+   ]
+  },
+  {
+   "key": "culture",
+   "fr": "Culture",
+   "en": "Culture",
+   "slug_fr": "culture",
+   "slug_en": "culture",
+   "db": [
+    "culture-africaine",
+    "culture"
+   ]
+  },
+  {
+   "key": "sports",
+   "fr": "Sports",
+   "en": "Sports",
+   "slug_fr": "sport",
+   "slug_en": "sports",
+   "db": [
+    "sports-fr",
+    "sports"
+   ]
+  },
+  {
+   "key": "science",
+   "fr": "Science et technologie",
+   "en": "Science and Technology",
+   "slug_fr": "science-et-technologie",
+   "slug_en": "science-and-technology",
+   "db": [
+    "science-et-technologie",
+    "science-and-technology"
+   ]
+  },
+  {
+   "key": "health",
+   "fr": "Santé & Bien-être",
+   "en": "Health & Wellness",
+   "slug_fr": "sante-bien-etre",
+   "slug_en": "health-wellness",
+   "db": [
+    "sante-bien-etre",
+    "health-wellness"
+   ]
+  },
+  {
+   "key": "online-press",
+   "fr": "Presse en ligne",
+   "en": "Online Press",
+   "slug_fr": "presse-en-ligne",
+   "slug_en": "online-press",
+   "db": [
+    "presse-en-ligne",
+    "online-press"
+   ]
+  },
+  {
+   "key": "podcasts",
+   "fr": "Podcasts",
+   "en": "Podcasts",
+   "slug_fr": "podcasts",
+   "slug_en": "podcasts",
+   "db": [
+    "radio",
+    "podcast"
+   ]
+  },
+  {
+   "key": "videos",
+   "fr": "Vidéos",
+   "en": "Videos",
+   "slug_fr": "videos",
+   "slug_en": "videos",
+   "db": [
+    "television-fr",
+    "television"
+   ]
+  },
+  {
+   "key": "magazine",
+   "fr": "Magazine",
+   "en": "Magazine",
+   "slug_fr": "magazine",
+   "slug_en": "magazine",
+   "db": [
+    "magazine-fr",
+    "magazine-en"
+   ]
+  },
+  {
+   "key": "radios",
+   "fr": "Radios africaines",
+   "en": "African Radios",
+   "slug_fr": "radios-africaines",
+   "slug_en": "african-radios",
+   "db": []
+  },
+  {
+   "key": "television",
+   "fr": "Télévision africaine",
+   "en": "African Television",
+   "slug_fr": "television-africaine",
+   "slug_en": "african-television",
+   "db": []
+  }
+ ],
+ "pairs": {
+  "4347": "4359",
+  "4337": "4360",
+  "4342": "4382",
+  "4334": "4398",
+  "4320": "4410",
+  "3473": "3765",
+  "3482": "3759",
+  "3740": "3754"
+ },
+ "en": {
+  "4637": {
+   "title": "Cape Verde: living under the dictates of natural disasters",
+   "excerpt": "Praia, January 7, 2026 —PRESS AFRICA— In 2025, Cape Verde went through one of its hardest years in the face of natural hazards: torrential rains linked to tropical storm Erin caused flash floods and landslides…"
+  },
+  "4632": {
+   "title": "Gambia: Barrow's succession, between stakes and scenarios",
+   "excerpt": "Banjul, January 7, 2026 —PRESS AFRICA— Less than a year before the presidential election planned for December 5, 2026, the question of who will succeed the head of the Gambian state is at the heart of public debate…"
+  },
+  "4631": {
+   "title": "Security: storm warning for South Sudan as a destination",
+   "excerpt": "Juba, January 7, 2026 —PRESS AFRICA— As South Sudan prepares for historic elections in December 2026, the security and political situation remains extremely fragile, a grim warning to any diplomatic or economic venture…"
+  },
+  "4630": {
+   "title": "Financial security: economic distress in Sudan",
+   "excerpt": "Khartoum, January 7, 2026 —PRESS AFRICA— Ravaged by a devastating civil conflict since April 2023, Sudan, one of the richest countries in history in Africa, now faces a deep financial crisis…"
+  },
+  "4622": {
+   "title": "Uganda: pre-election violence on the rise",
+   "excerpt": "Kampala, January 7, 2026 —PRESS AFRICA— A few days before January 15, 2026, the date set for Uganda's general elections, the political climate is deteriorating fast, with mounting pre-election violence and mass arrests…"
+  },
+  "4618": {
+   "title": "Côte d'Ivoire: an ambitious 2026 budget to accelerate economic transformation",
+   "excerpt": "Abidjan, January 7, 2026 —PRESS AFRICA— The Ivorian state budget for 2026, recently adopted by the National Assembly, stands out for a sharp increase in resources compared with the previous year…"
+  },
+  "4617": {
+   "title": "Ghana: the cedi's performance at the heart of the economic recovery",
+   "excerpt": "Accra, January 7, 2026 —PRESS AFRICA— 2025 will be remembered as a pivotal year for the Ghanaian currency, the cedi (GHS), which performed exceptionally against the main international currencies…"
+  },
+  "4613": {
+   "title": "Benin-Niger: a crisis with many repercussions",
+   "excerpt": "Niamey, January 7, 2026 —PRESS AFRICA— The diplomatic crisis between Niger and Benin, simmering since the July 2023 coup and intensifying since 2025, has entered a phase of open escalation…"
+  },
+  "4607": {
+   "title": "Mauritania: exports soon to drive economic growth",
+   "excerpt": "Nouakchott, January 7, 2026 —PRESS AFRICA— 2026 looks set to be a strategic turning point for Mauritanian exports, with favorable prospects for a substantial improvement in external revenues…"
+  },
+  "4606": {
+   "title": "Guinea-Bissau: citizens' daily lives put to the test after the ouster",
+   "excerpt": "Bissau, January 7, 2026 —PRESS AFRICA— Since the ousting of President Umaro Sissoco Embaló, Guinea-Bissau has been going through a period of political realignment that directly affects citizens' daily lives…"
+  },
+  "4596": {
+   "title": "Burundi: between growth and improved social conditions",
+   "excerpt": "Gitega, December 8, 2025—PRESS AFRICA—Over the past few years, Burundi has recorded notable progress in its economy, public finance management and road infrastructure development…"
+  },
+  "4587": {
+   "title": "Cameroon/2025: a mixed ranking, but real assets",
+   "excerpt": "Yaoundé, December 8, 2025—PRESS AFRICA—Cameroon continues to hold a strategic place in Africa as a major development player, yet it faces significant structural challenges…"
+  },
+  "4586": {
+   "title": "Central African Republic/2025: a social impact in the hope of recovery",
+   "excerpt": "Bangui, December 8, 2025—PRESS AFRICA—The Central African Republic (CAR) remains confronted with a deep social crisis in 2025, but some initiatives bring a glimmer of hope in a highly fragile context…"
+  },
+  "4585": {
+   "title": "Equatorial Guinea: tax evasion at the heart of economic challenges",
+   "excerpt": "Malabo, December 8, 2025—PRESS AFRICA—In 2025, Equatorial Guinea faces a persistent challenge: the fight against tax evasion, deeply rooted in a hydrocarbon-dependent economy with opaque financial governance…"
+  },
+  "4575": {
+   "title": "Congo/2025: the cultural economy on the rise",
+   "excerpt": "Brazzaville, December 8, 2025—PRESS AFRICA—Congo's cultural economy is emerging as a strategic sector at the heart of national economic diversification ambitions in 2025…"
+  },
+  "4574": {
+   "title": "DRC/2025: top 10 leading companies",
+   "excerpt": "Kinshasa, December 8, 2025—PRESS AFRICA—Several companies in the Democratic Republic of the Congo stand out in 2025 for their economic weight, strategic role and contribution to national development…"
+  },
+  "4573": {
+   "title": "São Tomé and Príncipe: the sensitive issues shaping 2025",
+   "excerpt": "São Tomé, December 8, 2025—PRESS AFRICA—In 2025, São Tomé and Príncipe, a small Central African archipelago known for its relative stability, faces a series of sensitive issues shaping its public debate…"
+  },
+  "4572": {
+   "title": "Somalia: daily life made of resilience, uncertainty and hope",
+   "excerpt": "Mogadishu, December 8, 2025—PRESS AFRICA—In Somalia, people's daily lives are a mix of persistent challenges, coping strategies and remarkable resilience…"
+  },
+  "4565": {
+   "title": "Comoros: youth facing the new vices of a changing society",
+   "excerpt": "Moroni, November 24, 2025—PRESS AFRICA— In the Comoros, a tropical archipelago with strong cultural identities, young people occupy a central demographic place…"
+  },
+  "4556": {
+   "title": "Madagascar: an economy weakened by political instability",
+   "excerpt": "Antananarivo, November 24, 2025—PRESS AFRICA— For more than two decades, Madagascar has gone through recurring cycles of political instability: disputed elections…"
+  },
+  "4557": {
+   "title": "Seychelles: the archipelago where hidden fortunes take shelter",
+   "excerpt": "Victoria, November 24, 2025—PRESS AFRICA— Known for their idyllic beaches and rare political stability in the region, the Seychelles also cultivate a discreet reputation…"
+  },
+  "4555": {
+   "title": "Mauritius: maternal and child mortality, a persistent challenge",
+   "excerpt": "Port Louis, November 24, 2025 —PRESS AFRICA— Often cited as one of the best-performing health systems in the Indian Ocean, Mauritius still faces a major challenge: maternal and child mortality…"
+  },
+  "4538": {
+   "title": "Egypt: Freemasonry in the shadows…",
+   "excerpt": "Cairo, November 24, 2025 —PRESS AFRICA— Long established in Egypt, where it knew a golden age in the 19th and early 20th centuries, Freemasonry remains a subject shrouded in opacity…"
+  },
+  "4540": {
+   "title": "Libya/Politics: the lasting legacy of the Gaddafi lineage",
+   "excerpt": "November 24, 2025 —PRESS AFRICA— A sociopolitical legacy claimed by some and loathed by others, it still shapes alliances, fuels divisions and drives ambitions…"
+  },
+  "4539": {
+   "title": "Morocco: a hybrid governance model with strong ambitions",
+   "excerpt": "November 24, 2025 —PRESS AFRICA— Since the early 2000s, Morocco has established itself on the African and Arab stage as a singular case: a kingdom pursuing gradual institutional reforms…"
+  },
+  "4537": {
+   "title": "Tunisia: what role in African integration?",
+   "excerpt": "Tunis, November 24, 2025 —PRESS AFRICA— Long turned toward the Mediterranean and Europe, Tunisia is gradually reshaping its geopolitical outlook to anchor itself more firmly in Africa's dynamics…"
+  },
+  "4528": {
+   "title": "Algeria: a land of vulnerability for Black Africans",
+   "excerpt": "Algiers, November 24, 2025 —PRESS AFRICA— Algeria, a crossroads between the Sahel, the Maghreb and the Mediterranean, has for over a decade hosted a growing number of sub-Saharan nationals…"
+  },
+  "4527": {
+   "title": "Djibouti: risks investors should avoid",
+   "excerpt": "November 24, 2025 —PRESS AFRICA— Djibouti, a small strategic nation in the Horn of Africa, has become a major logistics and trade hub thanks to its ports and proximity to international sea routes…"
+  },
+  "4529": {
+   "title": "Eritrea: a rich culture with export potential",
+   "excerpt": "Asmara, November 24, 2025 —PRESS AFRICA— Eritrea, a Horn of Africa country long isolated on the international stage, now reveals remarkable cultural potential that could appeal to global markets…"
+  },
+  "4517": {
+   "title": "HDI 2025: South Africa, a giant with feet of clay",
+   "excerpt": "Johannesburg, November 19, 2025 —PRESS AFRICA— South Africa remains one of the most developed countries on the continent, but its Human Development Index shows persistent inequalities…"
+  },
+  "4518": {
+   "title": "Angola: a democracy under tension between openness and control",
+   "excerpt": "Luanda, November 19, 2025 —PRESS AFRICA— Nearly half a century after independence, Angola continues to have an ambiguous relationship with democracy…"
+  },
+  "4508": {
+   "title": "Botswana: the limits of an African model in access to education",
+   "excerpt": "Gaborone, November 19, 2025 —PRESS AFRICA— Often cited as an example of stability and good governance in Africa, Botswana also stands out for its education policies…"
+  },
+  "4504": {
+   "title": "Mozambique: agriculture, a pillar of the economy that is still under-exploited",
+   "excerpt": "Maputo, November 19, 2025 —PRESS AFRICA— Mozambique, rich in fertile land and with a climate suited to farming, remains a country where land feeds most of the population…"
+  },
+  "4503": {
+   "title": "Namibia/Profile: Netumbo Nandi-Ndaitwah, a pioneer in the presidency",
+   "excerpt": "Windhoek, November 19, 2025 —PRESS AFRICA— At 72, Netumbo Nandi-Ndaitwah became, on March 21, 2025, the first woman to hold the presidency of Namibia…"
+  },
+  "4496": {
+   "title": "Lesotho: youth, a fragile but indispensable engine of the national economy",
+   "excerpt": "Maseru, November 16, 2025 —PRESS AFRICA— In the heart of the mountains of Southern Africa, Lesotho is increasingly betting on its youth to revive a struggling economy…"
+  },
+  "4495": {
+   "title": "Eswatini: the limits of a health system under pressure",
+   "excerpt": "Mbabane, November 15, 2025 —PRESS AFRICA— In the small kingdom of Eswatini, formerly Swaziland, public health remains one of the most fragile areas…"
+  },
+  "4488": {
+   "title": "Cotonou: FAGACE begins drafting its 2026-2030 strategic plan",
+   "excerpt": "Cotonou, November 11, 2025—PRESS AFRICA— The African Guarantee and Economic Cooperation Fund (FAGACE) has reached a major milestone in defining its medium-term vision…"
+  },
+  "4458": {
+   "title": "Ethiopia/Finance: external dependence declining, but…",
+   "excerpt": "Addis Ababa, November 5, 2025 —PRESS AFRICA— Ethiopia's latest economic review shows a marked improvement in its external debt profile, but…"
+  },
+  "4472": {
+   "title": "Liberia/Politics: looking back at a rich and unusual history",
+   "excerpt": "Monrovia, November 6, 2025 —PRESS AFRICA— The Republic of Liberia, founded in West Africa, has a singular political trajectory: its birth…"
+  },
+  "4468": {
+   "title": "ECOWAS: the fifty-year-old organization in search of a new regional momentum",
+   "excerpt": "Abuja, November 6, 2025 —PRESS AFRICA— Fifty years after its creation, the Economic Community of West African States (ECOWAS) is going through one of its most difficult periods…"
+  },
+  "4457": {
+   "title": "Tanzania: several dead in post-election violence",
+   "excerpt": "Dar es Salaam, November 6, 2025 —PRESS AFRICA— The East African country is going through a moment of crisis. Barely had the provisional results of the general election been announced…"
+  },
+  "4456": {
+   "title": "Africa/Air transport: the top 10 best airlines in 2025",
+   "excerpt": "Addis Ababa, November 6, 2025 —PRESS AFRICA— Which is Africa's best-performing airline in 2025? Several international rankings help answer the question…"
+  },
+  "4451": {
+   "title": "Chad: governance at the alert threshold",
+   "excerpt": "N'Djamena, November 6, 2025 —PRESS AFRICA— The latest report by the Mo Ibrahim Foundation on governance in Africa once again places Chad among the lowest-ranked countries…"
+  },
+  "4329": {
+   "title": "Africa/SMEs: the six most attractive sectors in 2025",
+   "excerpt": "Malabo, November 2, 2025—PRESS AFRICA— In 2025, small and medium-sized enterprises (SMEs) remain the backbone of African economies, creating jobs, local innovation and links in regional value chains…"
+  },
+  "4316": {
+   "title": "Africa: drug addiction, a multidimensional crisis",
+   "excerpt": "Johannesburg, November 2, 2025—PRESS AFRICA— In 2025, Africa faces a worrying reality: psychoactive substance use and dependence among young people has become a major public health problem…"
+  },
+  "4299": {
+   "title": "Africa: the stars of the moment in 2025",
+   "excerpt": "Abidjan, October 24, 2025—PRESS AFRICA— The year is rich for African stars: between international hits, streaming records and prestigious nominations, several artists, athletes and creators are in the spotlight…"
+  },
+  "4296": {
+   "title": "Benin/Oil: the realities of the field and prospects for production",
+   "excerpt": "Sèmè, October 29, 2025—PRESS AFRIKA— After nearly three decades of shutdown, the Sèmè field (block 1) off the coast of Benin is back at the center of attention…"
+  },
+  "4293": {
+   "title": "Guinea: Africa's number one supplier of raw materials to China",
+   "excerpt": "Conakry, October 27, 2025—PRESS AFRIKA— As trade between Africa and China gathers pace, Guinea stands out as one of the main suppliers of strategic raw materials for Chinese industry."
+  },
+  "4289": {
+   "title": "\"Made in China\": Nigeria, Africa's biggest consumer in 2025",
+   "excerpt": "Lagos, October 26, 2025—PRESS AFRIKA— Amid the rapid rise of trade between China and Africa, Nigeria now appears as the continent's biggest consumer of goods from Chinese industry…"
+  },
+  "4285": {
+   "title": "Africa: social and moral alarm over sexual excesses on TikTok",
+   "excerpt": "Abidjan, October 25, 2025—PRESS AFRIKA— TikTok, the Chinese video-sharing platform, has become within a few years one of the most widely used social networks on the African continent…"
+  },
+  "4281": {
+   "title": "West Africa: young people marry half as much as in 2000",
+   "excerpt": "Ouagadougou, October 23, 2025—PRESS AFRIKA— In a quarter of a century, marriage among young West Africans has changed profoundly. In 2000, nearly seven in ten young people were married before 30…"
+  },
+  "4267": {
+   "title": "Cotonou/Zémidjan: worrying return of older people to the trade",
+   "excerpt": "Cotonou, October 22, 2025 - PRESS AFRICA - On the busy streets of Cotonou, an unexpected phenomenon is drawing attention: more and more older people are taking the handlebars of the famous moto-taxis, the zémidjan…"
+  },
+  "4264": {
+   "title": "Africa/Counter-terrorism: state of play and financing challenges",
+   "excerpt": "Niamey, October 22, 2025 - PRESS AFRICA - As several parts of Africa face a resurgence of terrorist acts and transnational organized crime, financing the fight against terrorism and disrupting illicit flows are major challenges…"
+  },
+  "4259": {
+   "title": "Tourism in Benin in 2025: a booming sector",
+   "excerpt": "Several assets favor the tourist appeal of Benin as a destination. First and foremost, leaders have set a clear strategy through a five-year investment plan of 797 billion CFA francs (≈ USD 1.4 billion)…"
+  },
+  "4254": {
+   "title": "Science and Technology: African innovation takes shape in 2025",
+   "excerpt": "Abidjan, October 22, 2025 - PRESS AFRICA - In 2025, Africa is entering a technological and scientific turning point: a flourishing of local innovation, stronger cooperation and large-scale projects…"
+  },
+  "4237": {
+   "title": "Togo: deepening financial crisis due to regime change",
+   "excerpt": "Lomé, October 22, 2025 - PRESS AFRICA - Togo is going through a delicate period marked by deep economic difficulties, worsened by a change of political regime that…"
+  }
+ }
+}
