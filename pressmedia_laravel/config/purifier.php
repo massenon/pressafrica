@@ -25,8 +25,10 @@ return [
     'settings'      => [
         'default' => [
             'HTML.Doctype'             => 'HTML 4.01 Transitional',
-            'HTML.Allowed'             => 'div,b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src]',
-            'CSS.AllowedProperties'    => 'font,font-size,font-weight,font-style,font-family,text-decoration,padding-left,color,background-color,text-align',
+            // Article bodies: the structure the prototype's article styles expect (.prose h2/h3, lists, quotes),
+            // no inline style or class, so imported and typed bodies keep the site's typography.
+            'HTML.Allowed'             => 'h2,h3,h4,p,br,b,strong,i,em,u,ul,ol,li,blockquote,a[href|title],img[width|height|alt|src|title],table,thead,tbody,tr,th,td',
+            'CSS.AllowedProperties'    => '',
             'AutoFormat.AutoParagraph' => true,
             'AutoFormat.RemoveEmpty'   => true,
         ],

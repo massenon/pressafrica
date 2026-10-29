@@ -28,4 +28,8 @@ One block per working session: what was decided and done, what is open. Newest f
 **Open / needs the owner:** Q9 host + PHP + `storage:link` on cPanel; Q7 analytics source (phase 6); Q8 DPO (phase 7);
 Q4/Q5 magazine/radio/TV content and outbound links (phase 5).
 
-**Next:** phase 4 — public Blade pages (article, home, category, podcasts), SEO (meta, OG, JSON-LD, sitemaps, robots), Turbo Drive.
+**Phase 4 progress (2026-10-29):** article page done and pixel-checked against the prototype (see PROGRESS.md).
+Approach chosen to save tokens and keep the look 100 %: reuse the prototype's generated chrome, compiled CSS/JS and
+cleaned bodies instead of re-writing them. Found and fixed on the way: Purifier's default config dropped `<h2>`.
+
+**Next:** phase 4 — home, category and podcasts pages; sitemaps + robots; then refresh the chrome's dynamic zones.

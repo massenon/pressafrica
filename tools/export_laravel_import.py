@@ -26,3 +26,17 @@ out = {
 dest = HERE.parent / "prototype_html" / "data" / "laravel-import.json"
 dest.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf8")
 print(f"wrote {dest} ({len(out['categories'])} categories, {len(PAIRS)} pairs, {len(T)} EN stubs)")
+
+# Article bodies exactly as the prototype prints them (build_site.clean_body() for WordPress bodies,
+# sanitised translations as they are), keyed by language then WordPress id of the row the body comes from.
+import build_site as B  # noqa: E402  (guarded by __main__, importing does not run the build)
+
+B.build_articles()
+bodies = {"fr": {}, "en": {}}
+for lang in ("fr", "en"):
+    for a in B.ARTICLES[lang]:
+        B.CTX["lang"], B.CTX["cur"] = lang, a["path"]
+        bodies[lang][a["id"]] = a["body"] if a.get("tr") else B.clean_body(a["body"], a)
+dest = HERE.parent / "prototype_html" / "data" / "laravel-bodies.json"
+dest.write_text(json.dumps(bodies, ensure_ascii=False) + "\n", encoding="utf8")
+print(f"wrote {dest} ({len(bodies['fr'])} FR + {len(bodies['en'])} EN bodies)")

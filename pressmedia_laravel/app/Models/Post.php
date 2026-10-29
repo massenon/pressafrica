@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 /** Translatable model: text columns live in post_translations; translation($locale) falls back to the default locale. */
 class Post extends Model
@@ -35,6 +36,38 @@ class Post extends Model
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    /** Public URL in $locale (prototype path /{locale}/articles/{slug}.html), or null without a translation. */
+    public function url(string $locale): ?string
+    {
+        $t = $this->translations->firstWhere('locale', $locale);
+
+        return $t ? url("$locale/articles/{$t->slug}.html") : null;
+    }
+
+    /** Categories in label order for $locale, accents ignored (build_site.py mk(): the prototype's chip order). */
+    public function sortedCategories(?string $locale = null)
+    {
+        $locale ??= app()->getLocale();
+
+        return $this->categories->sortBy(fn ($c) => Str::lower(Str::ascii($c->translation($locale)?->name ?? '')))->values();
+    }
+
+    public function cover(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'cover_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /** Reading time as the prototype computes it (build_site.py: one minute per 950 characters, minimum 3). */
+    public static function minutes(string $html): int
+    {
+        return max(3, (int) round(mb_strlen(trim(strip_tags($html))) / 950));
     }
 
     public function tags(): BelongsToMany

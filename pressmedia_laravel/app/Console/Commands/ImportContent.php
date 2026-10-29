@@ -30,6 +30,9 @@ class ImportContent extends Command
 
     private array $usedSlugs = ['fr' => [], 'en' => []];
 
+    /** Bodies as the prototype prints them (laravel-bodies.json), by locale then WordPress id. */
+    private array $bodies = [];
+
     /** EN cover alt text from full translations, by WordPress id. */
     private array $enAlt = [];
 
@@ -46,6 +49,7 @@ class ImportContent extends Command
         $raw = collect(json_decode(file_get_contents("$src/articles.json"), true))->where('type', 'post')->keyBy('id');
         $rules = json_decode(file_get_contents("$src/laravel-import.json"), true);
         $manifest = is_file("$src/image-manifest.json") ? json_decode(file_get_contents("$src/image-manifest.json"), true) : [];
+        $this->bodies = is_file("$src/laravel-bodies.json") ? json_decode(file_get_contents("$src/laravel-bodies.json"), true) : [];
         $pairs = $rules['pairs'];
         $enNative = array_flip($pairs);   // EN id -> FR id
 
@@ -152,10 +156,11 @@ class ImportContent extends Command
         }
         $this->usedSlugs[$locale][] = $slug;
 
-        $body = clean(preg_replace('/<!--.*?-->/s', '', $r['content'] ?? ''));
-        if (str_contains($body, 'pressafrica.media/wp-content')) {
-            $this->anomaly($r['id'], "$locale body links images on the old WordPress host");
+        if (str_contains($r['content'] ?? '', 'pressafrica.media/wp-content')) {
+            $this->anomaly($r['id'], "$locale source body links images on the old WordPress host (left out by the prototype's cleaning)");
         }
+        // Prefer the body the prototype prints (build_site.clean_body()); fall back to the source without WP comments.
+        $body = clean($this->bodies[$locale][(string) $r['id']] ?? preg_replace('/<!--.*?-->/s', '', $r['content'] ?? ''));
 
         $post->translations()->updateOrCreate(['locale' => $locale], [
             'title' => $title,
@@ -181,7 +186,12 @@ class ImportContent extends Command
         $media = $post->cover_id ? Media::find($post->cover_id) : null;
         if (! $media) {
             $dest = 'media/import/'.basename($file);
-            Storage::disk(MediaStore::DISK)->put($dest, file_get_contents($file));
+            // The smaller widths go along so public pages get the prototype's srcset (Media::srcset()).
+            foreach ($manifest[$path]['widths'] as $w => $rel) {
+                if (is_file(dirname($src).'/'.$rel)) {
+                    Storage::disk(MediaStore::DISK)->put('media/import/'.basename($rel), file_get_contents(dirname($src).'/'.$rel));
+                }
+            }
             [$w, $h] = getimagesize($file) ?: [null, null];
             $media = Media::create(['path' => $dest, 'mime' => 'image/webp', 'size' => filesize($file), 'width' => $w, 'height' => $h,
                 'alt_fr' => $this->cleanTitle($r['image']['alt'] ?? $r['title']), 'alt_en' => $this->enAlt[$r['id']] ?? $post->translations()->where('locale', 'en')->value('title')]);

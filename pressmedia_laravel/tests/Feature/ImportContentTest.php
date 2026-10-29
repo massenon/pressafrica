@@ -132,7 +132,7 @@ class ImportContentTest extends TestCase
         $this->assertSame(['fr' => 3, 'en' => 3], $report['counts']);
         $issues = collect($report['anomalies'])->map(fn ($a) => $a['wp_id'].': '.$a['issue'])->all();
         $this->assertContains('13: no category maps to a site section', $issues);
-        $this->assertContains('10: fr body links images on the old WordPress host', $issues);
+        $this->assertContains("10: fr source body links images on the old WordPress host (left out by the prototype's cleaning)", $issues);
         $this->assertContains('13: EN has title/excerpt only, body stays French (no translations/en file)', $issues);
         $this->assertStringContainsString('pressafrica.media', $this->t(10, 'fr')->body, 'kept as in the source');
         $this->assertSame(2, AuditLog::where(['action' => 'import', 'user_name' => 'System'])->count());

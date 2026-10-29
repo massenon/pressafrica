@@ -18,6 +18,12 @@ Public layout loads `@hotwired/turbo` (npm, bundled by Vite, ~26 kB gzip measure
 ## Hosting: cPanel shared, no Node, no Redis (owner, 2026-10-28)
 Build assets before deploy (`npm run build` locally or in CI), web root = `public/`, `CACHE_STORE=file` (or `database`), `SESSION_DRIVER=file` or `database`, `QUEUE_CONNECTION=sync` or `database` with a cron `queue:work --stop-when-empty`, cron `* * * * * php artisan schedule:run`. Enable gzip/brotli and long cache headers on `/build`.
 
+## Public pages = the prototype's own markup and assets (2026-10-29)
+- Chrome (header, footer, dialogs) is generated: edit the prototype, then `python ../tools/export_chrome.py`. Never hand-edit `resources/chrome/*.html`.
+- Assets: `npm ci && php artisan site:assets` copies the prototype's compiled CSS/JS/fonts/images and Turbo into `public/assets` (not committed). Blade views reuse the prototype class names; no Vite build is needed for public pages.
+- Article bodies come from `prototype_html/data/laravel-bodies.json` (generator's `clean_body()`), re-exported by `python ../tools/export_laravel_import.py`.
+- Check a ported page with Playwright against `python -m http.server` on `prototype_html`: compare block heights, then pixel diff; look at an image only where they differ.
+
 ## Rules
 - Locales: `fr` (default) and `en`. Text lives in `*_translations` tables. URLs mirror the prototype (`/fr/...`, `/en/...`).
 - Sanitise every HTML body with Purifier before saving. Never render user HTML unescaped otherwise.
