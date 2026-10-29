@@ -13,6 +13,7 @@ use App\Http\Controllers\Site\ArticleController;
 use App\Http\Controllers\Site\CommentController as PublicCommentController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\SectionController;
+use App\Http\Controllers\Site\SeoController;
 use App\Http\Middleware\SetLocale;
 use App\Support\Settings;
 use Illuminate\Http\Request;
@@ -25,9 +26,14 @@ Route::get('/', function (Request $request) {
     return redirect('/'.(in_array($saved, SetLocale::LOCALES, true) ? $saved : Settings::get('defaultLang')).'/index.html');
 });
 
+Route::get('robots.txt', [SeoController::class, 'robots']);
+Route::get('sitemap.xml', [SeoController::class, 'sitemap']);
+Route::get('news-sitemap.xml', [SeoController::class, 'newsSitemap']);
+
 Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware('locale')->group(function () {
     Route::get('/', fn () => redirect('/'.app()->getLocale().'/index.html', 301));
     Route::get('index.html', [HomeController::class, 'show'])->name('home');
+    Route::get('feed.xml', [SeoController::class, 'feed'])->name('feed');
     Route::get('articles/{slug}.html', [ArticleController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('articles.show');
     Route::get('{slug}.html', [SectionController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('sections.show');   // keep last: catches /{locale}/*.html
     Route::post('articles/{slug}/comments', [PublicCommentController::class, 'store'])->middleware('throttle:comments')->name('comments.store');
