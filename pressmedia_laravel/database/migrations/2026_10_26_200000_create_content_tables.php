@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Schema;
  * Mirrors the HTML prototype data model (prototype_html/data/podcasts.json, generated articles).
  * Text lives in *_translations tables so a new language is a new row, not a new column.
  */
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $t) {
@@ -111,7 +112,7 @@ return new class extends Migration {
     public function down(): void
     {
         foreach (['podcast_episode_translations', 'podcast_episodes', 'podcast_show_translations', 'podcast_shows', 'category_post',
-                  'post_translations', 'posts', 'media', 'category_translations', 'categories'] as $table) {
+            'post_translations', 'posts', 'media', 'category_translations', 'categories'] as $table) {
             Schema::dropIfExists($table);
         }
     }

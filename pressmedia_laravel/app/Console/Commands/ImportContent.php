@@ -30,7 +30,7 @@ class ImportContent extends Command
 
     private array $usedSlugs = ['fr' => [], 'en' => []];
 
-    /** Bodies as the prototype prints them (laravel-bodies.json), by locale then WordPress id. */
+    /** Bodies and excerpts as the prototype prints them (laravel-bodies.json): [body|excerpt][locale][WordPress id]. */
     private array $bodies = [];
 
     /** EN cover alt text from full translations, by WordPress id. */
@@ -84,6 +84,13 @@ class ImportContent extends Command
                     } else {
                         $this->translation($post, 'en', $en, $en['title'], null, null);
                         $count['en']++;
+                        if ($en['date'] !== $r['date']) {
+                            $this->anomaly($id, "EN pair {$en['id']} dated {$en['date']}, FR {$r['date']}: one post keeps the FR date");
+                        }
+                        $mapped = fn ($row) => collect($row['categories'] ?? [])->pluck('slug')->map(fn ($s) => $catByDbSlug[$s] ?? null)->filter()->unique()->sort()->values()->all();
+                        if ($mapped($en) !== $mapped($r)) {
+                            $this->anomaly($id, "EN pair {$en['id']} has other sections than FR: one post keeps the FR sections");
+                        }
                     }
                 } elseif ($full = $this->fullTranslation($src, $id)) {
                     // Hand-made full EN translation (same file and checks as build_site.py load_translation()).
@@ -127,9 +134,12 @@ class ImportContent extends Command
     {
         $map = [];
         foreach ($cats as $i => $c) {
-            $cat = Category::updateOrCreate(['key' => $c['key']], ['position' => $i]);
+            $cat = Category::updateOrCreate(['key' => $c['key']], ['position' => $i, 'layout' => $c['layout'] ?? 'archive']);
             foreach (['fr', 'en'] as $l) {
-                $cat->translations()->updateOrCreate(['locale' => $l], ['name' => $c[$l], 'slug' => $c['slug_'.$l]]);
+                $cat->translations()->updateOrCreate(['locale' => $l], [
+                    'name' => $c[$l], 'slug' => $c['slug_'.$l], 'heading' => $c['heading_'.$l] ?? null,
+                    'seo_title' => $c['seo_title_'.$l] ?? null, 'description' => $c['description_'.$l] ?? null,
+                ]);
             }
             foreach ($c['db'] as $dbSlug) {
                 $map[$dbSlug] = $cat->id;
@@ -160,7 +170,8 @@ class ImportContent extends Command
             $this->anomaly($r['id'], "$locale source body links images on the old WordPress host (left out by the prototype's cleaning)");
         }
         // Prefer the body the prototype prints (build_site.clean_body()); fall back to the source without WP comments.
-        $body = clean($this->bodies[$locale][(string) $r['id']] ?? preg_replace('/<!--.*?-->/s', '', $r['content'] ?? ''));
+        $body = clean($this->bodies['body'][$locale][(string) $r['id']] ?? preg_replace('/<!--.*?-->/s', '', $r['content'] ?? ''));
+        $excerpt ??= $this->bodies['excerpt'][$locale][(string) $r['id']] ?? null;
 
         $post->translations()->updateOrCreate(['locale' => $locale], [
             'title' => $title,
@@ -168,6 +179,7 @@ class ImportContent extends Command
             'excerpt' => $excerpt ?? (trim($r['excerpt'] ?? '') ?: Str::limit(trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags($body)))), 165)),
             'body' => $body,
             'body_locale' => $bodyLocale,
+            'reading_minutes' => $this->bodies['minutes'][$locale][(string) $r['id']] ?? null,
             'seo_title' => ($full['seo_title'] ?? $r['seo_title'] ?? '') ?: null,
             'seo_description' => ($full['seo_desc'] ?? $r['seo_desc'] ?? '') ?: null,
         ]);

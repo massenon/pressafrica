@@ -1,1 +1,1 @@
-<p class="meta"><span class="meta-by">{{ __('site.by') }} <b class="author">{{ $post->author?->name }}</b></span><span class="meta-sep" aria-hidden="true"></span><span>{{ __('site.min_read', ['n' => \App\Models\Post::minutes($post->translation()->body)]) }}</span></p>
+<p class="meta"><span class="meta-by">{{ __('site.by') }} <b class="author">{{ $post->author?->name }}</b></span><span class="meta-sep" aria-hidden="true"></span><span>{{ __('site.min_read', ['n' => $post->translation()->minutes()]) }}</span></p>

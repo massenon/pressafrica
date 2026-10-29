@@ -37,8 +37,8 @@
 <nav class="breadcrumb" aria-label="{{ __('site.breadcrumb') }}"><ol>@foreach ($crumbs as $i => [$name, $href])<li>@if ($loop->last)<span aria-current="page">{{ $name }}</span>@else<a href="{{ $href }}">{{ $name }}</a>@endif</li>@endforeach</ol></nav>
 <article class="article">
 <header class="article-head">@include('site.partials.chips')<h1 class="article-title">{{ $t->title }}</h1>
-<div class="byline"><span class="avatar" aria-hidden="true">{{ mb_substr($post->author?->name ?? 'A', 0, 1) }}</span><div><p class="meta meta-lg"><span class="meta-by">{{ __('site.by') }} <b class="author">{{ $post->author?->name }}</b></span><span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $post->published_at->toDateString() }}">{{ $post->published_at->locale($lang)->isoFormat($lang === 'fr' ? 'D MMMM YYYY' : 'MMMM D, YYYY') }}</time><span class="meta-sep" aria-hidden="true"></span><span>{{ __('site.min_read', ['n' => $minutes]) }}</span></p>
-<p class="byline-upd">{{ __('site.updated') }} <time datetime="{{ $post->updated_at->toDateString() }}">{{ $post->updated_at->locale($lang)->isoFormat($lang === 'fr' ? 'D MMMM YYYY' : 'MMMM D, YYYY') }}</time></p></div></div>
+<div class="byline"><span class="avatar" aria-hidden="true">{{ mb_substr($post->author?->name ?? 'A', 0, 1) }}</span><div><p class="meta meta-lg"><span class="meta-by">{{ __('site.by') }} <b class="author">{{ $post->author?->name }}</b></span><span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $post->published_at->toDateString() }}">{{ \App\Support\Seo::date($post->published_at) }}</time><span class="meta-sep" aria-hidden="true"></span><span>{{ __('site.min_read', ['n' => $minutes]) }}</span></p>
+<p class="byline-upd">{{ __('site.updated') }} <time datetime="{{ $post->updated_at->toDateString() }}">{{ \App\Support\Seo::date($post->updated_at) }}</time></p></div></div>
 {{-- Only between two real versions: not to or from an English title over a French body. --}}
 @if (($o = $post->translations->firstWhere('locale', $other)) && ! $o->body_locale && ! $t->body_locale)<p class="alt-version"><a href="{{ $alternates[$other] }}" hreflang="{{ $other }}" lang="{{ $other }}">{{ __('site.read_in_other') }}</a></p>@endif
 </header>
@@ -46,7 +46,7 @@
 <div class="article-body"><div class="l-shared-sec-outer show-mobile"><div class="l-shared-sec" role="group" aria-label="{{ __('site.share_label') }}"><div class="l-shared-header meta-text"><svg class="i i-md" aria-hidden="true" focusable="false"><use href="#i-share"/></svg><span class="share-label">{{ __('site.share') }}</span></div><div class="l-shared-items">@include('site.partials.share', ['url' => $url, 'title' => $t->title, 'labels' => false])</div></div></div>
 @if ($t->body_locale && $t->body_locale !== $lang)<p class="alt-version">{{ __('site.body_in_french') }}</p>@endif
 {{-- Bodies are sanitised with Purifier when saved (INV-04), so they are printed as HTML here. --}}
-<div class="prose" @if ($t->body_locale && $t->body_locale !== $lang) lang="{{ $t->body_locale }}" @endif>{!! $t->body !!}</div></div>
+<div class="prose"{!! $t->body_locale && $t->body_locale !== $lang ? ' lang="'.e($t->body_locale).'"' : '' !!}>{!! $t->body !!}</div></div>
 <div class="e-shared-sec entry-sec"><div class="e-shared-header h4"><svg class="i i-md" aria-hidden="true" focusable="false"><use href="#i-share"/></svg><span>{{ __('site.share_article') }}</span></div><div class="rbbsl">@include('site.partials.share', ['url' => $url, 'title' => $t->title, 'labels' => true])</div></div>
 <section class="usr-holder entry-sec" aria-label="{{ __('site.by') }} {{ $post->author?->name }}"><div class="ubox"><div class="ubox-header"><div class="author-info-wrap"><span class="avatar" aria-hidden="true">{{ mb_substr($post->author?->name ?? 'A', 0, 1) }}</span><div class="is-meta"><div class="nname-info meta-author"><span class="meta-label">{{ __('site.by') }}</span><b class="nice-name">{{ $post->author?->name }}</b></div><span class="author-job">{{ __('site.editorial_team') }}</span></div></div>
 <div class="usocials meta-text"><span class="ef-label">{{ __('site.follow') }}</span>@foreach ([['facebook', 'Facebook', 'https://www.facebook.com/africaglobalpress'], ['x', 'X', 'https://x.com/africaglobalpress'], ['instagram', 'Instagram', 'https://www.instagram.com/africaglobalpress/']] as [$k, $n, $h])<a href="{{ $h }}" rel="noopener nofollow" target="_blank" aria-label="{{ $n }}" title="{{ $n }}"><svg class="i i-md" aria-hidden="true" focusable="false"><use href="#i-{{ $k }}"/></svg></a>@endforeach</div></div>
@@ -54,7 +54,7 @@
 @if ($prev || $next)
 <nav class="entry-pagination e-pagi entry-sec mobile-hide" aria-label="{{ __('site.prev_next') }}"><div class="inner">
 @foreach ([['left', $prev, 'prev', 'angle-l'], ['right', $next, 'next', 'angle-r']] as [$side, $p, $rel, $icon])
-<div class="nav-el nav-{{ $side }}">@if ($p)<a href="{{ $p->url($lang) }}" rel="{{ $rel }}"><span class="nav-label is-meta">@if ($rel === 'prev')<svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-{{ $icon }}"/></svg>@endif<span>{{ __('site.'.$rel) }}</span>@if ($rel === 'next')<svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-{{ $icon }}"/></svg>@endif</span><span class="nav-inner">@include('site.partials.img', ['media' => $p->cover, 'alt' => __('site.illustration', ['title' => $p->translation($lang)->title]), 'title' => $p->translation($lang)->title, 'class' => 'e-pagi-img', 'sizes' => '(min-width:1024px) 300px, 50vw'])<span class="e-pagi-title">{{ $p->translation($lang)->title }}</span></span></a>@endif</div>
+<div class="nav-el nav-{{ $side }}"{!! $p ? '' : ' aria-hidden="true"' !!}>@if ($p)<a href="{{ $p->url($lang) }}" rel="{{ $rel }}"><span class="nav-label is-meta">@if ($rel === 'prev')<svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-{{ $icon }}"/></svg>@endif<span>{{ __('site.'.$rel) }}</span>@if ($rel === 'next')<svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-{{ $icon }}"/></svg>@endif</span><span class="nav-inner">@include('site.partials.img', ['media' => $p->cover, 'alt' => __('site.illustration', ['title' => $p->translation($lang)->title]), 'title' => $p->translation($lang)->title, 'class' => 'e-pagi-img', 'sizes' => '(min-width:1024px) 300px, 50vw'])<span class="e-pagi-title">{{ $p->translation($lang)->title }}</span></span></a>@endif</div>
 @endforeach
 </div></nav>
 @endif
@@ -80,8 +80,7 @@
 @if ($related->isNotEmpty())
 <section class="block related" aria-labelledby="rel-t"><h2 class="sec-title sec-blue" id="rel-t"><span class="sq" aria-hidden="true"></span>{{ __('site.read_also') }}</h2><div class="grid-3">
 @foreach ($related as $p)
-@php($pt = $p->translation($lang))
-<article class="card card-grid reveal"><div class="thumb-wrap"><a class="thumb thumb-land" href="{{ $p->url($lang) }}" tabindex="-1" aria-hidden="true">@include('site.partials.img', ['media' => $p->cover, 'alt' => __('site.illustration', ['title' => $pt->title]), 'title' => $pt->title, 'sizes' => '(min-width:1024px) 400px, 100vw'])</a>@include('site.partials.chips', ['post' => $p])</div><h3 class="card-title "><a href="{{ $p->url($lang) }}">{{ $pt->title }}</a></h3><p class="excerpt">{{ \App\Support\Seo::truncate($pt->excerpt ?? '', 165) }}</p>@include('site.partials.meta', ['post' => $p])</article>
+@include('site.partials.card-grid')
 @endforeach
 </div></section>
 @endif
@@ -89,7 +88,7 @@
 <div class="comment-holder">
 @if ($comments->isNotEmpty())
 {{-- Published comments show the name and text only, never the e-mail (EX-26). --}}
-<ol class="comment-list" aria-label="{{ __('site.comments') }}">@foreach ($comments as $c)<li class="comment"><p class="meta"><b class="author">{{ $c->author }}</b><span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $c->created_at->toDateString() }}">{{ $c->created_at->locale($lang)->isoFormat($lang === 'fr' ? 'D MMMM YYYY' : 'MMMM D, YYYY') }}</time></p><p>{{ $c->body }}</p></li>@endforeach</ol>
+<ol class="comment-list" aria-label="{{ __('site.comments') }}">@foreach ($comments as $c)<li class="comment"><p class="meta"><b class="author">{{ $c->author }}</b><span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $c->created_at->toDateString() }}">{{ \App\Support\Seo::date($c->created_at) }}</time></p><p>{{ $c->body }}</p></li>@endforeach</ol>
 @endif
 <div id="respond" class="comment-respond"><form class="comment-form form" data-comment-server method="POST" action="{{ url("$lang/articles/{$t->slug}/comments") }}" novalidate>@csrf
 <p class="comment-notes">{{ __('site.cm_notes') }}</p>

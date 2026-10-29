@@ -16,7 +16,7 @@ class ArticleController extends Controller
         $t = PostTranslation::where('locale', $locale)->where('slug', $slug)->firstOrFail();
         $post = Post::published()->with(['translations', 'categories.translations', 'cover', 'author'])->findOrFail($t->post_id);
 
-        // Newest first, as on the prototype; prev = newer neighbour on the list, next = older one.
+        // Newest first, as on the prototype; "previous article" is the older neighbour, "next" the newer one.
         $list = Post::published()->whereHas('translations', fn ($q) => $q->where('locale', $locale))
             ->with(['translations', 'cover', 'author', 'categories.translations'])
             ->orderByDesc('published_at')->orderByDesc('id')->get();
@@ -35,13 +35,13 @@ class ArticleController extends Controller
             'post' => $post,
             't' => $t,
             'alternates' => $this->alternates($post),
-            'prev' => $i > 0 ? $list[$i - 1] : null,
-            'next' => $list[$i + 1] ?? null,
+            'prev' => $list[$i + 1] ?? null,
+            'next' => $i > 0 ? $list[$i - 1] : null,
             'mustRead' => $others->take(5)->values(),
             'related' => ($related->isNotEmpty() ? $related : $sharing)->take(3)->values(),
             'crumbCat' => $crumbCat,
             'comments' => $post->comments()->approved()->where('locale', $locale)->oldest()->get(),
-            'minutes' => Post::minutes($t->body),
+            'minutes' => $t->minutes(),
         ]);
     }
 

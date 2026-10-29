@@ -2,10 +2,21 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Carbon;
+
 /** Title and description rules of the prototype generator (build_site.py truncate(), build_article()). */
 class Seo
 {
     public const SUFFIX = ' | Africa Global Press';
+
+    /** Prototype date format (build_site.py fmt_date): "1er janvier 2026", "7 janvier 2026", "January 7, 2026". */
+    public static function date(\DateTimeInterface $d, ?string $lang = null): string
+    {
+        $lang ??= app()->getLocale();
+        $c = Carbon::instance($d)->locale($lang);
+
+        return $lang === 'fr' ? ($c->day === 1 ? '1er' : $c->day).' '.$c->isoFormat('MMMM YYYY') : $c->isoFormat('MMMM D, YYYY');
+    }
 
     public static function truncate(string $t, int $n = 160): string
     {

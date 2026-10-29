@@ -1,0 +1,1 @@
+<aside class="nl-card reveal" aria-labelledby="nlc-t"><svg class="nl-ico" aria-hidden="true" focusable="false"><use href="#i-envelope"/></svg><h2 id="nlc-t">{{ __('site.nl_card_title') }}</h2><p>{{ __('site.nl_card_text') }}</p><button type="button" class="btn btn-ink" data-open="newsletter">{{ __('site.nl_card_btn') }}</button></aside>

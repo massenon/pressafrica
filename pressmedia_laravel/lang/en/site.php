@@ -2,6 +2,7 @@
 
 // Public site strings, copied from the prototype pages so both builds read the same.
 return [
+    'home_crumb' => 'Africa Global Press',
     'breadcrumb' => 'Breadcrumb',
     'by' => 'By',
     'min_read' => ':n min read',
@@ -9,7 +10,7 @@ return [
     'read_in_other' => 'Read this article in French',
     'body_in_french' => 'This article is published in French; the title and summary are translated.',
     'share' => 'Share',
-    'share_label' => 'Share the article',
+    'share_label' => 'Share this article',
     'share_article' => 'Share this article',
     'share_on' => 'Share on :network',
     'share_mail' => 'Share by email',
@@ -54,4 +55,14 @@ return [
     'privacy_path' => 'privacy-policy.html',
     'og_locale' => 'en_US', 'og_locale_alt' => 'fr_FR',
     'site_suffix' => ' | Africa Global Press',
+    // Section pages (build_site.py archive_body(), thematic_body(), cat_faq()); {c} = section name.
+    'empty' => 'No articles in this section yet.',
+    'page_of' => 'Page',
+    'pages' => 'Pagination',
+    'next_page' => 'Next page',
+    'latest_pubs' => 'Latest publications',
+    'show_more' => 'Show more',
+    'end_list' => 'You have reached the end of the list!',
+    'faq_title' => 'Frequently asked questions',
+    'cat_faq' => [['What {c} news can I find on Africa Global Press?', 'Africa Global Press publishes reports, analysis and investigations on "{c}" across the African continent, written and verified by its editorial team.'], ['How often is the {c} section updated?', 'The editorial team publishes new articles as soon as news requires. The most recent content always appears at the top of the section.'], ['How can I follow the {c} section?', 'Subscribe to the Africa Global Press newsletter to receive a weekly selection of the best articles, or use the search to find a specific topic.']],
 ];

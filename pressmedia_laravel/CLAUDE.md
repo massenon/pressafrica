@@ -22,7 +22,7 @@ Build assets before deploy (`npm run build` locally or in CI), web root = `publi
 - Chrome (header, footer, dialogs) is generated: edit the prototype, then `python ../tools/export_chrome.py`. Never hand-edit `resources/chrome/*.html`.
 - Assets: `npm ci && php artisan site:assets` copies the prototype's compiled CSS/JS/fonts/images and Turbo into `public/assets` (not committed). Blade views reuse the prototype class names; no Vite build is needed for public pages.
 - Article bodies come from `prototype_html/data/laravel-bodies.json` (generator's `clean_body()`), re-exported by `python ../tools/export_laravel_import.py`.
-- Check a ported page with Playwright against `python -m http.server` on `prototype_html`: compare block heights, then pixel diff; look at an image only where they differ.
+- Check a ported page with `tools/qa/laravel_parity/sweep.sh` (normalised HTML diff, cheap) before any screenshot; look at an image only where the HTML differs.
 
 ## Rules
 - Locales: `fr` (default) and `en`. Text lives in `*_translations` tables. URLs mirror the prototype (`/fr/...`, `/en/...`).

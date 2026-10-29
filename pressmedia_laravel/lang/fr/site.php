@@ -2,6 +2,7 @@
 
 // Public site strings, copied from the prototype pages so both builds read the same.
 return [
+    'home_crumb' => 'Africa Global Press',
     'breadcrumb' => 'Fil d\'Ariane',
     'by' => 'Par',
     'min_read' => ':n min de lecture',
@@ -54,4 +55,14 @@ return [
     'privacy_path' => 'politique-de-confidentialite.html',
     'og_locale' => 'fr_FR', 'og_locale_alt' => 'en_US',
     'site_suffix' => ' | Africa Global Press',
+    // Section pages (build_site.py archive_body(), thematic_body(), cat_faq()); {c} = section name.
+    'empty' => 'Aucun article dans cette rubrique pour le moment.',
+    'page_of' => 'Page',
+    'pages' => 'Pagination',
+    'next_page' => 'Page suivante',
+    'latest_pubs' => 'Les dernières publications',
+    'show_more' => 'Afficher plus',
+    'end_list' => 'Vous avez atteint la fin de la liste !',
+    'faq_title' => 'Questions fréquentes',
+    'cat_faq' => [['Quelles actualités {c} trouve-t-on sur Africa Global Press ?', 'Africa Global Press publie des reportages, des analyses et des enquêtes sur le thème « {c} » à travers tout le continent africain, rédigés et vérifiés par sa rédaction.'], ['À quelle fréquence la rubrique {c} est-elle mise à jour ?', 'La rédaction publie de nouveaux articles dès que l\'actualité l\'exige. Les contenus les plus récents apparaissent toujours en tête de la rubrique.'], ['Comment suivre la rubrique {c} ?', 'Abonnez-vous à la newsletter d\'Africa Global Press pour recevoir une sélection hebdomadaire des meilleurs articles, ou utilisez la recherche pour retrouver un sujet précis.']],
 ];

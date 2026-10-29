@@ -9,7 +9,14 @@
    "db": [
     "societe",
     "social-news"
-   ]
+   ],
+   "layout": "archive",
+   "heading_fr": null,
+   "heading_en": null,
+   "seo_title_fr": "Société | Africa Global Press - Actualités Sociales Africaines",
+   "seo_title_en": "Society | Africa Global Press - African Social News",
+   "description_fr": "Société : restez informé de l'actualité sociale en Afrique avec Africa Global Press. Analyses et enjeux qui touchent les communautés africaines.",
+   "description_en": "Society: stay informed about social news in Africa with Africa Global Press. Analysis and issues affecting African communities."
   },
   {
    "key": "politics",
@@ -20,7 +27,14 @@
    "db": [
     "politique-fr",
     "political-news"
-   ]
+   ],
+   "layout": "thematic",
+   "heading_fr": "Actualités Politiques",
+   "heading_en": "Political News",
+   "seo_title_fr": "Politique | Africa Global Press - Actualités Politiques Africaines",
+   "seo_title_en": "Politics | Africa Global Press - African Political News",
+   "description_fr": "Politique africaine : élections, gouvernance, diplomatie et conflits. Reportages et analyses d'Africa Global Press sur l'actualité politique du continent.",
+   "description_en": "African politics: elections, governance, diplomacy and conflicts. Reports and analysis from Africa Global Press on the continent's political news."
   },
   {
    "key": "finance",
@@ -31,7 +45,14 @@
    "db": [
     "finance-fr",
     "finance-en"
-   ]
+   ],
+   "layout": "archive",
+   "heading_fr": null,
+   "heading_en": null,
+   "seo_title_fr": "Finance | Africa Global Press - Économie et Marchés Africains",
+   "seo_title_en": "Finance | Africa Global Press - African Economy and Markets",
+   "description_fr": "Finance : suivez l'actualité économique africaine avec Africa Global Press. Analyses des marchés financiers, investissements et tendances économiques.",
+   "description_en": "Finance: follow African economic news with Africa Global Press. Financial market analysis, investments and economic trends."
   },
   {
    "key": "economy",
@@ -42,7 +63,14 @@
    "db": [
     "economie-africaine",
     "african-economy"
-   ]
+   ],
+   "layout": "thematic",
+   "heading_fr": "Actualités Économiques",
+   "heading_en": "Economic News",
+   "seo_title_fr": "Économie africaine | Africa Global Press - Actualités Économiques",
+   "seo_title_en": "African Economy | Africa Global Press - Economic News",
+   "description_fr": "Économie africaine : croissance, commerce, entreprises et marchés. Reportages et analyses économiques d'Africa Global Press, en continu.",
+   "description_en": "African economy: growth, trade, business and markets. Economic reports and analysis from Africa Global Press, around the clock."
   },
   {
    "key": "culture",
@@ -53,7 +81,14 @@
    "db": [
     "culture-africaine",
     "culture"
-   ]
+   ],
+   "layout": "thematic",
+   "heading_fr": "Actualités Culturelles",
+   "heading_en": "Cultural News",
+   "seo_title_fr": "Culture | Africa Global Press - Actualités Culturelles Africaines",
+   "seo_title_en": "Culture | Africa Global Press - African Cultural News",
+   "description_fr": "Culture africaine : art, musique, littérature, cinéma et patrimoine. Découvrez la richesse et la diversité culturelle du continent avec Africa Global Press.",
+   "description_en": "African culture: art, music, literature, cinema and heritage. Discover the richness and diversity of the continent's culture with Africa Global Press."
   },
   {
    "key": "sports",
@@ -64,7 +99,14 @@
    "db": [
     "sports-fr",
     "sports"
-   ]
+   ],
+   "layout": "thematic",
+   "heading_fr": "Actualités Sportives",
+   "heading_en": "Sports News",
+   "seo_title_fr": "Sport | Africa Global Press - Actualités Sportives Africaines",
+   "seo_title_en": "Sports | Africa Global Press - African Sports News",
+   "description_fr": "Sport africain : résultats, analyses, interviews et reportages exclusifs sur le football et tous les sports du continent, sur Africa Global Press.",
+   "description_en": "African sports: results, analysis, interviews and exclusive reports on football and every sport across the continent, on Africa Global Press."
   },
   {
    "key": "science",
@@ -75,7 +117,14 @@
    "db": [
     "science-et-technologie",
     "science-and-technology"
-   ]
+   ],
+   "layout": "thematic",
+   "heading_fr": "Actualités Science et Technologie",
+   "heading_en": "Science and Technology News",
+   "seo_title_fr": "Science et technologie | Africa Global Press - Innovation en Afrique",
+   "seo_title_en": "Science and Technology | Africa Global Press - Innovation in Africa",
+   "description_fr": "Science et technologie en Afrique : innovations, recherche et numérique. Découvrez les avancées du continent avec Africa Global Press.",
+   "description_en": "Science and technology in Africa: innovation, research and digital. Discover the continent's advances with Africa Global Press."
   },
   {
    "key": "health",
@@ -86,7 +135,14 @@
    "db": [
     "sante-bien-etre",
     "health-wellness"
-   ]
+   ],
+   "layout": "thematic",
+   "heading_fr": "Actualités Santé & Bien-être",
+   "heading_en": "Health & Wellness News",
+   "seo_title_fr": "Santé & Bien-être | Africa Global Press - Actualités Santé en Afrique",
+   "seo_title_en": "Health & Wellness | Africa Global Press - Health News in Africa",
+   "description_fr": "Santé et bien-être en Afrique : systèmes de santé, prévention et société. Retrouvez les dernières informations d'Africa Global Press.",
+   "description_en": "Health and wellness in Africa: health systems, prevention and society. Find the latest information from Africa Global Press."
   },
   {
    "key": "online-press",
@@ -97,7 +153,14 @@
    "db": [
     "presse-en-ligne",
     "online-press"
-   ]
+   ],
+   "layout": "archive",
+   "heading_fr": null,
+   "heading_en": null,
+   "seo_title_fr": "Presse en ligne | Africa Global Press - Actualité Africaine",
+   "seo_title_en": "Online Press | Africa Global Press - African News",
+   "description_fr": "Presse en ligne avec Africa Global Press. Accédez à l'actualité africaine en direct et en continu : articles, analyses et reportages.",
+   "description_en": "Online press with Africa Global Press. Access African news live and around the clock: articles, analysis and reports."
   },
   {
    "key": "podcasts",
@@ -108,7 +171,14 @@
    "db": [
     "radio",
     "podcast"
-   ]
+   ],
+   "layout": "landing",
+   "heading_fr": null,
+   "heading_en": null,
+   "seo_title_fr": "Podcasts | Africa Global Press - L'actualité africaine à écouter",
+   "seo_title_en": "Podcasts | Africa Global Press - African news to listen to",
+   "description_fr": "Podcasts d'Africa Global Press : écoutez l'actualité africaine en audio. Analyses, économie et voix du continent, à écouter en ligne.",
+   "description_en": "Africa Global Press podcasts: listen to African news in audio. Analysis, economy and voices from the continent, online."
   },
   {
    "key": "videos",
@@ -119,7 +189,14 @@
    "db": [
     "television-fr",
     "television"
-   ]
+   ],
+   "layout": "landing",
+   "heading_fr": null,
+   "heading_en": null,
+   "seo_title_fr": "Vidéos | Africa Global Press - Reportages sur l'actualité africaine",
+   "seo_title_en": "Videos | Africa Global Press - Reports on African news",
+   "description_fr": "Vidéos d'Africa Global Press : reportages et formats vidéo sur l'actualité africaine : politique, économie, société, culture et santé, à regarder en quelques minutes.",
+   "description_en": "Africa Global Press videos: reports and video formats on African news: politics, economy, society, culture and health, to watch in a few minutes."
   },
   {
    "key": "magazine",
@@ -130,7 +207,14 @@
    "db": [
     "magazine-fr",
     "magazine-en"
-   ]
+   ],
+   "layout": "landing",
+   "heading_fr": null,
+   "heading_en": null,
+   "seo_title_fr": "Magazine | Africa Global Press - Un numéro par mois",
+   "seo_title_en": "Magazine | Africa Global Press - One issue a month",
+   "description_fr": "Magazine Africa Global Press : un numéro par mois, avec dossiers et grands formats sur l'Afrique. Parcourez le dernier numéro et les archives.",
+   "description_en": "Africa Global Press magazine: one issue a month, with in-depth features on Africa. Browse the latest issue and the archive."
   },
   {
    "key": "radios",
@@ -138,7 +222,14 @@
    "en": "African Radios",
    "slug_fr": "radios-africaines",
    "slug_en": "african-radios",
-   "db": []
+   "db": [],
+   "layout": "landing",
+   "heading_fr": null,
+   "heading_en": null,
+   "seo_title_fr": "Radios africaines | Africa Global Press - Répertoire",
+   "seo_title_en": "African Radios | Africa Global Press - Directory",
+   "description_fr": "Radios africaines : répertoire éditorial de radios qui couvrent l'actualité du continent, à filtrer par pays, avec accès à leur site officiel.",
+   "description_en": "African radios: an editorial directory of radio stations covering the continent's news, filterable by country, with links to their official sites."
   },
   {
    "key": "television",
@@ -146,7 +237,14 @@
    "en": "African Television",
    "slug_fr": "television-africaine",
    "slug_en": "african-television",
-   "db": []
+   "db": [],
+   "layout": "landing",
+   "heading_fr": null,
+   "heading_en": null,
+   "seo_title_fr": "Télévision africaine | Africa Global Press - Répertoire",
+   "seo_title_en": "African Television | Africa Global Press - Directory",
+   "description_fr": "Télévision africaine : répertoire éditorial de chaînes d'information du continent et du monde, à filtrer par pays, et replays vidéo Africa Global Press.",
+   "description_en": "African television: an editorial directory of news channels covering the continent and the world, filterable by country, plus Africa Global Press video replays."
   }
  ],
  "pairs": {

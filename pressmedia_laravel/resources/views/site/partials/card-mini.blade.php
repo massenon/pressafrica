@@ -1,0 +1,2 @@
+@php($pt = $p->translation())
+<article class="card card-mini reveal"><div class="thumb-wrap">@include('site.partials.thumb', ['cls' => 'thumb-land', 'sizes' => '(min-width:1024px) 200px, 50vw'])@include('site.partials.chips', ['post' => $p])</div><h2 class="card-title"><a href="{{ $p->url(app()->getLocale()) }}">{{ $pt->title }}</a></h2><p class="meta"><span>{{ __('site.min_read', ['n' => $pt->minutes()]) }}</span></p></article>
