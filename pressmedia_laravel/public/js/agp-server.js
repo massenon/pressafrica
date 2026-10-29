@@ -17,6 +17,28 @@
     label.hidden = false;
     f.querySelector('textarea').focus();
   });
+  /* Newsletter forms of the prototype (modal, article box): sent to the server (double opt-in) instead of the
+     browser storage of the prototype. Capture phase + stopPropagation so app.js's own handler never runs. */
+  document.addEventListener('submit', function (e) {
+    var f = e.target.closest && e.target.closest('form[data-newsletter]');
+    if (!f) return;
+    e.preventDefault(); e.stopPropagation();
+    var em = f.elements.email, ok = f.querySelector('.form-ok'), errEm = em && document.getElementById(em.getAttribute('aria-describedby'));
+    var cons = f.elements.consent, errCons = cons && document.getElementById(cons.id + '-err');
+    if (!em || !EMAIL.test(em.value.trim())) { if (errEm) errEm.hidden = false; em && em.focus(); return; }
+    if (errEm) errEm.hidden = true;
+    if (cons && !cons.checked) { if (errCons) errCons.hidden = false; cons.focus(); return; }
+    if (errCons) errCons.hidden = true;
+    var lang = document.documentElement.lang === 'en' ? 'en' : 'fr', body = new FormData(f);
+    fetch('/' + lang + '/newsletter', { method: 'POST', body: body, headers: { Accept: 'application/json', 'X-CSRF-TOKEN': token() }, credentials: 'same-origin' })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) { if (errEm) errEm.hidden = false; return; }
+        if (ok) { ok.textContent = res.j.message || ok.textContent; ok.hidden = false; }
+        em.value = ''; if (cons) cons.checked = false;
+      })
+      .catch(function () { if (errEm) errEm.hidden = false; });
+  }, true);
   function token() { var m = document.querySelector('meta[name="csrf-token"]'); return m ? m.content : ''; }
   document.addEventListener('submit', function (e) {
     var f = e.target.closest && e.target.closest('form[data-comment-server]');

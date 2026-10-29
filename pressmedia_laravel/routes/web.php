@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\HeroSlideController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MediaItemController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Site\ArticleController;
 use App\Http\Controllers\Site\CommentController as PublicCommentController;
 use App\Http\Controllers\Site\HomeController;
+use App\Http\Controllers\Site\NewsletterController;
 use App\Http\Controllers\Site\SectionController;
 use App\Http\Controllers\Site\SeoController;
 use App\Http\Middleware\SetLocale;
@@ -40,6 +42,9 @@ Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['l
     Route::get('feed.xml', [SeoController::class, 'feed'])->name('feed');
     Route::get('articles/{slug}.html', [ArticleController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('articles.show');
     Route::get('{slug}.html', [SectionController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('sections.show');   // keep last: catches /{locale}/*.html
+    Route::post('newsletter', [NewsletterController::class, 'store'])->middleware('throttle:comments')->name('newsletter.store');
+    Route::get('newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->where('token', '[A-Za-z0-9]+')->name('newsletter.confirm');
+    Route::get('newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->where('token', '[A-Za-z0-9]+')->name('newsletter.unsubscribe');
     Route::post('articles/{slug}/comments', [PublicCommentController::class, 'store'])->middleware('throttle:comments')->name('comments.store');
 });
 
@@ -85,6 +90,11 @@ Route::prefix('admin')->group(function () {
 
         Route::get('analytics', [AnalyticsController::class, 'index'])->middleware('can:analytics.view')->name('analytics.index');
         Route::get('analytics/export/{format}', [AnalyticsController::class, 'export'])->middleware('can:analytics.view')->name('analytics.export');
+
+        Route::get('newsletter', [AdminNewsletterController::class, 'index'])->middleware('can:newsletter.view')->name('newsletter.index');
+        Route::get('newsletter/export/{format}', [AdminNewsletterController::class, 'export'])->middleware('can:newsletter.view')->name('newsletter.export');
+        Route::post('newsletter/import', [AdminNewsletterController::class, 'import'])->middleware('can:newsletter.create')->name('newsletter.import');
+        Route::delete('newsletter/{subscriber}', [AdminNewsletterController::class, 'destroy'])->middleware('can:newsletter.delete')->name('newsletter.destroy');
 
         // Menus: main menu and mega panels.
         Route::get('menus', [MenuController::class, 'index'])->middleware('can:menus.view')->name('menus.index');

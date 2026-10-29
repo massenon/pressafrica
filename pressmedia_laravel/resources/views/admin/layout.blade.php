@@ -24,6 +24,7 @@
         ],
         'Audience' => [
             ['admin.comments.index', 'comments', 'Comments', 'comments.view', 'admin.comments.*', $pendingComments, 'Comments pending moderation'],
+            ['admin.newsletter.index', 'newsletter', 'Newsletter', 'newsletter.view', 'admin.newsletter.*'],
             ['admin.roles.index', 'authors', 'Authors & roles', 'users.view', 'admin.roles.*'],
         ],
         'Site' => [

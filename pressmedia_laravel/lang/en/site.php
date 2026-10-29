@@ -68,6 +68,16 @@ return [
     'mail_reply_line' => 'The Africa Global Press newsroom replied to your comment on “:title”:',
     'mail_reply_cta' => 'See the conversation',
     'mail_reply_why' => 'You receive this message because you asked to be told about a reply. No other email will be sent.',
+    // Newsletter (double opt-in) and contact form.
+    'nl_pending' => 'Thank you! Please confirm with the link we sent you by email.',
+    'nl_confirmed' => 'Your newsletter subscription is confirmed.',
+    'nl_unsubscribed' => 'You have been unsubscribed from the newsletter.',
+    'nl_mail_subject' => 'Confirm your newsletter subscription',
+    'nl_mail_line' => 'You asked to receive the Africa Global Press newsletter.',
+    'nl_mail_cta' => 'Confirm my subscription',
+    'nl_mail_ignore' => 'If this was not you, ignore this message: nothing will be sent to you.',
+    'nl_mail_unsub' => 'Unsubscribe at any time',
+    'ct_ok' => 'Thank you! Your message has been sent to the newsroom.',
     // Section pages (build_site.py archive_body(), thematic_body(), cat_faq()); {c} = section name.
     'empty' => 'No articles in this section yet.',
     'page_of' => 'Page',
