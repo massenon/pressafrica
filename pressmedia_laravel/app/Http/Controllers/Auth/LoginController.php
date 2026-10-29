@@ -29,7 +29,8 @@ class LoginController extends Controller
         ]);
 
         LoginThrottle::ensureNotLocked($request);
-        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+        // A deactivated account gets the same answer as a wrong password.
+        if (! Auth::attemptWhen($credentials, fn ($user) => $user->disabled_at === null, $request->boolean('remember'))) {
             LoginThrottle::failed($request);
             // Same message for unknown account and wrong password, so the form does not reveal which e-mails exist.
             throw ValidationException::withMessages(['email' => __('auth.failed')]);

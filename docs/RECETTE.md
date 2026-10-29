@@ -54,4 +54,4 @@ Automatisés dans `pressmedia_laravel/tests/Feature/AcceptanceJourneysTest.php` 
 | Firefox et Safari aux 4 largeurs (R10) | Équipe technique |
 | Validation DPO : GA4 / AdSense, textes des politiques, conservation du journal d'audit | DPO (Q8) |
 | Contenus réels Magazine / Radios / TV, vraies vidéos et audios | Rédacteur en chef (Q4) |
-| Changer les 4 comptes de départ dès la mise en ligne | Propriétaire |
+| Changer les 4 comptes de départ dès la mise en ligne : Admin > Staff accounts (`/admin/users`) et My account (`/admin/account`) | Propriétaire |

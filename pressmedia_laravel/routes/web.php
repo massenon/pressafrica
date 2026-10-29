@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AdZoneController;
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuditLogController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Admin\PrivacyController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Site\AdClickController;
 use App\Http\Controllers\Site\ArticleController;
@@ -29,6 +31,7 @@ use App\Http\Controllers\Site\PwaController;
 use App\Http\Controllers\Site\SectionController;
 use App\Http\Controllers\Site\SeoController;
 use App\Http\Middleware\SetLocale;
+use App\Models\MediaItem;
 use App\Support\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -66,7 +69,8 @@ Route::prefix('admin')->group(function () {
         Route::post('login', [LoginController::class, 'store'])->middleware('throttle:login');
     });
 
-    Route::middleware('auth')->name('admin.')->group(function () {
+    // auth.session ends other sessions once a password changes; active ends a deactivated account's session.
+    Route::middleware(['auth', 'auth.session', 'active'])->name('admin.')->group(function () {
         Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
         Route::view('/', 'admin.dashboard')->name('dashboard');
         Route::get('audit', [AuditLogController::class, 'index'])->middleware('can:audit.view')->name('audit.index');
@@ -146,7 +150,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('menus/{menu}', [MenuController::class, 'destroy'])->middleware('can:menus.delete')->name('menus.destroy');
 
         // Media sections (podcasts, videos, magazine, radios, TV); rights checked per type in the controller.
-        Route::prefix('media-items/{type}')->whereIn('type', array_keys(\App\Models\MediaItem::TYPES))->name('media-items.')->group(function () {
+        Route::prefix('media-items/{type}')->whereIn('type', array_keys(MediaItem::TYPES))->name('media-items.')->group(function () {
             Route::get('/', [MediaItemController::class, 'index'])->name('index');
             Route::get('create', [MediaItemController::class, 'create'])->name('create');
             Route::post('/', [MediaItemController::class, 'store'])->name('store');
@@ -164,6 +168,14 @@ Route::prefix('admin')->group(function () {
         Route::get('settings', [SettingsController::class, 'edit'])->middleware('can:settings.view')->name('settings.edit');
         Route::put('settings', [SettingsController::class, 'update'])->middleware('can:settings.edit')->name('settings.update');
 
+        Route::get('account', [AccountController::class, 'edit'])->name('account.edit');
+        Route::put('account', [AccountController::class, 'update'])->name('account.update');
+        Route::get('users', [UserController::class, 'index'])->middleware('can:users.view')->name('users.index');
+        Route::get('users/create', [UserController::class, 'create'])->middleware('can:users.create')->name('users.create');
+        Route::post('users', [UserController::class, 'store'])->middleware('can:users.create')->name('users.store');
+        Route::get('users/{user}/edit', [UserController::class, 'edit'])->middleware('can:users.edit')->name('users.edit');
+        Route::put('users/{user}', [UserController::class, 'update'])->middleware('can:users.edit')->name('users.update');
+        Route::post('users/{user}/toggle', [UserController::class, 'toggle'])->middleware('can:users.edit')->name('users.toggle');
         Route::get('roles', [RoleController::class, 'index'])->middleware('can:users.view')->name('roles.index');
         Route::post('roles', [RoleController::class, 'store'])->middleware('can:users.create')->name('roles.store');
         Route::put('roles/{role:name}', [RoleController::class, 'update'])->middleware('can:users.edit')->name('roles.update');

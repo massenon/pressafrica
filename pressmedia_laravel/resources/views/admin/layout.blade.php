@@ -27,7 +27,8 @@
             ['admin.comments.index', 'comments', 'Comments', 'comments.view', 'admin.comments.*', $pendingComments, 'Comments pending moderation'],
             ['admin.messages.index', 'comments', 'Contact messages', 'messages.view', 'admin.messages.*', $newMessages, 'New contact messages'],
             ['admin.newsletter.index', 'newsletter', 'Newsletter', 'newsletter.view', 'admin.newsletter.*'],
-            ['admin.roles.index', 'authors', 'Authors & roles', 'users.view', 'admin.roles.*'],
+            ['admin.users.index', 'authors', 'Staff accounts', 'users.view', 'admin.users.*'],
+            ['admin.roles.index', 'authors', 'Roles & permissions', 'users.view', 'admin.roles.*'],
         ],
         'Site' => [
             ['admin.ads.index', 'ads', 'Ad zones', 'ads.view', 'admin.ads.*'],
@@ -82,7 +83,7 @@
 <button type="button" class="a-iconbtn" id="themeBtn" data-theme-btn aria-pressed="{{ request()->cookie('theme') === 'dark' ? 'true' : 'false' }}" aria-label="Switch theme">{!! $icons['top-theme'] !!}</button>
 <div class="relative" style="position:relative"><button type="button" class="a-btn a-btn-ghost a-user-btn" aria-label="Account menu: {{ $user->name }}" aria-haspopup="true" aria-expanded="false" aria-controls="userPanel" data-user-btn><span class="a-avatar" aria-hidden="true">{{ collect(explode(' ', $user->name))->map(fn ($w) => mb_substr($w, 0, 1))->take(2)->implode('') }}</span><span class="hidden sm:inline">{{ $user->name }}</span>{!! $icons['top-chev'] !!}</button>
 <div id="userPanel" class="a-card" hidden style="position:absolute;right:0;top:52px;width:300px;max-width:calc(100vw - 32px);z-index:40"><div class="a-card-b"><p class="a-eyebrow">Signed in as</p><p class="a-serif">{{ $user->name }} • {{ ucfirst($user->getRoleNames()->first() ?? '') }}</p><p class="a-muted text-sm mb-3">{{ $user->email }}</p>
-<div class="flex gap-2 flex-wrap">@can('posts.view')<a class="a-btn a-btn-sm" href="{{ route('admin.posts.index') }}" wire:navigate><span>My posts</span></a>@endcan<form method="POST" action="{{ route('admin.logout') }}">@csrf<button class="a-btn a-btn-sm a-btn-danger" type="submit">{!! $icons['top-logout'] !!}<span>Log out</span></button></form></div></div></div></div>
+<div class="flex gap-2 flex-wrap"><a class="a-btn a-btn-sm" href="{{ route('admin.account.edit') }}" wire:navigate><span>My account</span></a>@can('posts.view')<a class="a-btn a-btn-sm" href="{{ route('admin.posts.index') }}" wire:navigate><span>My posts</span></a>@endcan<form method="POST" action="{{ route('admin.logout') }}">@csrf<button class="a-btn a-btn-sm a-btn-danger" type="submit">{!! $icons['top-logout'] !!}<span>Log out</span></button></form></div></div></div></div>
 </header>
 <main id="main" class="a-view" tabindex="-1"><div id="view">
 @if (session('status'))<div class="a-card a-card-b mb-4" role="status"><span class="a-badge ok">{{ session('status') }}</span></div>@endif
