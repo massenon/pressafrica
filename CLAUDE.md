@@ -1,6 +1,6 @@
 # pressafrica (Africa Global Press)
 
-Monorepo. Read this file, then `pressmedia_laravel/CLAUDE.md` and `pressmedia_laravel/docs/PROGRESS.md`. Nothing else unless the task needs it.
+Monorepo. Read this file, then `pressmedia_laravel/CLAUDE.md`, `pressmedia_laravel/docs/PROGRESS.md` and the top block of `docs/SESSION-LOG.md`. Nothing else unless the task needs it.
 
 ## Layout
 - `pressmedia_laravel/` — the product (Laravel 12 port). All new work goes here.
