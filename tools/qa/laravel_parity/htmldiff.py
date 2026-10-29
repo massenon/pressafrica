@@ -13,7 +13,7 @@ def norm(s, base):
         v = v.replace('http://127.0.0.1:8123', '').replace('/storage/media/import/', '/assets/img/posts/')
         return f'{m.group(1)}="{v}"'
     s = re.sub(r'<!--.*?-->', '', s, flags=re.S)
-    s = re.sub(r'\b(href|src|action)="([^"]*)"', ab, s)
+    s = re.sub(r'(?<![\w-])(href|src|action|poster|data-poster|data-src|data-read)="([^"]*)"', ab, s)
     s = re.sub(r'\s(srcset|sizes|style|width|height)="[^"]*"', '', s)
     s = re.sub(r'-(420|860|1280)\.webp', '.webp', s)
     s = s.replace('&#x27;', "'").replace('&#039;', "'").replace('&quot;', '"')

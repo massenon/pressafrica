@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PodcastShowTranslation extends Model
+class MediaItemTranslation extends Model
 {
     public $timestamps = false;
 

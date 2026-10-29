@@ -47,6 +47,8 @@ class Settings
         'maxAttempts' => ['security', 'int', 5, ['min:3', 'max:20']],
         'lockMinutes' => ['security', 'int', 15, ['min:1', 'max:1440']],
         'nofollow' => ['security', 'bool', true, []],
+        // Outbound "official site" links in the radio/TV directories (PRD EX-04). Shown as on the prototype until the owner answers Q5.
+        'directoryLinks' => ['seo', 'bool', true, []],
         'newsSitemap' => ['seo', 'bool', true, []],
         'rssFeed' => ['seo', 'bool', true, []],
         'popup' => ['seo', 'bool', true, []],

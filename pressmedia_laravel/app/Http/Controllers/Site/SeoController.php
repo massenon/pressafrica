@@ -32,7 +32,7 @@ class SeoController extends Controller
         $today = now()->toDateString();
 
         $add(['fr' => url('fr/index.html'), 'en' => url('en/index.html')], $today);
-        foreach (Category::with('translations')->where('layout', '!=', 'landing')->orderBy('position')->get() as $c) {
+        foreach (Category::with('translations')->orderBy('position')->get() as $c) {
             $add(['fr' => $c->url('fr'), 'en' => $c->url('en')], $today);
         }
         foreach (Chrome::pages()['fr'] as $slug => $key) {

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\MediaItemController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -67,6 +68,16 @@ Route::prefix('admin')->group(function () {
         Route::get('comments', [CommentController::class, 'index'])->middleware('can:comments.view')->name('comments.index');
         Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');   // right checked per status
         Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->middleware('can:comments.delete')->name('comments.destroy');
+
+        // Media sections (podcasts, videos, magazine, radios, TV); rights checked per type in the controller.
+        Route::prefix('media-items/{type}')->whereIn('type', array_keys(\App\Models\MediaItem::TYPES))->name('media-items.')->group(function () {
+            Route::get('/', [MediaItemController::class, 'index'])->name('index');
+            Route::get('create', [MediaItemController::class, 'create'])->name('create');
+            Route::post('/', [MediaItemController::class, 'store'])->name('store');
+            Route::get('{item}/edit', [MediaItemController::class, 'edit'])->name('edit');
+            Route::put('{item}', [MediaItemController::class, 'update'])->name('update');
+            Route::delete('{item}', [MediaItemController::class, 'destroy'])->name('destroy');
+        });
 
         Route::get('tags', [TagController::class, 'index'])->middleware('can:tags.view')->name('tags.index');
         Route::post('tags', [TagController::class, 'store'])->middleware('can:tags.create')->name('tags.store');

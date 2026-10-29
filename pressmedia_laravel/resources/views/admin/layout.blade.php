@@ -18,6 +18,7 @@
         @can('categories.view')<a href="{{ route('admin.categories.index') }}">Categories</a>@endcan
         @can('comments.view')<a href="{{ route('admin.comments.index') }}">Comments</a>@endcan
         @can('media.view')<a href="{{ route('admin.media.index') }}">Media</a>@endcan
+        @foreach (App\Models\MediaItem::TYPES as $mt => $md)@if ($mt !== 'podcast_show')@can($md['module'].'.view')<a href="{{ route('admin.media-items.index', $mt) }}">{{ ucfirst($mt) }}</a>@endcan @endif @endforeach
         @can('tags.view')<a href="{{ route('admin.tags.index') }}">Tags</a>@endcan
         @can('settings.view')<a href="{{ route('admin.settings.edit') }}">Settings</a>@endcan
         @can('users.view')<a href="{{ route('admin.roles.index') }}">Roles</a>@endcan

@@ -61,7 +61,7 @@ class SectionPageTest extends TestCase
     public function test_empty_landing_and_unknown_sections(): void
     {
         $this->get('/fr/sport.html')->assertOk()->assertSee(__('site.empty', [], 'fr'));
-        $this->get('/fr/podcasts.html')->assertNotFound();   // landing pages are their own modules
+        $this->get('/fr/podcasts.html')->assertOk()->assertSee(__('proto.landing_title', [], 'fr'));   // empty media section: coming soon
         $this->get('/fr/nope.html')->assertNotFound();
         $this->get('/en/societe.html')->assertNotFound();    // French slug on the English site
     }

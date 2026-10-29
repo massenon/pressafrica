@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\CategoryTranslation;
 use App\Models\Post;
 use App\Support\Chrome;
+use App\Support\MediaPages;
 use App\Support\Seo;
 use Illuminate\View\View;
 
@@ -22,7 +23,6 @@ class SectionController extends Controller
         $category = Category::with('translations')->findOrFail(
             CategoryTranslation::where('locale', $lang)->where('slug', $slug)->value('category_id') ?? 0
         );
-        abort_if($category->layout === 'landing', 404);   // podcasts, videos, magazine, radios, TV: own pages (phase 5)
 
         $posts = Post::published()
             ->whereHas('categories', fn ($q) => $q->whereKey($category->id))
@@ -38,7 +38,17 @@ class SectionController extends Controller
         $crumbs[] = [$t->name, null];
         $label = $lang === 'fr' ? mb_strtolower($t->name) : $t->name;
 
-        return view('site.sections.'.$category->layout, [
+        $media = $category->layout === 'landing' ? MediaPages::for($category->key, $lang) : [];
+        $view = $category->layout === 'landing' ? 'site.sections.landing' : 'site.sections.'.$category->layout;
+        if ($category->layout === 'landing') {
+            $main = ['podcasts' => 'episodes', 'videos' => 'videos', 'magazine' => 'issues', 'radios' => 'entries', 'television' => 'entries'][$category->key] ?? null;
+            $empty = ! $main || ($media[$main] ?? collect())->isEmpty();
+            // Nothing published yet: the prototype's "coming soon" block with the latest posts.
+            $media = $empty ? ['latest' => $posts->take(3), 'mediaView' => 'soon']
+                : $media + ['mediaView' => ['radios' => 'directory', 'television' => 'directory'][$category->key] ?? $category->key];
+        }
+
+        return view($view, $media + [
             'category' => $category,
             't' => $t,
             'posts' => $posts,
