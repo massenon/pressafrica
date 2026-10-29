@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\PrivacyController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TagController;
@@ -120,6 +121,10 @@ Route::prefix('admin')->group(function () {
         Route::post('messages/{message}/reply', [MessageController::class, 'reply'])->middleware('can:messages.edit')->name('messages.reply');
         Route::put('messages/{message}', [MessageController::class, 'update'])->middleware('can:messages.edit')->name('messages.update');
         Route::delete('messages/{message}', [MessageController::class, 'destroy'])->middleware('can:messages.delete')->name('messages.destroy');
+
+        Route::get('privacy', [PrivacyController::class, 'index'])->middleware('can:users.edit')->name('privacy.index');
+        Route::get('privacy/export', [PrivacyController::class, 'export'])->middleware('can:users.edit')->name('privacy.export');
+        Route::post('privacy/erase', [PrivacyController::class, 'erase'])->middleware('can:users.edit')->name('privacy.erase');
 
         // Menus: main menu and mega panels.
         Route::get('menus', [MenuController::class, 'index'])->middleware('can:menus.view')->name('menus.index');

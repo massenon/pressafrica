@@ -59,6 +59,7 @@ return [
     'cm_reply' => 'Répondre',
     'cm_replying' => 'Réponse à :name',
     'cm_cancel_reply' => 'Annuler la réponse',
+    'cm_anonymous' => 'Lecteur anonyme',
     'cm_staff' => 'Rédaction',
     'cm_notify' => 'M\'avertir par e-mail quand la rédaction répond',
     'cm_count' => ':n commentaire(s)',

@@ -34,7 +34,10 @@
             ['admin.menus.index', 'menus', 'Menus', 'menus.view', 'admin.menus.*'],
             ['admin.settings.edit', 'settings', 'Settings', 'settings.view', 'admin.settings.*'],
         ],
-        'System' => [['admin.audit.index', 'audit', 'Audit log', 'audit.view', 'admin.audit.*']],
+        'System' => [
+            ['admin.audit.index', 'audit', 'Audit log', 'audit.view', 'admin.audit.*'],
+            ['admin.privacy.index', 'authors', 'Personal data', 'users.edit', 'admin.privacy.*'],
+        ],
     ];
 @endphp
 <!doctype html>
