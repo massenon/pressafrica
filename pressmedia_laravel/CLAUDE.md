@@ -33,4 +33,4 @@ Build assets before deploy (`npm run build` locally or in CI), web root = `publi
 - Comments explain why, not what. Match surrounding style.
 
 ## Commands
-`php artisan migrate:fresh --seed`, `php artisan test`, `npm run dev`, `npm run build`.
+`php artisan migrate:fresh --seed` (roles + all content + demo staff/comments outside production), `php artisan test`, `npm run dev`, `npm run build`.

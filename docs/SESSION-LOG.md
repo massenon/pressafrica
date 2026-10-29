@@ -38,5 +38,11 @@ only for the 8 native EN WordPress rows (other date/author, one post keeps the F
 Generated from the prototype, never hand-edited: `resources/chrome/*`, `lang/*/proto.php`, `lang/*/seo.php`,
 `prototype_html/data/laravel-*.json` (re-run `tools/export_chrome.py` and `tools/export_laravel_import.py`).
 
-**Next:** phase 5 — media landing pages (podcasts, videos, magazine, radios, TV) public + admin; then refresh the
-chrome's dynamic zones (mega-menu cards) and the admin layout module (Livewire, prototype admin look).
+**Phase 5 (2026-10-29):** media sections in one `media_items` store, imported from the prototype JSON, public
+pages identical to the prototype, generic admin module per type. Blocked on owner: Q4 (real magazine/radio/TV
+content, real videos), Q5 (outbound directory links, Settings `directoryLinks`, on as in the prototype).
+**Seeders:** `php artisan migrate:fresh --seed` builds the whole site (content always; demo staff + comments
+outside production).
+
+**Next:** admin layout module (Livewire, prototype admin look, Quill editor, media picker, Featured/home picks
+screen), refresh the chrome's mega-menu cards; then phase 6 (analytics consent, ads, newsletter, menus) — Q7 open.
