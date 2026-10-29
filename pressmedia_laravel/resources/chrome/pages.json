@@ -1,0 +1,18 @@
+{
+ "fr": {
+  "qui-sommes-nous": "about",
+  "contact": "contact",
+  "mentions-legales": "legal",
+  "politique-de-confidentialite": "privacy",
+  "politique-cookies": "cookies",
+  "recherche": "search"
+ },
+ "en": {
+  "about-us": "about",
+  "contact": "contact",
+  "legal-notices": "legal",
+  "privacy-policy": "privacy",
+  "cookie-policy": "cookies",
+  "search": "search"
+ }
+}

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ $meta['title'] }}</title>
 <meta name="description" content="{{ $meta['description'] }}">
-<meta name="robots" content="{{ $meta['robots'] ?? 'index,follow,max-image-preview:large' }}">
+<meta name="robots" content="{{ ($meta['robots'] ?? null) ?: 'index,follow,max-image-preview:large' }}">
 <link rel="canonical" href="{{ $meta['canonical'] }}">
 @foreach ($alternates as $l => $href)
 <link rel="alternate" hreflang="{{ $l }}" href="{{ $href }}">

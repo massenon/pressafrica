@@ -80,6 +80,33 @@ def home_static():
         print(lang, "home static", len(html))
 
 
+def static_pages():
+    """<main> + page-specific JSON-LD of the fixed pages (about, contact, legal, privacy, cookies, search),
+    and pages.json (slug -> key per language). The search index is a %%SEARCH_INDEX%% marker filled from the DB."""
+    import json
+    import sys
+    sys.argv = sys.argv[:1]
+    from site_strings import STATIC_PATHS
+    pages = {"fr": {}, "en": {}}
+    for key, (p_fr, p_en) in STATIC_PATHS.items():
+        if key == "home":
+            continue
+        for lang, file in (("fr", p_fr), ("en", p_en)):
+            s = (PROTO / lang / file).read_text(encoding="utf8")
+            main = s[s.index("<main"):s.index("</main>") + 7]
+            main = main[main.index(">") + 1:-7]   # inner HTML; the layout prints <main>
+            main = re.sub(r'(<script type="application/json" id="search-index">).*?(</script>)', r"\1%%SEARCH_INDEX%%\2", main, flags=re.S)
+            head = s[:s.index("</head>")]
+            ld = [x for x in re.findall(r'<script type="application/ld\+json">.*?</script>', head, flags=re.S)
+                  if '"@type":"WebSite"' not in x and '"@type":"Organization"' not in x]
+            (OUT / f"page-{key}-{lang}.html").write_text(markers(absolutize(main, f"/{lang}/{file}")), encoding="utf8")
+            (OUT / f"page-{key}-{lang}.jsonld.html").write_text("\n".join(ld) + "\n", encoding="utf8")
+            pages[lang][file.removesuffix(".html")] = key
+    (OUT / "pages.json").write_text(json.dumps(pages, ensure_ascii=False, indent=1) + "\n", encoding="utf8")
+    print("static pages", {k: len(v) for k, v in pages.items()})
+
+
 if __name__ == "__main__":
     main()
     home_static()
+    static_pages()
