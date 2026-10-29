@@ -16,7 +16,8 @@
 | Admin posts `/admin/posts` (FR required, EN optional per INV-10; statuses draft/pending/published/scheduled, publish needs `posts.publish`; authors see and edit only their own via `PostPolicy`; Purifier on bodies; auto slug with -2 suffix; soft delete) | done 2026-10-29, `tests/Feature/PostsTest.php`; plain controllers + Blade, Quill/Livewire with the admin layout module |
 | Scheduling (EX-25): `posts:publish-scheduled` every minute via `schedule:run`; published + future date = scheduled; journaled as System | done 2026-10-29 (phase 2 exit criterion 1) |
 | Categories `/admin/categories` (unlimited nesting, cycle check, FR/EN names and slugs, delete refused while it has posts or children) and tags `/admin/tags` (EX-23: create, rename, merge, delete, usage counts; tags typed in the editor) | done 2026-10-29, `tests/Feature/TaxonomyTest.php` |
-| Admin media library (upload, WebP, alt FR/EN) | todo, next (phase 2b) |
+| Media library `/admin/media` (EX-24): JPEG/PNG re-encoded to WebP q82, width capped at 2400 px, EXIF dropped; GIF/WebP/PDF kept; type checked from the bytes (finfo), 10 MB max, random names under `storage/app/public/media/Y/m`; alt FR/EN editable; delete refused while used as a post cover | done 2026-10-29, `tests/Feature/MediaTest.php`; deploy needs `php artisan storage:link` (Q9: cPanel may need a manual symlink); responsive `srcset` sizes come with phase 4; media picker in the post editor with the admin layout module |
+| Comment moderation (EX-26) | todo, next (phase 2c) |
 | Admin Livewire: podcasts, comments, ads, newsletter, menus, settings, users | todo |
 | SEO on-page: unique meta title, meta description from the article lead, canonical, hreflang | todo |
 | SEO social: Open Graph (og:image large for Facebook/WhatsApp), Twitter Card, via `@section` in the layout | todo |

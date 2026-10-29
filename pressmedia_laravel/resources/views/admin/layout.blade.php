@@ -16,6 +16,7 @@
         @include('partials.theme-toggle')
         @can('posts.view')<a href="{{ route('admin.posts.index') }}">Posts</a>@endcan
         @can('categories.view')<a href="{{ route('admin.categories.index') }}">Categories</a>@endcan
+        @can('media.view')<a href="{{ route('admin.media.index') }}">Media</a>@endcan
         @can('tags.view')<a href="{{ route('admin.tags.index') }}">Tags</a>@endcan
         @can('settings.view')<a href="{{ route('admin.settings.edit') }}">Settings</a>@endcan
         @can('users.view')<a href="{{ route('admin.roles.index') }}">Roles</a>@endcan

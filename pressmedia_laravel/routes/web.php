@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -42,6 +43,11 @@ Route::prefix('admin')->group(function () {
         Route::get('categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('can:categories.edit')->name('categories.edit');
         Route::put('categories/{category}', [CategoryController::class, 'update'])->middleware('can:categories.edit')->name('categories.update');
         Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->middleware('can:categories.delete')->name('categories.destroy');
+
+        Route::get('media', [MediaController::class, 'index'])->middleware('can:media.view')->name('media.index');
+        Route::post('media', [MediaController::class, 'store'])->middleware('can:media.create')->name('media.store');
+        Route::put('media/{medium}', [MediaController::class, 'update'])->middleware('can:media.edit')->name('media.update');
+        Route::delete('media/{medium}', [MediaController::class, 'destroy'])->middleware('can:media.delete')->name('media.destroy');
 
         Route::get('tags', [TagController::class, 'index'])->middleware('can:tags.view')->name('tags.index');
         Route::post('tags', [TagController::class, 'store'])->middleware('can:tags.create')->name('tags.store');
