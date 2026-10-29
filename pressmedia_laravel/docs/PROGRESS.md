@@ -17,8 +17,8 @@
 | Scheduling (EX-25): `posts:publish-scheduled` every minute via `schedule:run`; published + future date = scheduled; journaled as System | done 2026-10-29 (phase 2 exit criterion 1) |
 | Categories `/admin/categories` (unlimited nesting, cycle check, FR/EN names and slugs, delete refused while it has posts or children) and tags `/admin/tags` (EX-23: create, rename, merge, delete, usage counts; tags typed in the editor) | done 2026-10-29, `tests/Feature/TaxonomyTest.php` |
 | Media library `/admin/media` (EX-24): JPEG/PNG re-encoded to WebP q82, width capped at 2400 px, EXIF dropped; GIF/WebP/PDF kept; type checked from the bytes (finfo), 10 MB max, random names under `storage/app/public/media/Y/m`; alt FR/EN editable; delete refused while used as a post cover | done 2026-10-29, `tests/Feature/MediaTest.php`; deploy needs `php artisan storage:link` (Q9: cPanel may need a manual symlink); responsive `srcset` sizes come with phase 4; media picker in the post editor with the admin layout module |
-| Comment moderation (EX-26) | todo, next (phase 2c) |
-| Admin Livewire: podcasts, comments, ads, newsletter, menus, settings, users | todo |
+| Comments (EX-26): public `POST /{locale}/articles/{slug}/comments` (prototype fields, consent required + timestamp, honeypot `website`, 5/min per IP, plain text only, no IP stored); pending unless `commentsApproval` is off; `/admin/comments` queue (approve needs `comments.publish`, spam `comments.edit`, delete archives); e-mail hidden from serialisation | done 2026-10-29, `tests/Feature/CommentsTest.php`; public display under the article comes with phase 4. **Phase 2 complete** (exit criteria: scheduled post self-publishes, public comment arrives pending) |
+| Admin: podcasts, ads, newsletter, menus, users (comments and settings done) | todo |
 | SEO on-page: unique meta title, meta description from the article lead, canonical, hreflang | todo |
 | SEO social: Open Graph (og:image large for Facebook/WhatsApp), Twitter Card, via `@section` in the layout | todo |
 | SEO structured data: Schema.org NewsArticle, BreadcrumbList, Organization, WebSite, JSON-LD | todo |

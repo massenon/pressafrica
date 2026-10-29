@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Site\CommentController as PublicCommentController;
 use App\Http\Middleware\SetLocale;
 use App\Support\Settings;
 use Illuminate\Http\Request;
@@ -22,6 +24,7 @@ Route::get('/', function (Request $request) {
 
 Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware('locale')->group(function () {
     Route::view('/', 'public.home')->name('home');
+    Route::post('articles/{slug}/comments', [PublicCommentController::class, 'store'])->middleware('throttle:comments')->name('comments.store');
 });
 
 Route::prefix('admin')->group(function () {
@@ -48,6 +51,10 @@ Route::prefix('admin')->group(function () {
         Route::post('media', [MediaController::class, 'store'])->middleware('can:media.create')->name('media.store');
         Route::put('media/{medium}', [MediaController::class, 'update'])->middleware('can:media.edit')->name('media.update');
         Route::delete('media/{medium}', [MediaController::class, 'destroy'])->middleware('can:media.delete')->name('media.destroy');
+
+        Route::get('comments', [CommentController::class, 'index'])->middleware('can:comments.view')->name('comments.index');
+        Route::put('comments/{comment}', [CommentController::class, 'update'])->name('comments.update');   // right checked per status
+        Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->middleware('can:comments.delete')->name('comments.destroy');
 
         Route::get('tags', [TagController::class, 'index'])->middleware('can:tags.view')->name('tags.index');
         Route::post('tags', [TagController::class, 'store'])->middleware('can:tags.create')->name('tags.store');

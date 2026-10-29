@@ -41,6 +41,9 @@ class AppServiceProvider extends ServiceProvider
                 ->response(fn () => $this->lockedOut($request)),
         ]);
 
+        // Public comment form: per IP, generous enough for a shared office network, tight enough to stop a flood.
+        RateLimiter::for('comments', fn (Request $request) => Limit::perMinute(5)->by('comments:'.$request->ip()));
+
         Event::listen(Login::class, fn (Login $e) => AuditLog::record('login', 'auth', $e->user->email, null, $e->user));
         Event::listen(Logout::class, fn (Logout $e) => $e->user && AuditLog::record('logout', 'auth', $e->user->email, null, $e->user));
         Event::listen(Failed::class, fn (Failed $e) => AuditLog::record('login_failed', 'auth', $e->credentials['email'] ?? null, null, null));

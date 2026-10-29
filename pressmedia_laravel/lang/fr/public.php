@@ -7,4 +7,6 @@ return [
     'switch_lang_label' => 'Read this page in English',
     'theme_dark' => 'Passer en mode sombre',
     'theme_light' => 'Passer en mode clair',
+    'comment_pending' => 'Merci ! Votre commentaire est en attente de modération.',
+    'comment_published' => 'Merci ! Votre commentaire est publié.',
 ];
