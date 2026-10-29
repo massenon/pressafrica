@@ -25,6 +25,7 @@ use App\Http\Controllers\Site\CommentController as PublicCommentController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\NewsletterController;
+use App\Http\Controllers\Site\PwaController;
 use App\Http\Controllers\Site\SectionController;
 use App\Http\Controllers\Site\SeoController;
 use App\Http\Middleware\SetLocale;
@@ -40,6 +41,8 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('ad/{zone}/{device}', AdClickController::class)->middleware('throttle:60,1')->name('ads.click');
+Route::get('manifest.webmanifest', [PwaController::class, 'manifest']);
+Route::get('sw.js', [PwaController::class, 'worker']);
 Route::get('robots.txt', [SeoController::class, 'robots']);
 Route::get('sitemap.xml', [SeoController::class, 'sitemap']);
 Route::get('news-sitemap.xml', [SeoController::class, 'newsSitemap']);

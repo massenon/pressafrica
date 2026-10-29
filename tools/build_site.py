@@ -876,7 +876,8 @@ def dialogs():
              f'<button type="submit" class="btn btn-primary">{esc(u["login_submit"])}</button>'
              f'<p class="form-note" role="status" hidden>{esc(u["login_demo"])}</p>'
              f'<a class="lost" href="{L("contact")}">{esc(u["login_lost"])}</a></form></div></div>')
-    cookie = (f'<aside class="cookie" id="cookie-banner" role="dialog" aria-modal="false" aria-labelledby="ck-t" hidden>'
+    # A <div>, not <aside>: role="dialog" is not allowed on <aside> (axe / Lighthouse aria-allowed-role).
+    cookie = (f'<div class="cookie" id="cookie-banner" role="dialog" aria-modal="false" aria-labelledby="ck-t" hidden>'
               f'<div class="cookie-in"><div class="cookie-text"><h2 id="ck-t">{esc(u["cookie_title"])}</h2>'
               f'<p>{esc(u["cookie_text"])} <a href="{L("privacy")}">{esc(u["cookie_privacy"])}</a> {esc(u["cookie_and"])} <a href="{L("cookies")}">{esc(u["cookie_cookies"])}</a>.</p></div>'
               f'<div class="cookie-actions"><button type="button" class="btn btn-primary" data-consent="all">{esc(u["cookie_accept"])}</button>'
@@ -887,7 +888,7 @@ def dialogs():
               f'<label class="check"><input type="checkbox" name="analytics"><span><b>{esc(u["cookie_ana"])}</b><small>{esc(u["cookie_ana_d"])}</small></span></label>'
               f'<label class="check"><input type="checkbox" name="social"><span><b>{esc(u["cookie_soc"])}</b><small>{esc(u["cookie_soc_d"])}</small></span></label>'
               f'<label class="check"><input type="checkbox" name="ads"><span><b>{esc(u["cookie_ads"])}</b><small>{esc(u["cookie_ads_d"])}</small></span></label></fieldset>'
-              f'<button type="submit" class="btn btn-primary btn-sm">{esc(u["cookie_save"])}</button></form></aside>')
+              f'<button type="submit" class="btn btn-primary btn-sm">{esc(u["cookie_save"])}</button></form></div>')
     # third-party scripts stay inert (type=text/plain) until the matching consent category is granted by app.js
     gated = ('<script type="text/plain" data-consent-cat="analytics" data-src=""></script>'
              '<script type="text/plain" data-consent-cat="social" data-src=""></script>')

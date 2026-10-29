@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\Process\Process;
 
 /**
  * Copies the prototype's compiled assets (CSS, fonts, icons, images, app.js) into public/assets and Turbo from
@@ -15,6 +16,25 @@ class SyncSiteAssets extends Command
     protected $signature = 'site:assets {--source= : prototype_html folder}';
 
     protected $description = 'Copy the prototype assets and Turbo into public/assets';
+
+    /**
+     * Lighthouse "minify JavaScript": the prototype's app.js is readable source and Turbo's npm build is not minified
+     * (217 kB). esbuild comes with Vite; this runs on the workstation that prepares the deploy, never on the host.
+     */
+    private function minify(array $files): void
+    {
+        $esbuild = base_path('node_modules/.bin/esbuild');
+        if (! is_file($esbuild)) {
+            $this->warn('esbuild not found (npm ci): JavaScript left unminified.');
+
+            return;
+        }
+        foreach ($files as $f) {
+            $p = new Process([$esbuild, $f, '--minify', '--allow-overwrite', '--outfile='.$f, '--log-level=error']);
+            $p->run();
+            $p->isSuccessful() ? $this->line('minified '.basename($f).' ('.round(filesize($f) / 1024).' kB)') : $this->warn('could not minify '.basename($f).': '.$p->getErrorOutput());
+        }
+    }
 
     public function handle(): int
     {
@@ -45,9 +65,9 @@ class SyncSiteAssets extends Command
         foreach (['quill.js', 'quill.snow.css'] as $f) {
             File::copy(base_path("node_modules/quill/dist/$f"), "$dest/vendor/quill/$f");
         }
-        if (is_file("$src/manifest.webmanifest")) {
-            File::copy("$src/manifest.webmanifest", public_path('manifest.webmanifest'));
-        }
+        // The web manifest and service worker are routes (built from Settings > PWA), not copies of the prototype's.
+        File::delete([public_path('manifest.webmanifest'), public_path('sw.js')]);
+        $this->minify(["$dest/js/app.js", "$dest/js/vendor/turbo.min.js"]);
         $this->info('Assets copied to public/assets.');
 
         return self::SUCCESS;

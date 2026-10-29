@@ -56,6 +56,20 @@ class SeoFilesTest extends TestCase
         $this->get('/news-sitemap.xml')->assertNotFound();
     }
 
+    public function test_pwa_manifest_and_service_worker_follow_the_setting(): void
+    {
+        Settings::save(['pwaName' => 'AGP Info', 'pwaTheme' => '#112233']);
+        $this->get('/manifest.webmanifest')->assertOk()->assertJsonPath('start_url', '/fr/index.html')->assertJsonPath('name', 'AGP Info')->assertJsonPath('theme_color', '#112233');
+        $js = $this->get('/sw.js')->assertOk()->assertHeader('Content-Type', 'application/javascript')->getContent();
+        $this->assertStringContainsString("e.request.mode === 'navigate'", $js);
+        $this->assertStringContainsString('admin|api', $js);
+        $this->get('/fr/index.html')->assertSee('data-sw="/sw.js"', false)->assertSee('<link rel="manifest" href="/manifest.webmanifest">', false);
+
+        Settings::save(['pwa' => false]);
+        $this->get('/sw.js')->assertNotFound();
+        $this->get('/fr/index.html')->assertDontSee('data-sw=', false);
+    }
+
     public function test_rss_feed_per_language(): void
     {
         $this->article('frais', now()->subHour());

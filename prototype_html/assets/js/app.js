@@ -573,7 +573,8 @@
   /* ---------- service worker (http/https only) ---------- */
   if ('serviceWorker' in navigator && /^https?:$/.test(w.location.protocol) && !w.__agpSw) {
     w.__agpSw = true;
-    w.addEventListener('load', function () { navigator.serviceWorker.register(d.body.getAttribute('data-sw')).catch(function () { /* optional */ }); });
+    var swUrl = d.body.getAttribute('data-sw');   // no attribute = no PWA (avoids a request to "null")
+    if (swUrl) w.addEventListener('load', function () { navigator.serviceWorker.register(swUrl).catch(function () { /* optional */ }); });
   }
 
   /* ---------- Turbo Drive: after a page swap, move focus to <main> so keyboard and screen-reader users land on the new content ---------- */

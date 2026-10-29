@@ -31,6 +31,7 @@
 @isset($meta['image'])<meta name="twitter:image" content="{{ $meta['image'] }}">@endisset
 <meta name="theme-color" content="{{ \App\Support\Settings::get('pwaTheme') }}">
 <meta name="color-scheme" content="light dark">
+@if (\App\Support\Settings::get('pwa'))<link rel="manifest" href="/manifest.webmanifest">@endif
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml" sizes="any">
 <link rel="icon" href="/assets/icons/favicon-32.png" type="image/png" sizes="32x32">
@@ -59,7 +60,7 @@ document.addEventListener('turbo:load',function(){if(on)pv()})})();</script>
 <script type="text/plain" data-consent-cat="analytics" data-src="https://www.googletagmanager.com/gtag/js?id={{ $ga }}"></script>
 @endif
 </head>
-<body class="{{ $bodyClass ?? '' }}" id="top" data-lang="{{ $lang }}" data-home="/{{ $lang }}/index.html">
+<body class="{{ $bodyClass ?? '' }}" id="top" data-lang="{{ $lang }}" data-home="/{{ $lang }}/index.html"@if (\App\Support\Settings::get('pwa')) data-sw="/sw.js"@endif>
 {!! \App\Support\Chrome::render('sprite', $lang) !!}
 @php($navMarkers = \App\Support\Navigation::markers($lang))
 {!! \App\Support\Chrome::render('header', $lang, $alternates, $navMarkers) !!}
