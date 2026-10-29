@@ -28,6 +28,7 @@
             ['admin.roles.index', 'authors', 'Authors & roles', 'users.view', 'admin.roles.*'],
         ],
         'Site' => [
+            ['admin.ads.index', 'ads', 'Ad zones', 'ads.view', 'admin.ads.*'],
             ['admin.menus.index', 'menus', 'Menus', 'menus.view', 'admin.menus.*'],
             ['admin.settings.edit', 'settings', 'Settings', 'settings.view', 'admin.settings.*'],
         ],

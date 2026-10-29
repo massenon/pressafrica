@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdZoneController;
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Site\AdClickController;
 use App\Http\Controllers\Site\ArticleController;
 use App\Http\Controllers\Site\CommentController as PublicCommentController;
 use App\Http\Controllers\Site\HomeController;
@@ -32,6 +34,7 @@ Route::get('/', function (Request $request) {
     return redirect('/'.(in_array($saved, SetLocale::LOCALES, true) ? $saved : Settings::get('defaultLang')).'/index.html');
 });
 
+Route::get('ad/{zone}/{device}', AdClickController::class)->middleware('throttle:60,1')->name('ads.click');
 Route::get('robots.txt', [SeoController::class, 'robots']);
 Route::get('sitemap.xml', [SeoController::class, 'sitemap']);
 Route::get('news-sitemap.xml', [SeoController::class, 'newsSitemap']);
@@ -95,6 +98,10 @@ Route::prefix('admin')->group(function () {
         Route::get('newsletter/export/{format}', [AdminNewsletterController::class, 'export'])->middleware('can:newsletter.view')->name('newsletter.export');
         Route::post('newsletter/import', [AdminNewsletterController::class, 'import'])->middleware('can:newsletter.create')->name('newsletter.import');
         Route::delete('newsletter/{subscriber}', [AdminNewsletterController::class, 'destroy'])->middleware('can:newsletter.delete')->name('newsletter.destroy');
+
+        Route::get('ads', [AdZoneController::class, 'index'])->middleware('can:ads.view')->name('ads.index');
+        Route::get('ads/{zone}/edit', [AdZoneController::class, 'edit'])->middleware('can:ads.edit')->name('ads.edit');
+        Route::put('ads/{zone}', [AdZoneController::class, 'update'])->middleware('can:ads.edit')->name('ads.update');
 
         // Menus: main menu and mega panels.
         Route::get('menus', [MenuController::class, 'index'])->middleware('can:menus.view')->name('menus.index');

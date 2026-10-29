@@ -78,7 +78,7 @@
 </section>
 @endif
 <div class="asd-sticky"><aside class="nl-card reveal" aria-labelledby="nlc-t"><svg class="nl-ico" aria-hidden="true" focusable="false"><use href="#i-envelope"/></svg><h2 id="nlc-t">{{ __('site.nl_card_title') }}</h2><p>{{ __('site.nl_card_text') }}</p><button type="button" class="btn btn-ink" data-open="newsletter">{{ __('site.nl_card_btn') }}</button></aside>
-<div class="asd-ad" data-ad-zone="sidebar_article"><span class="ad-label">{{ __('site.ad') }}</span><div class="ad-box" role="img" aria-label="{{ __('site.ad_reserved_label') }}" style="aspect-ratio:300/250"><span>{{ __('site.ad_reserved') }}</span></div></div></div>
+<div class="asd-ad" data-ad-zone="sidebar_article"><span class="ad-label">{{ __('site.ad') }}</span>@include('site.partials.ad', ['key' => 'sidebar_article'])</div></div>
 </div></aside></div>
 @if ($related->isNotEmpty())
 <section class="block related" aria-labelledby="rel-t"><h2 class="sec-title sec-blue" id="rel-t"><span class="sq" aria-hidden="true"></span>{{ __('site.read_also') }}</h2><div class="grid-3">
