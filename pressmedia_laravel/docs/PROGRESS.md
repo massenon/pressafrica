@@ -46,6 +46,7 @@
 | Laravel port of the new modules (analytics source GA4 API or first-party log, audit table append-only, scheduled backups, tags, channel directories) | todo, blocked on PRD Q2, Q3, Q7 |
 | Prototype "Explore by topic" popup (Foxiz template popup, top panel, template cloned on first open) | done 2026-10-28; port to a Blade partial + `<template>` |
 | Implementation plan (phases, FR and NFR tables): `docs/IMPLEMENTATION-PLAN.md` | done 2026-10-28; phase 0 blocked on Q9 (owner checks host and PHP) |
+| Spec `docs/specs/SPEC-2026-10-29-carrousel-questions-reponses-admin.md` (EX-40 to EX-52): admin-managed hero carousel with current slides as default, public Q&A replies under articles, admin in the prototype look (Livewire, Quill, media picker) | spec PROPOSED 2026-10-29; step A (carousel) next; step B waits on S1 (may readers reply to readers?) |
 | Tests and UAT | todo |
 
 Notes: Livewire resolved to 3.8 (3.6 line requested, `^3.6` allows it). Vue bundle is 45 kB gzip; split i18n per island if it matters in Lighthouse.
