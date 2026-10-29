@@ -885,7 +885,8 @@ def dialogs():
               f'<form class="cookie-prefs" id="ck-prefs" hidden><fieldset><legend class="sr-only">{esc(u["cookie_custom"])}</legend>'
               f'<label class="check"><input type="checkbox" checked disabled><span><b>{esc(u["cookie_ess"])}</b><small>{esc(u["cookie_ess_d"])}</small></span></label>'
               f'<label class="check"><input type="checkbox" name="analytics"><span><b>{esc(u["cookie_ana"])}</b><small>{esc(u["cookie_ana_d"])}</small></span></label>'
-              f'<label class="check"><input type="checkbox" name="social"><span><b>{esc(u["cookie_soc"])}</b><small>{esc(u["cookie_soc_d"])}</small></span></label></fieldset>'
+              f'<label class="check"><input type="checkbox" name="social"><span><b>{esc(u["cookie_soc"])}</b><small>{esc(u["cookie_soc_d"])}</small></span></label>'
+              f'<label class="check"><input type="checkbox" name="ads"><span><b>{esc(u["cookie_ads"])}</b><small>{esc(u["cookie_ads_d"])}</small></span></label></fieldset>'
               f'<button type="submit" class="btn btn-primary btn-sm">{esc(u["cookie_save"])}</button></form></aside>')
     # third-party scripts stay inert (type=text/plain) until the matching consent category is granted by app.js
     gated = ('<script type="text/plain" data-consent-cat="analytics" data-src=""></script>'

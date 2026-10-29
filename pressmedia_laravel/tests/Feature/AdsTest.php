@@ -73,7 +73,7 @@ class AdsTest extends TestCase
     {
         $this->configure(['type' => 'adsense', 'client' => 'ca-pub-1234567890123456', 'slot' => '1234567890']);
         $html = $this->get('/fr/articles/benin.html')->getContent();
-        $this->assertStringContainsString('<script type="text/plain" data-consent-cat="analytics" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456">', $html);
+        $this->assertStringContainsString('<script type="text/plain" data-consent-cat="ads" data-src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456">', $html);
 
         $this->actingAs(User::factory()->create()->assignRole('admin'));
         $zone = AdZone::where('key', 'sidebar_article')->sole();

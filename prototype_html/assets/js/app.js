@@ -486,7 +486,7 @@
     if (!banner) return;
     var c = readConsent();
     if (c && !force) return;
-    if (c) { var a = $('[name=analytics]', banner), s = $('[name=social]', banner); if (a) a.checked = !!c.analytics; if (s) s.checked = !!c.social; }
+    if (c) { var a = $('[name=analytics]', banner), s = $('[name=social]', banner), ad = $('[name=ads]', banner); if (a) a.checked = !!c.analytics; if (s) s.checked = !!c.social; if (ad) ad.checked = !!c.ads; }
     banner.hidden = false;
     if (force) { var b = $('[data-consent="all"]', banner); if (b) b.focus(); }
   }
@@ -494,11 +494,11 @@
     var c0 = readConsent();
     if (c0) activateScripts(c0); else w.setTimeout(function () { showCookie(false); }, 600);
     $$('[data-consent]', banner).forEach(function (b) {
-      on(b, 'click', function () { var all = b.getAttribute('data-consent') === 'all'; saveConsent({ analytics: all, social: all }); });
+      on(b, 'click', function () { var all = b.getAttribute('data-consent') === 'all'; saveConsent({ analytics: all, social: all, ads: all }); });
     });
     var custom = $('[data-consent-custom]', banner), prefs = $('#ck-prefs', banner);
     on(custom, 'click', function () { var o = prefs.hidden; prefs.hidden = !o; custom.setAttribute('aria-expanded', o ? 'true' : 'false'); });
-    on(prefs, 'submit', function (e) { e.preventDefault(); saveConsent({ analytics: prefs.elements.analytics.checked, social: prefs.elements.social.checked }); });
+    on(prefs, 'submit', function (e) { e.preventDefault(); saveConsent({ analytics: prefs.elements.analytics.checked, social: prefs.elements.social.checked, ads: !!(prefs.elements.ads && prefs.elements.ads.checked) }); });
   }
 
   /* ---------- search results page (filter over embedded JSON) ---------- */
