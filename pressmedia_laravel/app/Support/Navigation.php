@@ -23,6 +23,8 @@ class Navigation
                 'episodes' => MediaPages::items('podcast')->take(4), 'shows' => MediaItem::ofType('podcast_show')->with('translations')->get()->keyBy('key'),
                 'videos' => MediaPages::items('video')->filter(fn ($v) => $v->post)->take(4),
             ])->render(),
+            '%%AD_HEADER%%' => ($ad = trim(view('site.partials.ad', ['key' => 'header_top', 'placeholder' => false])->render()))
+                ? '<div class="container-page ad-header" data-ad-zone="header_top"><span class="ad-label">'.e(__('site.ad', [], $lang)).'</span>'.$ad.'</div>' : '',
             '%%TOPICS%%' => view('site.partials.topics', ['lang' => $lang, 'posts' => $posts,
                 'sections' => Category::with('translations')->whereIn('key', ['politics', 'economy', 'society', 'finance', 'culture', 'sports', 'health', 'science'])->get()->sortBy(fn ($c) => array_search($c->key, ['politics', 'economy', 'society', 'finance', 'culture', 'sports', 'health', 'science']))])->render(),
         ];

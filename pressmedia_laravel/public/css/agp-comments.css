@@ -8,3 +8,7 @@
 .comment-reply-link{font-size:.85rem;text-decoration:underline}
 .comment-replying{font-size:.9rem;margin:.25rem 0 .5rem}
 [data-theme="dark"] .comment-reply.is-staff{border-left-color:#8fb2ff}
+/* Ad zones added by the Laravel port (header band, inside articles): same label style as the sidebar ad. */
+.ad-header{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.75rem 0}
+.ad-in-article{margin:1.5rem 0;text-align:center}
+.ad-header .ad-label,.ad-in-article .ad-label{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7}

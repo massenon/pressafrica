@@ -56,6 +56,19 @@ class AdsTest extends TestCase
         $this->assertTrue(AuditLog::where(['module' => 'ads', 'action' => 'update'])->exists());
     }
 
+    public function test_header_and_in_article_zones_appear_only_when_active(): void
+    {
+        $this->get('/fr/articles/benin.html')->assertDontSee('data-ad-zone="header_top"', false)->assertDontSee('data-ad-zone="in_article"', false);
+        Post::first()->translations()->update(['body' => '<p>Un</p><p>Deux</p><p>Trois</p><p>Quatre</p>']);
+        $m = Media::create(['path' => 'media/ban.webp', 'mime' => 'image/webp', 'size' => 1, 'width' => 728, 'height' => 90, 'alt_fr' => 'Sponsor']);
+        foreach (['header_top', 'in_article'] as $key) {
+            AdZone::where('key', $key)->update(['active' => true, 'desktop' => ['enabled' => true, 'type' => 'banner', 'media_id' => $m->id, 'url' => 'https://s.example'], 'mobile' => ['enabled' => false, 'type' => 'banner']]);
+        }
+        $html = $this->get('/fr/articles/benin.html')->getContent();
+        $this->assertStringContainsString('data-ad-zone="header_top"', $html);
+        $this->assertMatchesRegularExpression('#<p>Trois</p><div class="ad-in-article" data-ad-zone="in_article">.*?</div><p>Quatre</p>#s', $html);
+    }
+
     public function test_adsense_waits_for_consent_and_bad_codes_are_refused(): void
     {
         $this->configure(['type' => 'adsense', 'client' => 'ca-pub-1234567890123456', 'slot' => '1234567890']);

@@ -48,6 +48,8 @@ def markers(html):
     html = re.sub(r'(<p class="topbar-date"[^>]*>)[^<]*(</p>)', r'\1%%DATE%%\2', html)
     # Parts that list articles are rendered from the database (App\Support\Navigation): the main menu with its
     # mega panels, and the "Explore by topic" columns. Cut by sibling boundaries (panels hold nested lists).
+    # Ad zone "header_top" sits between the logo band and the menu (empty while the zone is inactive).
+    html = html.replace('<div class="mainnav-wrap">', '%%AD_HEADER%%<div class="mainnav-wrap">', 1)
     for start, end, mark in (('<ul class="nav-list">', '<button type="button" class="btn btn-flash btn-explore"', "%%NAV%%"),
                              ('<div class="tp-grid">', '<div class="tp-chan">', "%%TOPICS%%")):
         i = html.find(start)

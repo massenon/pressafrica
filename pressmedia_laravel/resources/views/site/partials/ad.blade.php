@@ -1,10 +1,12 @@
-{{-- Ad zone $key: the configured ad per device (desktop/mobile), else the prototype's reserved placeholder. --}}
+{{-- Ad zone $key: the configured ad per device (desktop/mobile), else the prototype's reserved placeholder
+     (or nothing, with placeholder=false, where the prototype has no ad box: header, inside the article). --}}
 @php
     $zone = \App\Models\AdZone::where('key', $key)->first();
     $served = $zone ? array_filter(['desktop' => $zone->config('desktop'), 'mobile' => $zone->config('mobile')]) : [];
     foreach (array_keys($served) as $dev) { $zone->track($dev, 'impressions'); }
 @endphp
-@if (! $served)
+@if (! $served && ! ($placeholder ?? true))
+@elseif (! $served)
 <div class="ad-box" role="img" aria-label="{{ __('site.ad_reserved_label') }}" style="aspect-ratio:300/250"><span>{{ __('site.ad_reserved') }}</span></div>
 @else
 @foreach ($served as $dev => $c)
