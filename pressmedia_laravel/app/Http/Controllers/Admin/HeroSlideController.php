@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Models\HeroSlide;
 use App\Models\Media;
-use App\Models\Post;
 use App\Support\MediaStore;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -94,8 +93,6 @@ class HeroSlideController extends Controller
     {
         return view('admin.featured.form', [
             'slide' => $slide,
-            'posts' => Post::published()->with('translations')->orderByDesc('published_at')->get(),
-            'images' => Media::where('mime', 'like', 'image/%')->latest('id')->get(),
             'canPublish' => auth()->user()->can('featured.publish'),
         ]);
     }

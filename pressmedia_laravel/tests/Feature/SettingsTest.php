@@ -91,6 +91,7 @@ class SettingsTest extends TestCase
         foreach (range(1, 3) as $_) {
             $this->post('/admin/login', ['email' => $user->email, 'password' => 'nope']);
         }
-        $this->post('/admin/login', ['email' => $user->email, 'password' => 'Correct-Horse-9!'])->assertStatus(429);
+        $this->post('/admin/login', ['email' => $user->email, 'password' => 'Correct-Horse-9!'])->assertSessionHasErrors('email');
+        $this->assertGuest();
     }
 }

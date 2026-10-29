@@ -40,6 +40,11 @@ class SyncSiteAssets extends Command
         }
         File::ensureDirectoryExists("$dest/js/vendor");
         File::copy($turbo, "$dest/js/vendor/turbo.min.js");
+        // Admin rich-text editor (spec EX-48), served as a static file like Turbo: the host has no Node.
+        File::ensureDirectoryExists("$dest/vendor/quill");
+        foreach (['quill.js', 'quill.snow.css'] as $f) {
+            File::copy(base_path("node_modules/quill/dist/$f"), "$dest/vendor/quill/$f");
+        }
         if (is_file("$src/manifest.webmanifest")) {
             File::copy("$src/manifest.webmanifest", public_path('manifest.webmanifest'));
         }

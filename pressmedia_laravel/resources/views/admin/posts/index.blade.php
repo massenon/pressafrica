@@ -1,32 +1,31 @@
 @extends('admin.layout')
 @section('title', 'Posts')
+@section('page', 'posts')
 @section('content')
-<div class="mb-4 flex items-center justify-between">
-    <h1 class="text-2xl font-bold">Posts</h1>
-    @can('create', App\Models\Post::class)<a class="rounded bg-slate-900 px-3 py-2 text-sm font-semibold text-white" href="{{ route('admin.posts.create') }}">New post</a>@endcan
-</div>
-@if (session('status'))<p class="mb-3 rounded bg-green-50 p-2 text-sm text-green-800" role="status">{{ session('status') }}</p>@endif
-<form method="GET" class="mb-4 flex gap-2 text-sm">
-    <input class="rounded border px-2 py-1" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="Search titles" aria-label="Search titles">
-    <select class="rounded border px-2 py-1" name="status" aria-label="Status"><option value="">All statuses</option>
-        @foreach (App\Models\Post::STATUSES as $s)<option value="{{ $s }}" @selected(($filters['status'] ?? '') === $s)>{{ $s }}</option>@endforeach
-    </select>
-    <button class="rounded border px-3 py-1" type="submit">Filter</button>
+@php($badge = ['published' => 'ok', 'scheduled' => 'info', 'pending' => 'warn', 'draft' => ''])
+<div class="a-page-head"><div><p class="a-eyebrow">Newsroom</p><h1>Posts</h1><p>Search, filter, review and publish.</p></div>
+<div class="flex flex-wrap gap-2">@can('create', App\Models\Post::class)<a class="a-btn a-btn-primary" href="{{ route('admin.posts.create') }}" wire:navigate><span>New post</span></a>@endcan</div></div>
+<section aria-label="Posts list" class="a-card">
+<form method="GET" class="a-tools">
+    <div class="a-field" style="min-width:220px;flex:1 1 0%"><label class="a-label" for="pq">Search</label><input class="a-input" type="search" id="pq" name="q" value="{{ $filters['q'] ?? '' }}" placeholder="Search by title…" autocomplete="off"></div>
+    <div class="a-field"><label class="a-label" for="pstatus">Status</label><select class="a-select" id="pstatus" name="status" onchange="this.form.requestSubmit()"><option value="">All</option>@foreach (App\Models\Post::STATUSES as $s)<option value="{{ $s }}" @selected(($filters['status'] ?? '') === $s)>{{ ucfirst($s) }}</option>@endforeach</select></div>
+    <div class="a-field" style="align-self:end"><button class="a-btn" type="submit">Filter</button></div>
 </form>
-<table class="w-full border-collapse bg-white text-sm dark:bg-slate-800">
-    <thead><tr class="border-b text-left"><th class="p-2">Title</th><th class="p-2">EN</th><th class="p-2">Author</th><th class="p-2">Status</th><th class="p-2">Date</th></tr></thead>
-    <tbody>
-    @forelse ($posts as $p)
-        <tr class="border-b">
-            <td class="p-2">@can('update', $p)<a class="underline" href="{{ route('admin.posts.edit', $p) }}">{{ $p->translation('fr')?->title }}</a>@else{{ $p->translation('fr')?->title }}@endcan</td>
-            <td class="p-2">{{ $p->translations->contains('locale', 'en') ? '✓' : '—' }}</td>
-            <td class="p-2">{{ $p->author?->name }}</td><td class="p-2">{{ $p->status }}</td>
-            <td class="p-2 whitespace-nowrap">{{ $p->published_at?->format('Y-m-d H:i') }}</td>
-        </tr>
-    @empty
-        <tr><td class="p-2" colspan="5">No posts.</td></tr>
-    @endforelse
-    </tbody>
-</table>
+<div class="a-tablewrap"><table class="a-table" aria-label="Posts">
+<thead><tr><th scope="col">Post</th><th scope="col" class="text-sm">Author</th><th scope="col">Categories</th><th scope="col">Lang</th><th scope="col">Status</th><th scope="col">Date</th><th scope="col" class="text-right"><span class="a-vh">Actions</span></th></tr></thead>
+<tbody>
+@forelse ($posts as $p)
+@php($t = $p->translation('fr'))
+<tr><td><div class="flex gap-3 items-center"><span class="a-thumb" aria-hidden="true">@if ($p->cover)<img src="{{ $p->cover->url() }}" alt="" loading="lazy" class="w-full h-full object-cover">@endif</span><div>@can('update', $p)<a class="ttl" href="{{ route('admin.posts.edit', $p) }}" wire:navigate>{{ $t?->title }}</a>@else<span class="ttl">{{ $t?->title }}</span>@endcan<span class="a-muted text-xs">/{{ $t?->slug }}</span></div></div></td>
+<td class="text-sm">{{ $p->author?->name }}</td>
+<td>{{ $p->categories->map(fn ($c) => $c->translation('fr')?->name)->implode(', ') }}</td>
+<td>@foreach ($p->translations->sortBy('locale') as $tr)<span class="a-badge">{{ strtoupper($tr->locale) }}</span> @endforeach</td>
+<td><span class="a-badge {{ $badge[$p->status] ?? '' }}">{{ ucfirst($p->status) }}</span></td>
+<td class="whitespace-nowrap">{{ $p->published_at?->format('j M Y') }}</td>
+<td class="text-right whitespace-nowrap">@if ($p->status === 'published' && $p->url('fr'))<a class="a-btn a-btn-sm a-btn-ghost" href="{{ $p->url('fr') }}" target="_blank" rel="noopener">View</a>@endif @can('update', $p)<a class="a-btn a-btn-sm" href="{{ route('admin.posts.edit', $p) }}" wire:navigate>Edit</a>@endcan</td></tr>
+@empty
+<tr><td colspan="7">No posts.</td></tr>
+@endforelse
+</tbody></table></div></section>
 <div class="mt-4">{{ $posts->links() }}</div>
 @endsection

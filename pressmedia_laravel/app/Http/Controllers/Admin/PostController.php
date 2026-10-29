@@ -34,7 +34,7 @@ class PostController extends Controller
         $this->authorize('viewAny', Post::class);
         $filters = $request->validate(['status' => ['nullable', Rule::in(Post::STATUSES)], 'q' => ['nullable', 'string', 'max:100']]);
 
-        $posts = Post::with(['translations', 'author'])
+        $posts = Post::with(['translations', 'author', 'cover', 'categories.translations'])
             ->unless($request->user()->can('posts.publish'), fn ($q) => $q->where('author_id', $request->user()->id))
             ->when($filters['status'] ?? null, fn ($q, $s) => $q->where('status', $s))
             ->when($filters['q'] ?? null, fn ($q, $term) => $q->whereHas('translations', fn ($t) => $t->where('title', 'like', '%'.$term.'%')))
@@ -113,7 +113,7 @@ class PostController extends Controller
         }
 
         DB::transaction(function () use ($post, $data, $status, $at) {
-            $post->fill(['status' => $status, 'published_at' => $at, 'featured' => (bool) ($data['featured'] ?? false)])->save();
+            $post->fill(['status' => $status, 'published_at' => $at, 'featured' => (bool) ($data['featured'] ?? false), 'cover_id' => $data['cover_id'] ?? null])->save();
 
             foreach (self::LOCALES as $locale) {
                 $fields = $data['translations'][$locale] ?? [];
@@ -151,6 +151,7 @@ class PostController extends Controller
             'status' => ['required', Rule::in($canPublish ? Post::STATUSES : ['draft', 'pending'])],
             'published_at' => ['nullable', 'date', 'required_if:status,scheduled', Rule::when(request('status') === 'scheduled', 'after:now')],
             'featured' => ['boolean'],
+            'cover_id' => ['nullable', 'integer', 'exists:media,id'],
             'categories' => ['array'],
             'categories.*' => ['integer', 'exists:categories,id'],
             'tags' => ['nullable', 'string', 'max:500'],

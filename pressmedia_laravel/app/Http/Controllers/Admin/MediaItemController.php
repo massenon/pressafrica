@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Models\MediaItem;
-use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,7 +87,6 @@ class MediaItemController extends Controller
         return view('admin.media-items.form', [
             'type' => $type, 'item' => $item, 'def' => MediaItem::TYPES[$type],
             'statuses' => auth()->user()->can(MediaItem::TYPES[$type]['module'].'.publish') ? self::STATUSES : ['draft', 'archived'],
-            'posts' => Post::with('translations')->orderByDesc('published_at')->get(),
             'shows' => MediaItem::ofType('podcast_show')->with('translations')->get(),
         ]);
     }
@@ -104,7 +102,8 @@ class MediaItemController extends Controller
             'status' => ['required', Rule::in($canPublish || $item->status === 'published' ? self::STATUSES : ['draft', 'archived'])],
             'published_on' => ['nullable', 'date'],
             'post_id' => ['nullable', 'integer', 'exists:posts,id'],
-            'articles' => ['nullable', 'string', 'max:500'],
+            'articles' => ['nullable', 'array', 'max:30'],
+            'articles.*' => ['integer', 'exists:posts,id'],
         ];
         foreach ($def['data'] as $field => $input) {
             $rules["data.$field"] = match ($input) {
@@ -144,9 +143,8 @@ class MediaItemController extends Controller
                 $item->translations()->updateOrCreate(['locale' => $l], collect($tr)->only($def['translated'])->all());
             }
             if ($type === 'magazine') {
-                // Contents in the typed order: "12, 5, 7" (post ids).
-                $ids = collect(preg_split('/[\s,]+/', $data['articles'] ?? '', -1, PREG_SPLIT_NO_EMPTY))->map(fn ($i) => (int) $i)
-                    ->filter(fn ($i) => Post::whereKey($i)->exists())->unique()->values();
+                // Contents in the order chosen in the picker.
+                $ids = collect($data['articles'] ?? [])->map(fn ($i) => (int) $i)->unique()->values();
                 $item->posts()->sync($ids->mapWithKeys(fn ($id, $n) => [$id => ['position' => $n + 1]])->all());
             }
         });

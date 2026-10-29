@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
@@ -33,13 +32,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Per account and per IP: the first stops guessing one password (maxAttempts per lockMinutes, from Settings),
         // the second stops spraying many accounts.
-        RateLimiter::for('login', fn (Request $request) => [
-            Limit::perMinutes(max(1, (int) Settings::get('lockMinutes')), max(1, (int) Settings::get('maxAttempts')))
-                ->by(Str::lower((string) $request->input('email')).'|'.$request->ip())
-                ->response(fn () => $this->lockedOut($request)),
-            Limit::perMinute(20)->by('ip:'.$request->ip())
-                ->response(fn () => $this->lockedOut($request)),
-        ]);
+        RateLimiter::for('login', fn (Request $request) => Limit::perMinute(20)->by('ip:'.$request->ip())
+            ->response(fn () => $this->lockedOut($request)));
 
         // Public comment form: per IP, generous enough for a shared office network, tight enough to stop a flood.
         RateLimiter::for('comments', fn (Request $request) => [

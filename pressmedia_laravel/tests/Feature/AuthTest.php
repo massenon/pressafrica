@@ -65,9 +65,22 @@ class AuthTest extends TestCase
         }
 
         // Even the right password is refused while locked out.
-        $this->post('/admin/login', ['email' => $user->email, 'password' => self::PASSWORD])->assertStatus(429);
+        $this->post('/admin/login', ['email' => $user->email, 'password' => self::PASSWORD])
+            ->assertSessionHasErrors('email');
+        $this->assertGuest();
+        $this->postJson('/api/tokens', ['email' => $user->email, 'password' => self::PASSWORD, 'device_name' => 'cli'])->assertStatus(429);
         $this->assertGuest();
         $this->assertTrue(AuditLog::where('action', 'lockout')->exists());
+    }
+
+    public function test_successful_sign_ins_never_lock_the_account(): void
+    {
+        $user = $this->user();
+        foreach (range(1, 8) as $_) {
+            $this->post('/admin/login', ['email' => $user->email, 'password' => self::PASSWORD])->assertRedirect('/admin');
+            $this->post('/admin/logout');
+        }
+        $this->assertFalse(AuditLog::where('action', 'lockout')->exists());
     }
 
     public function test_api_token_is_issued_used_and_revoked(): void

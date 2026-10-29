@@ -155,6 +155,9 @@ Quill pour le corps des articles (intertitres H2/H3, gras, italique, listes, cit
 
 ## 8. Phasage et dépendances
 
+**État au 2026-10-29 : étapes A, B et C livrées** (voir `pressmedia_laravel/docs/PROGRESS.md`). P1 livré : EX-50 (compteur du tableau de bord). Restent EX-49 (aperçu du carrousel) et EX-51 (réponse épinglée).
+
+
 | Étape | Contenu | Dépend de | Critère de sortie |
 |---|---|---|---|
 | A | EX-40, EX-41 (écran simple), EX-42 | — | Parité de l'accueil = 0 ; CRUD testé ; audit |

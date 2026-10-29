@@ -44,5 +44,10 @@ content, real videos), Q5 (outbound directory links, Settings `directoryLinks`, 
 **Seeders:** `php artisan migrate:fresh --seed` builds the whole site (content always; demo staff + comments
 outside production).
 
-**Next:** admin layout module (Livewire, prototype admin look, Quill editor, media picker, Featured/home picks
-screen), refresh the chrome's mega-menu cards; then phase 6 (analytics consent, ads, newsletter, menus) — Q7 open.
+**Spec 2026-10-29 (carousel, Q&A, admin look) — arbitrated and delivered:** steps A (Featured carousel, default =
+prototype slides), B (Q&A under articles, newsroom answers with badge, reader e-mail on opt-in, anti-bot rules),
+C (admin in the prototype look, Livewire navigation, MediaPicker, PostPicker, Quill). App timezone = Benin.
+SMTP of the owner in `.env.example` (password only on the server). Demo staff = `*@pressafrica.media`.
+
+**Next:** refresh the public chrome's mega-menu cards from the database; then phase 6 (analytics consent, ads,
+newsletter, menus) — Q7 (statistics source) still open; contact form + `SUPPORT_MAIL`.
