@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\HeroSlideController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MediaItemController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Site\AdClickController;
 use App\Http\Controllers\Site\ArticleController;
 use App\Http\Controllers\Site\CommentController as PublicCommentController;
+use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\NewsletterController;
 use App\Http\Controllers\Site\SectionController;
@@ -45,6 +47,7 @@ Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['l
     Route::get('feed.xml', [SeoController::class, 'feed'])->name('feed');
     Route::get('articles/{slug}.html', [ArticleController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('articles.show');
     Route::get('{slug}.html', [SectionController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('sections.show');   // keep last: catches /{locale}/*.html
+    Route::post('contact', [ContactController::class, 'store'])->middleware('throttle:comments')->name('contact.store');
     Route::post('newsletter', [NewsletterController::class, 'store'])->middleware('throttle:comments')->name('newsletter.store');
     Route::get('newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->where('token', '[A-Za-z0-9]+')->name('newsletter.confirm');
     Route::get('newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->where('token', '[A-Za-z0-9]+')->name('newsletter.unsubscribe');
@@ -102,6 +105,12 @@ Route::prefix('admin')->group(function () {
         Route::get('ads', [AdZoneController::class, 'index'])->middleware('can:ads.view')->name('ads.index');
         Route::get('ads/{zone}/edit', [AdZoneController::class, 'edit'])->middleware('can:ads.edit')->name('ads.edit');
         Route::put('ads/{zone}', [AdZoneController::class, 'update'])->middleware('can:ads.edit')->name('ads.update');
+
+        Route::get('messages', [MessageController::class, 'index'])->middleware('can:messages.view')->name('messages.index');
+        Route::get('messages/{message}', [MessageController::class, 'show'])->middleware('can:messages.view')->name('messages.show');
+        Route::post('messages/{message}/reply', [MessageController::class, 'reply'])->middleware('can:messages.edit')->name('messages.reply');
+        Route::put('messages/{message}', [MessageController::class, 'update'])->middleware('can:messages.edit')->name('messages.update');
+        Route::delete('messages/{message}', [MessageController::class, 'destroy'])->middleware('can:messages.delete')->name('messages.destroy');
 
         // Menus: main menu and mega panels.
         Route::get('menus', [MenuController::class, 'index'])->middleware('can:menus.view')->name('menus.index');

@@ -49,5 +49,10 @@ prototype slides), B (Q&A under articles, newsroom answers with badge, reader e-
 C (admin in the prototype look, Livewire navigation, MediaPicker, PostPicker, Quill). App timezone = Benin.
 SMTP of the owner in `.env.example` (password only on the server). Demo staff = `*@pressafrica.media`.
 
-**Next:** refresh the public chrome's mega-menu cards from the database; then phase 6 (analytics consent, ads,
-newsletter, menus) — Q7 (statistics source) still open; contact form + `SUPPORT_MAIL`.
+**Phase 6 (2026-10-29):** Q7 answered (first-party log; GA4 built, off). Delivered: dynamic menu + mega panels +
+topic popup (Admin > Menus), first-party analytics + GA4 module (Admin > Analytics), newsletter with double opt-in,
+ad zones with CTR, contact form to SUPPORT_MAIL with an admin inbox. Demo staff accounts also in production
+(owner), never overwritten on re-seed.
+
+**Next:** phase 7 (security/GDPR: data export and erasure, backups, error pages, production checklist) and
+phase 8 (Lighthouse, UAT). Open: Q8 (DPO: GA4/AdSense consent categories, retention), Q9 (host checks).

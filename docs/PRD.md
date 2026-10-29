@@ -308,7 +308,7 @@ Le nombre total de permissions (A7) sera recalculé au seed ; ne pas figer « 60
 | Q9 | Hébergeur, version de PHP (8.3 visé), SSH, extensions et limites du plan cPanel mutualisé ? | EX-39 ; conditionne le planificateur, les sauvegardes et la compilation des assets |
 | Q5 | Autoriser les liens sortants dans les annuaires Radios/TV (EX-04) ? | A6 |
 | Q6 | Seuils de performance : à fixer **après** mesure M1 ; supprimer ou garder le « > 90, < 2 s » de S4 ? | A5 |
-| Q7 | Source des statistiques en production : API GA4, journal interne, ou les deux (EX-19) ? Quel hébergeur et quelle tâche planifiée (EX-25, 29) ? | Change l'architecture et le RGPD |
+| Q7 | Source des statistiques en production : API GA4, journal interne, ou les deux (EX-19) ? **Réponse du propriétaire (2026-10-29) : journal interne (b) ; GA4 implémenté mais désactivé par défaut.** | Change l'architecture et le RGPD |
 | Q9 | Bouton Instagram du partage : ouvrir le profil (actuel) ou retirer, faute d'adresse de partage officielle ? | EX-37 |
 | Q10 | Fiche de permissions des nouveaux modules (§7) et regroupement de la barre latérale (EX-22) | Un rôle sans fiche n'obtient rien |
 

@@ -39,6 +39,27 @@
       })
       .catch(function () { if (errEm) errEm.hidden = false; });
   }, true);
+  /* Contact page: app.js keeps its field-by-field validation; a valid form is sent to the server instead of the
+     prototype's browser storage (capture phase, so app.js's submit handler does not run for it). */
+  document.addEventListener('submit', function (e) {
+    var f = e.target.closest && e.target.closest('form[data-contact]');
+    if (!f) return;
+    var valid = [].every.call(f.querySelectorAll('[required]'), function (x) { return x.type === 'checkbox' ? x.checked : x.value.trim() !== ''; })
+      && EMAIL.test((f.elements.email || {}).value || '');
+    if (!valid) return;   // let app.js show its messages
+    e.preventDefault(); e.stopPropagation();
+    var ok = f.querySelector('.form-ok'), sum = f.querySelector('.form-summary'), btn = f.querySelector('button[type=submit]');
+    var lang = document.documentElement.lang === 'en' ? 'en' : 'fr';
+    btn.disabled = true;
+    fetch('/' + lang + '/contact', { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json', 'X-CSRF-TOKEN': token() }, credentials: 'same-origin' })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        btn.disabled = false;
+        if (!res.ok) { if (sum) sum.hidden = false; return; }
+        f.reset(); if (sum) sum.hidden = true; if (ok) { ok.hidden = false; ok.focus && ok.focus(); }
+      })
+      .catch(function () { btn.disabled = false; if (sum) sum.hidden = false; });
+  }, true);
   function token() { var m = document.querySelector('meta[name="csrf-token"]'); return m ? m.content : ''; }
   document.addEventListener('submit', function (e) {
     var f = e.target.closest && e.target.closest('form[data-comment-server]');

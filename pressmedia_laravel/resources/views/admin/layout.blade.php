@@ -5,6 +5,7 @@
     $is = fn (string $pattern) => request()->routeIs($pattern);
     $pendingPosts = $user?->can('posts.publish') ? \App\Models\Post::where('status', 'pending')->count() : 0;
     $pendingComments = $user?->can('comments.view') ? \App\Models\Comment::where('status', 'pending')->count() : 0;
+    $newMessages = $user?->can('messages.view') ? \App\Models\ContactMessage::where('status', 'new')->count() : 0;
     // Same groups and order as the prototype sidebar; modules not built yet (analytics, newsletter, ads, menus, backups) are left out.
     $nav = [
         'Overview' => [['admin.dashboard', 'index', 'Dashboard', null, 'admin.dashboard'], ['admin.analytics.index', 'analytics', 'Analytics', 'analytics.view', 'admin.analytics.*']],
@@ -24,6 +25,7 @@
         ],
         'Audience' => [
             ['admin.comments.index', 'comments', 'Comments', 'comments.view', 'admin.comments.*', $pendingComments, 'Comments pending moderation'],
+            ['admin.messages.index', 'comments', 'Contact messages', 'messages.view', 'admin.messages.*', $newMessages, 'New contact messages'],
             ['admin.newsletter.index', 'newsletter', 'Newsletter', 'newsletter.view', 'admin.newsletter.*'],
             ['admin.roles.index', 'authors', 'Authors & roles', 'users.view', 'admin.roles.*'],
         ],

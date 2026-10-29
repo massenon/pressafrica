@@ -14,7 +14,8 @@ use Spatie\Permission\PermissionRegistrar;
 class RolesSeeder extends Seeder
 {
     private const MODULES = ['posts', 'categories', 'media', 'featured', 'comments', 'newsletter', 'ads', 'podcasts', 'menus', 'settings', 'users', 'ai',
-        'analytics', 'tags', 'videos', 'magazine', 'radios', 'television', 'audit', 'backups'];
+        'analytics', 'tags', 'videos', 'magazine', 'radios', 'television', 'audit', 'backups',
+        'messages'];   // contact-page messages (not in the prototype: its form never left the browser)
 
     private const ACTIONS = ['view', 'create', 'edit', 'delete', 'publish'];
 
@@ -43,7 +44,7 @@ class RolesSeeder extends Seeder
             $only(['posts'], ['view', 'create', 'edit']), $only(['media', 'ai'], ['view', 'create']), $only(['categories', 'tags'], ['view'])
         ));
         Role::findOrCreate('moderator', 'web')->syncPermissions(array_merge(
-            $only(['comments'], self::ACTIONS), $only(['posts', 'newsletter'], ['view'])
+            $only(['comments'], self::ACTIONS), $only(['posts', 'newsletter', 'messages'], ['view'])
         ));
     }
 }
