@@ -12,6 +12,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -24,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Production is served over HTTPS only: generated links and redirects must never fall back to http.
+        if ($this->app->isProduction()) {
+            URL::forceScheme('https');
+        }
+
         // Length and complexity come from Settings > Security (owner sets the rule; default 12 + complexity).
         // The breach check calls an external API, so it runs in production only.
         Password::defaults(fn () => Password::min(max(8, (int) Settings::get('minPassword')))

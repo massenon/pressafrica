@@ -44,7 +44,7 @@ Route::get('robots.txt', [SeoController::class, 'robots']);
 Route::get('sitemap.xml', [SeoController::class, 'sitemap']);
 Route::get('news-sitemap.xml', [SeoController::class, 'newsSitemap']);
 
-Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['locale', 'count'])->group(function () {
+Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['locale', 'maintenance', 'count'])->group(function () {
     Route::get('/', fn () => redirect('/'.app()->getLocale().'/index.html', 301));
     Route::get('index.html', [HomeController::class, 'show'])->name('home');
     Route::get('feed.xml', [SeoController::class, 'feed'])->name('feed');

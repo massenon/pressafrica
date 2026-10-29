@@ -18,6 +18,12 @@ class Seo
         return $lang === 'fr' ? ($c->day === 1 ? '1er' : $c->day).' '.$c->isoFormat('MMMM YYYY') : $c->isoFormat('MMMM D, YYYY');
     }
 
+    /** FR or EN text from the URL (/en/... = English), for pages rendered without the locale middleware (errors). */
+    public static function byUrl(string $fr, string $en): string
+    {
+        return request()->segment(1) === 'en' ? $en : $fr;
+    }
+
     public static function truncate(string $t, int $n = 160): string
     {
         $t = trim(preg_replace('/\s+/u', ' ', $t));
