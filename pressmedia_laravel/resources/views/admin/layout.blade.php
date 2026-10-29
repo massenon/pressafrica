@@ -7,7 +7,7 @@
     $pendingComments = $user?->can('comments.view') ? \App\Models\Comment::where('status', 'pending')->count() : 0;
     // Same groups and order as the prototype sidebar; modules not built yet (analytics, newsletter, ads, menus, backups) are left out.
     $nav = [
-        'Overview' => [['admin.dashboard', 'index', 'Dashboard', null, 'admin.dashboard']],
+        'Overview' => [['admin.dashboard', 'index', 'Dashboard', null, 'admin.dashboard'], ['admin.analytics.index', 'analytics', 'Analytics', 'analytics.view', 'admin.analytics.*']],
         'Newsroom' => [
             ['admin.posts.index', 'posts', 'Posts', 'posts.view', 'admin.posts.*', $pendingPosts, 'Posts pending review'],
             ['admin.categories.index', 'categories', 'Categories', 'categories.view', 'admin.categories.*'],

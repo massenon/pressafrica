@@ -49,6 +49,15 @@
 <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'WebSite', '@id' => url('/').'/#website', 'url' => url("$lang/index.html"), 'name' => 'Africa Global Press', 'inLanguage' => $lang, 'publisher' => ['@id' => url('/').'/#org']], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'Organization', '@id' => url('/').'/#org', 'name' => 'Africa Global Press', 'url' => url('/').'/', 'logo' => url('assets/img/site/logo-420.webp')], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 @stack('jsonld')
+@if (\App\Support\Settings::get('ga4Enabled') && ($ga = \App\Support\Settings::get('ga4MeasurementId')))
+{{-- GA4 (off by default, Q7): denied until the visitor accepts "analytics" in the cookie banner; the prototype's app.js
+     then loads the library (data-consent-cat). One page_view per Turbo visit, none before consent. --}}
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+(function(){var on=false,id=@json($ga);function pv(){gtag('event','page_view',{page_location:location.href,page_title:document.title})}
+document.addEventListener('agp:consent',function(e){if(on||!e.detail||!e.detail.analytics)return;on=true;gtag('consent','update',{analytics_storage:'granted'});gtag('js',new Date());gtag('config',id,{anonymize_ip:true,send_page_view:false});pv()});
+document.addEventListener('turbo:load',function(){if(on)pv()})})();</script>
+<script type="text/plain" data-consent-cat="analytics" data-src="https://www.googletagmanager.com/gtag/js?id={{ $ga }}"></script>
+@endif
 </head>
 <body class="{{ $bodyClass ?? '' }}" id="top" data-lang="{{ $lang }}" data-home="/{{ $lang }}/index.html">
 {!! \App\Support\Chrome::render('sprite', $lang) !!}

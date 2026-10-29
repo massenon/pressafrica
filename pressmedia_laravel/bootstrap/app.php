@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(fn () => route('admin.dashboard'));
         // Written by JS (theme) or read before routing (locale); they hold no secret, so they stay plain.
         $middleware->encryptCookies(except: ['theme', 'locale']);
-        $middleware->alias(['locale' => \App\Http\Middleware\SetLocale::class]);
+        $middleware->alias(['locale' => \App\Http\Middleware\SetLocale::class, 'count' => \App\Http\Middleware\RecordPageView::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

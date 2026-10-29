@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
@@ -33,7 +34,7 @@ Route::get('robots.txt', [SeoController::class, 'robots']);
 Route::get('sitemap.xml', [SeoController::class, 'sitemap']);
 Route::get('news-sitemap.xml', [SeoController::class, 'newsSitemap']);
 
-Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware('locale')->group(function () {
+Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['locale', 'count'])->group(function () {
     Route::get('/', fn () => redirect('/'.app()->getLocale().'/index.html', 301));
     Route::get('index.html', [HomeController::class, 'show'])->name('home');
     Route::get('feed.xml', [SeoController::class, 'feed'])->name('feed');
@@ -81,6 +82,9 @@ Route::prefix('admin')->group(function () {
         Route::put('featured/{slide}', [HeroSlideController::class, 'update'])->middleware('can:featured.edit')->name('featured.update');
         Route::post('featured/{slide}/move', [HeroSlideController::class, 'move'])->middleware('can:featured.edit')->name('featured.move');
         Route::delete('featured/{slide}', [HeroSlideController::class, 'destroy'])->middleware('can:featured.delete')->name('featured.destroy');
+
+        Route::get('analytics', [AnalyticsController::class, 'index'])->middleware('can:analytics.view')->name('analytics.index');
+        Route::get('analytics/export/{format}', [AnalyticsController::class, 'export'])->middleware('can:analytics.view')->name('analytics.export');
 
         // Menus: main menu and mega panels.
         Route::get('menus', [MenuController::class, 'index'])->middleware('can:menus.view')->name('menus.index');

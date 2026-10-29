@@ -37,6 +37,12 @@ class Settings
         'pwaName' => ['pwa', 'string', 'Africa Global Press', ['max:60']],
         'pwaShort' => ['pwa', 'string', 'AGP', ['max:12']],
         'pwaTheme' => ['pwa', 'color', '#013079', []],
+        // Audience (Q7): first-party log by default; GA4 implemented but off until the owner enables it.
+        'analyticsSource' => ['analytics', 'enum:internal,ga4', 'internal', []],
+        'ga4Enabled' => ['analytics', 'bool', false, []],
+        'ga4MeasurementId' => ['analytics', 'string', '', ['max:30', 'regex:/^(G-[A-Z0-9]{4,20})?$/']],
+        'ga4PropertyId' => ['analytics', 'string', '', ['max:20', 'regex:/^[0-9]*$/']],
+        'ga4Credentials' => ['analytics', 'secret', '', ['max:10000']],
         'aiProvider' => ['ai', 'enum:openai,gemini', 'openai', []],
         'aiOpenaiKey' => ['ai', 'secret', '', ['max:255']],
         'aiGeminiKey' => ['ai', 'secret', '', ['max:255']],
