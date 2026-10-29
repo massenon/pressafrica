@@ -36,6 +36,7 @@
         ],
         'System' => [
             ['admin.audit.index', 'audit', 'Audit log', 'audit.view', 'admin.audit.*'],
+            ['admin.backups.index', 'backups', 'Backups', 'backups.view', 'admin.backups.*'],
             ['admin.privacy.index', 'authors', 'Personal data', 'users.edit', 'admin.privacy.*'],
         ],
     ];

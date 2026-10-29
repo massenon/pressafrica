@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 
 Schedule::command('posts:publish-scheduled')->everyMinute()->withoutOverlapping();
 Schedule::command('newsletter:send')->everyMinute()->withoutOverlapping();
+// Backups (EX-29): database every night, uploaded media weekly (Benin time).
+Schedule::command('backup:run')->dailyAt('03:15')->withoutOverlapping();
+Schedule::command('backup:run --media')->weeklyOn(0, '04:15')->withoutOverlapping();

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdZoneController;
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\CampaignController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
@@ -122,6 +123,11 @@ Route::prefix('admin')->group(function () {
         Route::put('messages/{message}', [MessageController::class, 'update'])->middleware('can:messages.edit')->name('messages.update');
         Route::delete('messages/{message}', [MessageController::class, 'destroy'])->middleware('can:messages.delete')->name('messages.destroy');
 
+        Route::get('backups', [BackupController::class, 'index'])->middleware('can:backups.view')->name('backups.index');
+        Route::post('backups', [BackupController::class, 'store'])->middleware('can:backups.create')->name('backups.store');
+        Route::get('backups/{file}', [BackupController::class, 'download'])->where('file', '[A-Za-z0-9._-]+')->middleware('can:backups.view')->name('backups.download');
+        Route::post('backups/{file}/restore', [BackupController::class, 'restore'])->where('file', '[A-Za-z0-9._-]+')->middleware('can:backups.publish')->name('backups.restore');
+        Route::delete('backups/{file}', [BackupController::class, 'destroy'])->where('file', '[A-Za-z0-9._-]+')->middleware('can:backups.delete')->name('backups.destroy');
         Route::get('privacy', [PrivacyController::class, 'index'])->middleware('can:users.edit')->name('privacy.index');
         Route::get('privacy/export', [PrivacyController::class, 'export'])->middleware('can:users.edit')->name('privacy.export');
         Route::post('privacy/erase', [PrivacyController::class, 'erase'])->middleware('can:users.edit')->name('privacy.erase');
