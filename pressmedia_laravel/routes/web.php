@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\HeroSlideController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MediaItemController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -80,6 +81,16 @@ Route::prefix('admin')->group(function () {
         Route::put('featured/{slide}', [HeroSlideController::class, 'update'])->middleware('can:featured.edit')->name('featured.update');
         Route::post('featured/{slide}/move', [HeroSlideController::class, 'move'])->middleware('can:featured.edit')->name('featured.move');
         Route::delete('featured/{slide}', [HeroSlideController::class, 'destroy'])->middleware('can:featured.delete')->name('featured.destroy');
+
+        // Menus: main menu and mega panels.
+        Route::get('menus', [MenuController::class, 'index'])->middleware('can:menus.view')->name('menus.index');
+        Route::get('menus/create', [MenuController::class, 'create'])->middleware('can:menus.create')->name('menus.create');
+        Route::post('menus', [MenuController::class, 'store'])->middleware('can:menus.create')->name('menus.store');
+        Route::post('menus/restore', [MenuController::class, 'restore'])->middleware('can:menus.edit')->name('menus.restore');
+        Route::get('menus/{menu}/edit', [MenuController::class, 'edit'])->middleware('can:menus.edit')->name('menus.edit');
+        Route::put('menus/{menu}', [MenuController::class, 'update'])->middleware('can:menus.edit')->name('menus.update');
+        Route::post('menus/{menu}/move', [MenuController::class, 'move'])->middleware('can:menus.edit')->name('menus.move');
+        Route::delete('menus/{menu}', [MenuController::class, 'destroy'])->middleware('can:menus.delete')->name('menus.destroy');
 
         // Media sections (podcasts, videos, magazine, radios, TV); rights checked per type in the controller.
         Route::prefix('media-items/{type}')->whereIn('type', array_keys(\App\Models\MediaItem::TYPES))->name('media-items.')->group(function () {

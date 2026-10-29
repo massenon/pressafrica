@@ -26,7 +26,10 @@
             ['admin.comments.index', 'comments', 'Comments', 'comments.view', 'admin.comments.*', $pendingComments, 'Comments pending moderation'],
             ['admin.roles.index', 'authors', 'Authors & roles', 'users.view', 'admin.roles.*'],
         ],
-        'Site' => [['admin.settings.edit', 'settings', 'Settings', 'settings.view', 'admin.settings.*']],
+        'Site' => [
+            ['admin.menus.index', 'menus', 'Menus', 'menus.view', 'admin.menus.*'],
+            ['admin.settings.edit', 'settings', 'Settings', 'settings.view', 'admin.settings.*'],
+        ],
         'System' => [['admin.audit.index', 'audit', 'Audit log', 'audit.view', 'admin.audit.*']],
     ];
 @endphp

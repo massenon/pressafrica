@@ -52,12 +52,13 @@
 </head>
 <body class="{{ $bodyClass ?? '' }}" id="top" data-lang="{{ $lang }}" data-home="/{{ $lang }}/index.html">
 {!! \App\Support\Chrome::render('sprite', $lang) !!}
-{!! \App\Support\Chrome::render('header', $lang, $alternates) !!}
+@php($navMarkers = \App\Support\Navigation::markers($lang))
+{!! \App\Support\Chrome::render('header', $lang, $alternates, $navMarkers) !!}
 @yield('after_header')
 <main id="main" tabindex="-1">
 @yield('main')
 </main>
-{!! \App\Support\Chrome::render('footer', $lang, $alternates) !!}
+{!! \App\Support\Chrome::render('footer', $lang, $alternates, $navMarkers) !!}
 <script src="/assets/js/app.js" defer></script>
 <script src="/js/agp-server.js" defer></script>
 </body>

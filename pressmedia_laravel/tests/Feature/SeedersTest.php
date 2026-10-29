@@ -12,6 +12,7 @@ use Database\Seeders\DemoCommentsSeeder;
 use Database\Seeders\DemoUsersSeeder;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -41,23 +42,23 @@ class SeedersTest extends TestCase
 
     public function test_production_gets_the_staff_accounts_but_no_demo_comments(): void
     {
-        $this->seed(\Database\Seeders\RolesSeeder::class);
+        $this->seed(RolesSeeder::class);
         $this->app['env'] = 'production';
-        (new \Database\Seeders\DemoUsersSeeder)->run();
-        (new \Database\Seeders\DemoCommentsSeeder)->run();
+        (new DemoUsersSeeder)->run();
+        (new DemoCommentsSeeder)->run();
         $this->assertSame(4, User::count());
         $this->assertSame(0, Comment::count());
     }
 
     public function test_re_seeding_never_resets_a_changed_password_or_role(): void
     {
-        $this->seed(\Database\Seeders\RolesSeeder::class);
-        (new \Database\Seeders\DemoUsersSeeder)->run();
+        $this->seed(RolesSeeder::class);
+        (new DemoUsersSeeder)->run();
         $admin = User::where('email', 'admin@pressafrica.media')->sole();
         $admin->update(['password' => 'Changed-Online-2026!', 'name' => 'Rédacteur en chef']);
 
-        (new \Database\Seeders\DemoUsersSeeder)->run();
-        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('Changed-Online-2026!', $admin->fresh()->password));
+        (new DemoUsersSeeder)->run();
+        $this->assertTrue(Hash::check('Changed-Online-2026!', $admin->fresh()->password));
         $this->assertSame('Rédacteur en chef', $admin->fresh()->name);
     }
 }

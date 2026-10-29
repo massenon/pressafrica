@@ -4,8 +4,17 @@ import sys, re, posixpath, urllib.request, difflib
 path = sys.argv[1]
 proto = open('/home/user/pressafrica/prototype_html/' + path, encoding='utf8').read()
 lara = urllib.request.urlopen('http://127.0.0.1:8123/' + path).read().decode('utf8')
+# REGION=chrome compares the header + footer (menus, dialogs) instead of <main>.
+import os
+REGION = os.environ.get('REGION', 'main')
+
+
 def norm(s, base):
-    s = s[s.index('<main'):s.index('</main>')]
+    if REGION == 'chrome':
+        s = s[s.index('<header class="site-header"'):s.index('</header>')] + s[s.index('<footer class="site-footer"'):s.index('<script src="', s.index('<footer class="site-footer"'))]
+        s = re.sub(r'<p class="topbar-date"[^>]*>[^<]*</p>', '', s)   # today's date
+    else:
+        s = s[s.index('<main'):s.index('</main>')]
     def ab(m):
         v = m.group(2)
         if v and not v.startswith(('http', '#', '/', 'mailto:', 'data:')):
