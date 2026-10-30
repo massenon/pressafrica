@@ -26,7 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Production is served over HTTPS only: generated links and redirects must never fall back to http.
-        if ($this->app->isProduction()) {
+        // Only for an https APP_URL: a production .env copied to a workstation must not send the browser to https://127.0.0.1.
+        if ($this->app->isProduction() && str_starts_with((string) config('app.url'), 'https://')) {
             URL::forceScheme('https');
         }
 

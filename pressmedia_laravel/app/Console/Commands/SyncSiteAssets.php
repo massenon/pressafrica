@@ -23,7 +23,7 @@ class SyncSiteAssets extends Command
      */
     private function minify(array $files): void
     {
-        $esbuild = base_path('node_modules/.bin/esbuild');
+        $esbuild = base_path('node_modules/.bin/esbuild'.(PHP_OS_FAMILY === 'Windows' ? '.cmd' : ''));
         if (! is_file($esbuild)) {
             $this->warn('esbuild not found (npm ci): JavaScript left unminified.');
 

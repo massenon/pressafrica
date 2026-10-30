@@ -26,7 +26,7 @@ Envoyer sur le serveur tout le dossier `pressafrica/` (le site lit `../prototype
 ## 2. Base de données et `.env`
 
 - [ ] Créer la base MySQL et son utilisateur dans cPanel (« Bases de données MySQL »).
-- [ ] Copier `.env.example` en `.env` et compléter : `APP_URL=https://pressafrica.media`, `DB_CONNECTION=mysql`, `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, **`MAIL_PASSWORD`**, `DEMO_PASSWORD` (mot de passe fort des 4 comptes de départ).
+- [ ] Copier `.env.production.example` (pas `.env.example`, réservé au poste local) en `.env` et compléter : `APP_URL=https://pressafrica.media`, `DB_CONNECTION=mysql`, `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, **`MAIL_PASSWORD`**, `DEMO_PASSWORD` (mot de passe fort des 4 comptes de départ).
 - [ ] `php artisan key:generate` puis **sauvegarder `APP_KEY` hors du serveur** : sans elle, les sauvegardes chiffrées et les clés d'API stockées sont illisibles.
 - [ ] Vérifier : `APP_ENV=production`, `APP_DEBUG=false`, `SESSION_SECURE_COOKIE=true`.
 

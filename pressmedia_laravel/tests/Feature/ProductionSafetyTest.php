@@ -43,7 +43,7 @@ class ProductionSafetyTest extends TestCase
 
     public function test_the_production_template_is_safe(): void
     {
-        $env = file_get_contents(base_path('.env.example'));
+        $env = file_get_contents(base_path('.env.production.example'));
         foreach (['APP_ENV=production', 'APP_DEBUG=false', 'SESSION_SECURE_COOKIE=true', 'MAIL_PASSWORD='."\n"] as $line) {
             $this->assertStringContainsString($line, $env);
         }
