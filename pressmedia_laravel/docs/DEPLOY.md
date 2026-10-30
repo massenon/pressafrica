@@ -27,7 +27,7 @@ Envoyer sur le serveur tout le dossier `pressafrica/` (le site lit `../prototype
 
 - [ ] Créer la base MySQL et son utilisateur dans cPanel (« Bases de données MySQL »).
 - [ ] Copier `.env.production.example` (pas `.env.example`, réservé au poste local) en `.env` et compléter : `APP_URL=https://pressafrica.media`, `DB_CONNECTION=mysql`, `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, **`MAIL_PASSWORD`**, `DEMO_PASSWORD` (mot de passe fort des 4 comptes de départ).
-- [ ] `php artisan key:generate` puis **sauvegarder `APP_KEY` hors du serveur** : sans elle, les sauvegardes chiffrées et les clés d'API stockées sont illisibles.
+- [ ] `php artisan key:generate` (une clé neuve : ne jamais réutiliser celle du poste local) puis **sauvegarder `APP_KEY` hors du serveur** : sans elle, les sauvegardes chiffrées et les clés d'API stockées sont illisibles.
 - [ ] Vérifier : `APP_ENV=production`, `APP_DEBUG=false`, `SESSION_SECURE_COOKIE=true`.
 
 ## 3. Racine web
@@ -49,7 +49,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 
 ## 5. Tâche cron (une seule ligne, indispensable)
 
-Dans cPanel → « Tâches cron », toutes les minutes :
+Dans cPanel → « Tâches cron », toutes les minutes. Si `php -v` dans le terminal cPanel n'affiche pas 8.2+, remplacer `php` par le chemin de la bonne version (souvent `/usr/local/bin/ea-php83` ou `/opt/cpanel/ea-php83/root/usr/bin/php`) :
 
 ```
 * * * * * cd /home/<compte>/pressafrica/pressmedia_laravel && php artisan schedule:run >> /dev/null 2>&1
@@ -61,7 +61,7 @@ Elle déclenche : publication des articles planifiés (chaque minute), envoi des
 ## 6. Premiers pas dans l'administration
 
 - [ ] Se connecter sur `/admin/login` avec `admin@pressafrica.media` et `DEMO_PASSWORD`.
-- [ ] **Changer immédiatement** les mots de passe (et noms) des 4 comptes `admin@`, `editor@`, `author@`, `moderator@pressafrica.media`, ou créer les vrais comptes et supprimer ceux-là.
+- [ ] **Changer immédiatement** les mots de passe (et noms) des 4 comptes `admin@`, `editor@`, `author@`, `moderator@pressafrica.media`, ou créer les vrais comptes (Admin → Staff accounts) puis **désactiver** ceux-là (un compte n'est jamais supprimé : ses articles gardent leur auteur).
 - [ ] Réglages : vérifier titre, couleurs, `maintenance` désactivée, `newsletterBatch` sous le quota horaire / 60.
 - [ ] Sauvegardes : cliquer « Back up now », puis télécharger le fichier : il doit apparaître dans la liste.
 - [ ] Publicités : zones inactives par défaut ; renseigner les vrais codes AdSense avant de les activer.
@@ -70,7 +70,7 @@ Elle déclenche : publication des articles planifiés (chaque minute), envoi des
 ## 7. Vérifications après mise en ligne
 
 - [ ] `https://pressafrica.media/` redirige vers `/fr` ; un article (`/fr/articles/…`), une rubrique (`/fr/politique`), `/en` s'affichent ; une ancienne adresse `…/index.html` ou `….html` redirige (301) vers l'adresse sans extension.
-- [ ] Le site répond en HTTPS uniquement ; `/robots.txt` et `/sitemap.xml` utilisent le bon domaine.
+- [ ] Le site répond en HTTPS uniquement (cPanel → Domaines → « Force HTTPS Redirect ») ; `www.` redirige vers le domaine sans `www` ; `/robots.txt` et `/sitemap.xml` utilisent le bon domaine.
 - [ ] Une page inexistante affiche la page 404 du site, sans détail technique.
 - [ ] Commentaire de test → arrive « en attente » dans l'admin ; formulaire de contact → e-mail reçu sur `SUPPORT_MAIL`.
 - [ ] Inscription newsletter de test → e-mail de confirmation reçu, lien de confirmation fonctionnel.
