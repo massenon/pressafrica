@@ -1,6 +1,6 @@
 # Mise en production — Africa Global Press (cPanel mutualisé)
 
-Checklist pas à pas. Cocher chaque ligne ; ne pas sauter les vérifications. Hébergement cible : cPanel mutualisé,
+Checklist pas à pas (guide détaillé en français pour le propriétaire : `docs/MISE-EN-LIGNE.md` à la racine du dépôt). Cocher chaque ligne ; ne pas sauter les vérifications. Hébergement cible : cPanel mutualisé,
 PHP 8.3, MySQL, **sans Node ni Redis sur le serveur** (décision du propriétaire, 2026-10-28).
 
 ## 0. À vérifier chez l'hébergeur (question Q9)
