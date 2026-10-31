@@ -62,5 +62,9 @@ security headers, `docs/DEPLOY.md`, Lighthouse (gzip: 92-97 perf, 100 elsewhere)
 **Then (2026-10-29):** staff accounts `/admin/users` + `/admin/account` (the owner could not change the demo accounts
 otherwise); stale PROGRESS rows closed; clean public URLs without `.html` (owner choice), old paths 301. 154 tests green.
 
+**Closing (2026-10-31):** `.env.example` = local template, `.env.production.example` = server; owner go-live guide
+`docs/MISE-EN-LIGNE.md`. No development task open. Not examined: parity diffs on some EN pages (author, dates,
+prev/next) and small FR search diffs, present before the clean-URL change.
+
 **Next:** go-live with `docs/DEPLOY.md` once Q9 is checked; Firefox/Safari pass (R10); DPO review (Q8);
 real media content (Q4). Optional spec items: EX-49 carousel preview, EX-51 pinned answer.
