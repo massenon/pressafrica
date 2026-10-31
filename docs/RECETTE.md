@@ -15,6 +15,11 @@ ajoute la compression et les en-têtes de cache qu'Apache appliquera en producti
 | Rubrique `/fr/politique` | 85 | **94** | 100 | 100 | 100 | 2,9 s | 0,000 |
 | Podcasts | 91 | **97** | 100 | 100 | 100 | 2,4 s | 0,004 |
 
+**Production (2026-10-31, `https://pressafrica.media/fr`, PageSpeed Insights, ordinateur)** : performance **100**,
+accessibilité **100**, bonnes pratiques **100**, SEO 100, navigation par agents 99 ; FCP 0,3 s, LCP 0,5 s, TBT 0 ms,
+CLS 0,004, Speed Index 1,3 s. Mesure mobile en production : à faire. Pistes non notées : réponse serveur de la page
+≈ 1,5 s dans la chaîne critique, petit CSS `agp-comments.css` bloquant, reflow forcé de 30 ms dans `app.js`.
+
 Corrigé pendant la mesure : rôle ARIA du bandeau cookies (`<aside role=dialog>` interdit), requête 404 du service
 worker, JavaScript non minifié (Turbo 217 → 92 ko, `app.js` 36 → 23 ko). Prototype statique mesuré en même temps :
 performance 82 à 91, accessibilité 100. **Le seuil chiffré reste à fixer par le propriétaire après mesure sur
