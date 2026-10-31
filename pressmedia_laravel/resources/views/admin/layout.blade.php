@@ -51,8 +51,8 @@
 <meta name="color-scheme" content="light dark">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>@yield('title') - AGP Admin</title>
-<link rel="icon" href="/assets/icons/favicon.ico" sizes="48x48">
-<link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+<link rel="icon" href="/assets/icons/favicon.ico?v=2" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg?v=2">
 <link rel="stylesheet" href="/assets/css/admin.min.css">
 @stack('head')
 </head>

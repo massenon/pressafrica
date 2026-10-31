@@ -12,3 +12,7 @@
 .ad-header{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.75rem 0}
 .ad-in-article{margin:1.5rem 0;text-align:center}
 .ad-header .ad-label,.ad-in-article .ad-label{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+/* Flash Infos ticker: the prototype fades items with opacity, so Lighthouse measured a half-transparent title as low
+   contrast. Items now slide at full opacity inside the clipped list; hidden ones are visibility:hidden. */
+.ticker-item,.js .ticker-item:first-child:not(.is-active){opacity:1;visibility:hidden;transform:translateY(100%);transition:transform .45s var(--ease),visibility 0s .45s}
+.ticker-item:first-child,.ticker-item.is-active{opacity:1;visibility:visible;transform:none;transition:transform .45s var(--ease)}

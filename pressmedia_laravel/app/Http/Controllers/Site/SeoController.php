@@ -22,6 +22,20 @@ class SeoController extends Controller
         return response(implode("\n", $lines)."\n", 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
     }
 
+    /** Plain-language map of the site for AI agents (llms.txt proposal: Markdown with one H1). */
+    public function llms(): Response
+    {
+        $lines = ['# Africa Global Press', '', '> '.__('seo.desc.home', [], 'fr'), '', '## Sections (français)'];
+        foreach (\App\Models\Category::with('translations')->orderBy('id')->get() as $c) {
+            if ($c->translation('fr')) {
+                $lines[] = '- ['.$c->translation('fr')->name.']('.$c->url('fr').')';
+            }
+        }
+        $lines = array_merge($lines, ['', '## Sections (English)', '- [Home]('.url('en').')', '', '## Plan du site', '- [sitemap.xml]('.url('sitemap.xml').')', '- [RSS (fr)]('.url('fr/feed.xml').')', '- [RSS (en)]('.url('en/feed.xml').')']);
+
+        return response(implode("\n", $lines)."\n", 200, ['Content-Type' => 'text/markdown; charset=UTF-8']);
+    }
+
     /** Every indexable page with its FR/EN alternates (as the prototype's sitemap.xml) and article cover images. */
     public function sitemap(): Response
     {

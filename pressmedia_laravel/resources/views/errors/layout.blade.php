@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
 <title>@yield('code') · Africa Global Press</title>
-<link rel="icon" href="/assets/icons/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/icons/favicon.ico?v=2" sizes="48x48">
 <link rel="stylesheet" href="/assets/css/app.min.css">
 </head>
 <body class="page-legal">

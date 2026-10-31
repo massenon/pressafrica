@@ -32,15 +32,16 @@
 <meta name="theme-color" content="{{ \App\Support\Settings::get('pwaTheme') }}">
 <meta name="color-scheme" content="light dark">
 @if (\App\Support\Settings::get('pwa'))<link rel="manifest" href="/manifest.webmanifest">@endif
-<link rel="icon" href="/assets/icons/favicon.ico" sizes="48x48">
-<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml" sizes="any">
-<link rel="icon" href="/assets/icons/favicon-32.png" type="image/png" sizes="32x32">
-<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="icon" href="/assets/icons/favicon.ico?v=2" sizes="48x48">
+<link rel="icon" href="/assets/icons/favicon.svg?v=2" type="image/svg+xml" sizes="any">
+<link rel="icon" href="/assets/icons/favicon-32.png?v=2" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png?v=2">
 <link rel="preload" href="/assets/fonts/Alegreya-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/EncodeSans-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 @stack('preload')
 <link rel="stylesheet" href="/assets/css/app.min.css">
-<link rel="stylesheet" href="/css/agp-comments.css">
+{{-- Small Laravel-only stylesheet inlined: one render-blocking request less (Lighthouse mobile). --}}
+<style>{!! file_get_contents(public_path('css/agp-comments.css')) !!}</style>
 {{-- Light by default; the visitor's saved choice wins; the OS preference is never read (INV-07). --}}
 <script>(function(d){try{var t=localStorage.getItem("agp-theme");d.setAttribute("data-theme",t==="dark"?"dark":"light")}catch(e){d.setAttribute("data-theme","light")}d.classList.add("js")})(document.documentElement)</script>
 <script src="/assets/js/vendor/turbo.min.js" defer></script>

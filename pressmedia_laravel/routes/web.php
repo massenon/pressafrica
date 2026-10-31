@@ -47,6 +47,7 @@ Route::get('ad/{zone}/{device}', AdClickController::class)->middleware('throttle
 Route::get('manifest.webmanifest', [PwaController::class, 'manifest']);
 Route::get('sw.js', [PwaController::class, 'worker']);
 Route::get('robots.txt', [SeoController::class, 'robots']);
+Route::get('llms.txt', [SeoController::class, 'llms']);
 Route::get('sitemap.xml', [SeoController::class, 'sitemap']);
 Route::get('news-sitemap.xml', [SeoController::class, 'newsSitemap']);
 
