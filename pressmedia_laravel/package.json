@@ -15,9 +15,11 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
+        "@hotwired/turbo": "8.0.23",
         "@inertiajs/vue3": "^3.9.1",
         "@vitejs/plugin-vue": "^6.0.10",
         "pinia": "^4.1.0",
+        "quill": "2.0.3",
         "typescript": "^7.0.2",
         "vue": "^3.5.44",
         "vue-i18n": "^11.4.16",

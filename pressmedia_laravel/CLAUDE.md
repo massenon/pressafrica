@@ -1,6 +1,6 @@
 # Africa Global Press (pressmedia_laravel)
 
-Laravel port of the HTML prototype in `C:\Projects1\pressafrica` (see its `docs/TECHNICAL.md`). Read this file first; do not re-read the specs.
+Laravel port of the HTML prototype in `../prototype_html` (see `../docs/TECHNICAL.md`). Read this file first; do not re-read the specs.
 
 ## Stack (fixed)
 Laravel 12.70, PHP 8.3, MySQL in production (SQLite locally), Sanctum 4, spatie/laravel-permission 8, mews/purifier, Livewire 3 admin (Tailwind, SweetAlert2, Chart.js, Quill, Choices, flatpickr), Vue 3 + Pinia + vue-i18n + TypeScript on the public site.
@@ -18,13 +18,19 @@ Public layout loads `@hotwired/turbo` (npm, bundled by Vite, ~26 kB gzip measure
 ## Hosting: cPanel shared, no Node, no Redis (owner, 2026-10-28)
 Build assets before deploy (`npm run build` locally or in CI), web root = `public/`, `CACHE_STORE=file` (or `database`), `SESSION_DRIVER=file` or `database`, `QUEUE_CONNECTION=sync` or `database` with a cron `queue:work --stop-when-empty`, cron `* * * * * php artisan schedule:run`. Enable gzip/brotli and long cache headers on `/build`.
 
+## Public pages = the prototype's own markup and assets (2026-10-29)
+- Chrome (header, footer, dialogs) is generated: edit the prototype, then `python ../tools/export_chrome.py`. Never hand-edit `resources/chrome/*.html`.
+- Assets: `npm ci && php artisan site:assets` copies the prototype's compiled CSS/JS/fonts/images and Turbo into `public/assets` (not committed). Blade views reuse the prototype class names; no Vite build is needed for public pages.
+- Article bodies come from `prototype_html/data/laravel-bodies.json` (generator's `clean_body()`), re-exported by `python ../tools/export_laravel_import.py`.
+- Check a ported page with `tools/qa/laravel_parity/sweep.sh` (normalised HTML diff, cheap) before any screenshot; look at an image only where the HTML differs.
+
 ## Rules
-- Locales: `fr` (default) and `en`. Text lives in `*_translations` tables. URLs mirror the prototype (`/fr/...`, `/en/...`).
+- Locales: `fr` (default) and `en`. Text lives in `*_translations` tables. Public URLs have no extension (owner decision 2026-10-29): `/fr`, `/fr/{section}`, `/fr/articles/{slug}`; the prototype's `*.html` paths answer 301. Chrome exported from the prototype is cleaned by `export_chrome.py` (`clean_urls`).
 - Sanitise every HTML body with Purifier before saving. Never render user HTML unescaped otherwise.
 - Permissions are `<module>.<action>` (`RolesSeeder`). Check with policies or `can()`, never by role name.
-- Tailwind everywhere (owner decision 2026-10-28, public and admin). Keep the prototype look: tokens from `pressafrica/prototype_html/assets/css/src.css`. No redesign.
+- Tailwind everywhere (owner decision 2026-10-28, public and admin). Keep the prototype look: tokens from `../prototype_html/assets/css/src.css`. No redesign.
 - One module per session; finish with tests (Pest/PHPUnit) and update `docs/PROGRESS.md`.
 - Comments explain why, not what. Match surrounding style.
 
 ## Commands
-`php artisan migrate:fresh --seed`, `php artisan test`, `npm run dev`, `npm run build`.
+`php artisan migrate:fresh --seed` (roles + all content + demo staff/comments outside production), `php artisan test`, `npm run dev`, `npm run build`.

@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Dark mode follows the server-rendered data-theme attribute, not the OS preference (INV-07). */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';

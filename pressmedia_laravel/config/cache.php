@@ -32,7 +32,15 @@ return [
     |
     */
 
+    // Public page cache (App\Http\Middleware\PageCache). Off in tests unless a test turns it on.
+    'pages_enabled' => env('PAGE_CACHE', true),
+
     'stores' => [
+
+        'pages' => [
+            'driver' => 'file',
+            'path' => storage_path('framework/cache/pages'),
+        ],
 
         'array' => [
             'driver' => 'array',

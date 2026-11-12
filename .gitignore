@@ -3,6 +3,9 @@ node_modules/
 vendor/
 pressmedia_laravel/public/build/
 pressmedia_laravel/public/hot
+pressmedia_laravel/public/assets/
+pressmedia_laravel/public/manifest.webmanifest
+pressmedia_laravel/public/storage
 __pycache__/
 
 # secrets and local data

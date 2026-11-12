@@ -23,3 +23,13 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Africa Global Press (cPanel, Apache): compression and long cache for static assets.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml application/rss+xml image/svg+xml
+</IfModule>
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|woff2|webp|png|jpg|jpeg|svg|ico|mp3|mp4)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+</IfModule>

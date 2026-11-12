@@ -65,7 +65,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // Benin time (owner decision 2026-10-29): scheduling of posts and carousel slides, dates shown on the site.
+    'timezone' => 'Africa/Porto-Novo',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,9 +79,17 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'fr'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
+
+    /*
+    | Language that translated content (posts, categories, podcasts) falls back to when a translation is missing.
+    | French is the source language: a post may be published in French only (PRD INV-10). Kept apart from
+    | fallback_locale, which serves untranslated framework strings and is English.
+    */
+
+    'content_locale' => 'fr',
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 

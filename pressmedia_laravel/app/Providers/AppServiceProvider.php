@@ -2,23 +2,78 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\PageCache;
+use App\Models\AuditLog;
+use App\Models\ContactMessage;
+use App\Models\NewsletterCampaign;
+use App\Models\NewsletterSubscriber;
+use App\Models\PageView;
+use App\Support\Settings;
+use Illuminate\Auth\Events\Failed;
+use Illuminate\Auth\Events\Lockout;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        // Any change to what public pages show empties the page cache. Visit logs, audit entries, subscribers,
+        // campaigns and contact messages never appear on a page, and page views are written on every hit.
+        Event::listen(['eloquent.saved: *', 'eloquent.deleted: *'], function (string $event, array $data) {
+            if (! $data[0] instanceof PageView && ! $data[0] instanceof AuditLog && ! $data[0] instanceof NewsletterSubscriber
+                && ! $data[0] instanceof NewsletterCampaign && ! $data[0] instanceof ContactMessage) {
+                PageCache::flush();
+            }
+        });
+
+        // Production is served over HTTPS only: generated links and redirects must never fall back to http.
+        // Only for an https APP_URL: a production .env copied to a workstation must not send the browser to https://127.0.0.1.
+        if ($this->app->isProduction() && str_starts_with((string) config('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
+
+        // Length and complexity come from Settings > Security (owner sets the rule; default 12 + complexity).
+        // The breach check calls an external API, so it runs in production only.
+        Password::defaults(fn () => Password::min(max(8, (int) Settings::get('minPassword')))
+            ->when(Settings::get('passComplexity'), fn ($rule) => $rule->letters()->mixedCase()->numbers()->symbols())
+            ->when(app()->isProduction(), fn ($rule) => $rule->uncompromised()));
+
+        // Per account and per IP: the first stops guessing one password (maxAttempts per lockMinutes, from Settings),
+        // the second stops spraying many accounts.
+        RateLimiter::for('login', fn (Request $request) => Limit::perMinute(20)->by('ip:'.$request->ip())
+            ->response(fn () => $this->lockedOut($request)));
+
+        // Public comment form: per IP, generous enough for a shared office network, tight enough to stop a flood.
+        RateLimiter::for('comments', fn (Request $request) => [
+            Limit::perMinute(5)->by('comments:'.$request->ip()),
+            Limit::perDay(30)->by('comments-day:'.$request->ip()),   // scripted floods spread over the day (S5)
+        ]);
+
+        Event::listen(Login::class, fn (Login $e) => AuditLog::record('login', 'auth', $e->user->email, null, $e->user));
+        Event::listen(Logout::class, fn (Logout $e) => $e->user && AuditLog::record('logout', 'auth', $e->user->email, null, $e->user));
+        Event::listen(Failed::class, fn (Failed $e) => AuditLog::record('login_failed', 'auth', $e->credentials['email'] ?? null, null, null));
+        Event::listen(Lockout::class, fn (Lockout $e) => AuditLog::record('lockout', 'auth', $e->request->input('email'), null, null));
+    }
+
+    private function lockedOut(Request $request)
+    {
+        event(new Lockout($request));
+
+        return $request->expectsJson()
+            ? response()->json(['message' => __('auth.throttle', ['seconds' => 60])], 429)
+            : back()->withInput($request->only('email'))->withErrors(['email' => __('auth.throttle', ['seconds' => 60])])->setStatusCode(429);
     }
 }

@@ -1,0 +1,18 @@
+/* Replies under a comment (spec EX-46): the prototype has no reply styles; indentation and the newsroom accent
+   reuse its brand colour (#013079) so nothing else in the design changes. */
+.comment-list{list-style:none;padding:0;margin:0 0 1.5rem}
+.comment-list>.comment{padding:.75rem 0;border-bottom:1px solid rgba(0,0,0,.08)}
+.comment-replies{list-style:none;margin:.5rem 0 0 1.25rem;padding:0 0 0 .9rem;border-left:2px solid rgba(1,48,121,.25)}
+.comment-reply{padding:.5rem 0}
+.comment-reply.is-staff{border-left:3px solid #013079;margin-left:-1.05rem;padding-left:.9rem}
+.comment-reply-link{font-size:.85rem;text-decoration:underline}
+.comment-replying{font-size:.9rem;margin:.25rem 0 .5rem}
+[data-theme="dark"] .comment-reply.is-staff{border-left-color:#8fb2ff}
+/* Ad zones added by the Laravel port (header band, inside articles): same label style as the sidebar ad. */
+.ad-header{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.75rem 0}
+.ad-in-article{margin:1.5rem 0;text-align:center}
+.ad-header .ad-label,.ad-in-article .ad-label{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+/* Flash Infos ticker: the prototype fades items with opacity, so Lighthouse measured a half-transparent title as low
+   contrast. Items now slide at full opacity inside the clipped list; hidden ones are visibility:hidden. */
+.ticker-item,.js .ticker-item:first-child:not(.is-active){opacity:1;visibility:hidden;transform:translateY(100%);transition:transform .45s var(--ease),visibility 0s .45s}
+.ticker-item:first-child,.ticker-item.is-active{opacity:1;visibility:visible;transform:none;transition:transform .45s var(--ease)}

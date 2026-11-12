@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('code', '404')
+@section('title', \App\Support\Seo::byUrl('Page introuvable', 'Page not found'))
+@section('text', \App\Support\Seo::byUrl('Cette page n’existe pas ou a été déplacée.', 'This page does not exist or has moved.'))
+@section('search', '1')

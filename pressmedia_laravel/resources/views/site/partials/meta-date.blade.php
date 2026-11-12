@@ -1,0 +1,2 @@
+@php($lang = app()->getLocale())
+<p class="meta">@if ($avatar ?? false)<span class="avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr($post->author?->name ?? 'A', 0, 1)) }}</span>@endif<span class="meta-by">{{ __('site.by') }} <b class="author">{{ $post->author?->name }}</b></span><span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $post->published_at->toDateString() }}">{{ \App\Support\Seo::date($post->published_at) }}</time></p>
