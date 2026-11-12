@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Http\Middleware\PageCache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -83,6 +84,7 @@ class Backup
         } finally {
             DB::statement($mysql ? 'SET FOREIGN_KEY_CHECKS=1' : 'PRAGMA foreign_keys = ON');
         }
+        PageCache::flush();   // restored rows bypass model events
     }
 
     public static function dump(): string

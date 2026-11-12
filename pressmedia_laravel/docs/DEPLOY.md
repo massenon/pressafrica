@@ -45,6 +45,7 @@ php artisan config:cache && php artisan route:cache && php artisan view:cache
 ```
 
 - [ ] Si `storage:link` est refusé : créer le lien dans le gestionnaire de fichiers cPanel (`public/storage` → `storage/app/public`), ou demander à l'hébergeur.
+- [ ] PHP : extension **opcache** activée (cPanel → Select PHP Version) ; `.env` avec `SESSION_DRIVER=file` et `CACHE_STORE=file`.
 - [ ] Droits d'écriture sur `storage/` et `bootstrap/cache/` (755 dossiers, 644 fichiers).
 
 ## 5. Tâche cron (une seule ligne, indispensable)

@@ -51,7 +51,7 @@ Route::get('llms.txt', [SeoController::class, 'llms']);
 Route::get('sitemap.xml', [SeoController::class, 'sitemap']);
 Route::get('news-sitemap.xml', [SeoController::class, 'newsSitemap']);
 
-Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['locale', 'maintenance', 'count'])->group(function () {
+Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['locale', 'maintenance', 'count', 'pagecache'])->group(function () {
     // Clean URLs (owner decision 2026-10-29); the prototype's *.html addresses answer with a permanent redirect.
     // The locale middleware removes {locale} from the route parameters, hence app()->getLocale().
     $legacy = fn (string $path) => fn (Request $request) => redirect(rtrim('/'.app()->getLocale()."/$path", '/').($request->getQueryString() ? '?'.$request->getQueryString() : ''), 301);

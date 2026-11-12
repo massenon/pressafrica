@@ -25,7 +25,8 @@ class SetLocale
         $request->route()->forgetParameter('locale');   // controllers do not need it as an argument
 
         if ($request->cookie('locale') !== $locale) {
-            Cookie::queue('locale', $locale, 60 * 24 * 365, sameSite: 'lax');
+            // Built in full: named arguments through Cookie::queue() landed in the wrong slot ("path=lax" in production).
+            Cookie::queue(Cookie::make('locale', $locale, 60 * 24 * 365, '/', null, null, true, false, 'lax'));
         }
 
         return $next($request);

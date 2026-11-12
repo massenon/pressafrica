@@ -77,6 +77,8 @@ DB_PASSWORD=************
 
 SESSION_SECURE_COOKIE=true
 SESSION_SAME_SITE=strict
+SESSION_DRIVER=file           ← fichiers, pas MySQL (plus rapide sur l'hébergement mutualisé)
+CACHE_STORE=file
 
 MAIL_MAILER=smtp
 MAIL_PASSWORD=************     ← mot de passe de contact@pressafrica.media
@@ -139,6 +141,15 @@ Si vous modifiez le `.env` plus tard, relancez `php artisan config:cache`.
 - [ ] Si `storage:link` est refusé : créer le lien `public/storage` → `storage/app/public` dans le gestionnaire
       de fichiers cPanel, ou le demander à l'hébergeur.
 
+### Vitesse : réglages PHP indispensables (cPanel → « Select PHP Version » → Extensions)
+
+- [ ] Cocher **`opcache`** (sans lui, PHP recompile tout Laravel à chaque visite : ≈ 1 s perdue par page).
+- [ ] Vérifier que `config:cache`, `route:cache` et `view:cache` ont été lancés (étape ci-dessus).
+
+Les pages publiques sont gardées en cache 10 minutes pour les visiteurs (`storage/framework/cache/pages`) ;
+toute modification dans l'administration vide ce cache aussitôt. Les comptes connectés voient toujours la
+page à jour. Pour le désactiver en cas de besoin : `PAGE_CACHE=false` dans le `.env`, puis `php artisan config:cache`.
+
 ## 5. Tâche cron : une seule ligne
 
 Dans cPanel → Tâches cron, réglez « chaque minute » et remplacez `<compte>` par votre identifiant cPanel :
@@ -158,6 +169,7 @@ Cette ligne suffit pour tout, à l'heure du Bénin :
 | Envoi des campagnes newsletter, par lots (réglage `newsletterBatch`, 50 par défaut) | chaque minute |
 | Sauvegarde chiffrée de la base | chaque nuit à 3 h 15 |
 | Sauvegarde des médias | le dimanche à 4 h 15 |
+| Nettoyage des anciennes pages en cache | chaque nuit à 3 h 45 |
 
 Aucune autre tâche cron n'est nécessaire (aucun e-mail n'est mis en file d'attente).
 Réglez `newsletterBatch` (Admin → Réglages) sous le quota d'envoi horaire de l'hébergeur divisé par 60.

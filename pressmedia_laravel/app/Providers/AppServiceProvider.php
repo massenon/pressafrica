@@ -2,7 +2,12 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\PageCache;
 use App\Models\AuditLog;
+use App\Models\ContactMessage;
+use App\Models\NewsletterCampaign;
+use App\Models\NewsletterSubscriber;
+use App\Models\PageView;
 use App\Support\Settings;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Lockout;
@@ -25,6 +30,15 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Any change to what public pages show empties the page cache. Visit logs, audit entries, subscribers,
+        // campaigns and contact messages never appear on a page, and page views are written on every hit.
+        Event::listen(['eloquent.saved: *', 'eloquent.deleted: *'], function (string $event, array $data) {
+            if (! $data[0] instanceof PageView && ! $data[0] instanceof AuditLog && ! $data[0] instanceof NewsletterSubscriber
+                && ! $data[0] instanceof NewsletterCampaign && ! $data[0] instanceof ContactMessage) {
+                PageCache::flush();
+            }
+        });
+
         // Production is served over HTTPS only: generated links and redirects must never fall back to http.
         // Only for an https APP_URL: a production .env copied to a workstation must not send the browser to https://127.0.0.1.
         if ($this->app->isProduction() && str_starts_with((string) config('app.url'), 'https://')) {

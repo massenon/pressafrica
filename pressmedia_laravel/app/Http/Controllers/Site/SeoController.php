@@ -26,7 +26,7 @@ class SeoController extends Controller
     public function llms(): Response
     {
         $lines = ['# Africa Global Press', '', '> '.__('seo.desc.home', [], 'fr'), '', '## Sections (français)'];
-        foreach (\App\Models\Category::with('translations')->orderBy('id')->get() as $c) {
+        foreach (Category::with('translations')->orderBy('id')->get() as $c) {
             if ($c->translation('fr')) {
                 $lines[] = '- ['.$c->translation('fr')->name.']('.$c->url('fr').')';
             }
