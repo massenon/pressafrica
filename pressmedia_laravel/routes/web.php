@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Site\AdClickController;
 use App\Http\Controllers\Site\ArticleController;
+use App\Http\Controllers\Site\AuthorController;
 use App\Http\Controllers\Site\CommentController as PublicCommentController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\HomeController;
@@ -50,6 +51,7 @@ Route::get('robots.txt', [SeoController::class, 'robots']);
 Route::get('llms.txt', [SeoController::class, 'llms']);
 Route::get('sitemap.xml', [SeoController::class, 'sitemap']);
 Route::get('news-sitemap.xml', [SeoController::class, 'newsSitemap']);
+Route::get('sitemap-{n}.xml', [SeoController::class, 'sitemapPart'])->where('n', '[0-9]+');
 
 Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['locale', 'maintenance', 'count', 'pagecache'])->group(function () {
     // Clean URLs (owner decision 2026-10-29); the prototype's *.html addresses answer with a permanent redirect.
@@ -61,6 +63,7 @@ Route::prefix('{locale}')->whereIn('locale', SetLocale::LOCALES)->middleware(['l
     Route::get('articles/{slug}.html', fn (Request $request) => $legacy('articles/'.$request->route('slug'))($request))->where('slug', '[a-z0-9-]+');
     Route::get('articles/{slug}', [ArticleController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('articles.show');
     Route::get('{slug}.html', fn (Request $request) => $legacy($request->route('slug'))($request))->where('slug', '[a-z0-9-]+');
+    Route::get('authors/{slug}', [AuthorController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('authors.show');
     Route::post('contact', [ContactController::class, 'store'])->middleware('throttle:comments')->name('contact.store');
     Route::post('newsletter', [NewsletterController::class, 'store'])->middleware('throttle:comments')->name('newsletter.store');
     Route::get('newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->where('token', '[A-Za-z0-9]+')->name('newsletter.confirm');

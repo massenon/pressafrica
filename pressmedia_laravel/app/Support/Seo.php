@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 
 /** Title and description rules of the prototype generator (build_site.py truncate(), build_article()). */
@@ -24,6 +25,16 @@ class Seo
         return request()->segment(1) === 'en' ? $en : $fr;
     }
 
+    /** URL of page $n of a paginated list: page 1 is the bare path (no ?page=1 duplicate), null outside the range. */
+    public static function pageUrl(LengthAwarePaginator $p, int $n): ?string
+    {
+        if ($n < 1 || $n > $p->lastPage()) {
+            return null;
+        }
+
+        return $n === 1 ? $p->path() : $p->path().'?page='.$n;
+    }
+
     public static function truncate(string $t, int $n = 160): string
     {
         $t = trim(preg_replace('/\s+/u', ' ', $t));
@@ -36,15 +47,25 @@ class Seo
         return rtrim($cut, ' ,;:-—').'…';
     }
 
+    /** Google shows about 60 characters of a title; longer ones are cut with an ellipsis in the results. */
+    public const TITLE_MAX = 60;
+
+    /**
+     * Title + brand when it fits in 60 characters; otherwise the title alone (never cut to a stump to keep the brand),
+     * and only a title longer than 60 characters is shortened, at a word boundary.
+     */
     public static function title(string $title, ?string $seoTitle = null): string
     {
-        $tt = $seoTitle ?: $title;
+        $tt = trim(preg_replace('/\s+/u', ' ', $seoTitle ?: $title));
         $full = $tt.self::SUFFIX;
-        if (mb_strlen($full) <= 70) {
-            return $full;
-        }
 
-        return $seoTitle && mb_strlen($tt) <= 70 ? $tt : self::truncate($tt, 40).self::SUFFIX;
+        return mb_strlen($full) <= self::TITLE_MAX ? $full : self::bound($tt);
+    }
+
+    /** A hand-written title kept as typed, shortened only past $max characters. */
+    public static function bound(string $title, int $max = self::TITLE_MAX): string
+    {
+        return mb_strlen($title) <= $max ? $title : self::truncate($title, $max);
     }
 
     public static function description(?string $seoDescription, ?string $excerpt, string $body): string

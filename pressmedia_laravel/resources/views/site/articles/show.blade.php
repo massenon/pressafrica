@@ -13,14 +13,21 @@
         'canonical' => $url,
         'og_type' => 'article',
         'image' => $post->cover?->url(),
+        'image_w' => $post->cover?->width,
+        'image_h' => $post->cover?->height,
         'image_alt' => $alt,
+        // A version whose body is still in the other language duplicates it: kept out of the index.
+        'robots' => $t->isIndexable() ? null : 'noindex,follow',
     ];
+    $authorUrl = $post->author ? \App\Support\Authors::url($post->author, $lang) : null;
+    $authorLd = $post->author?->name ? array_filter(['@type' => 'Person', 'name' => $post->author->name, 'url' => $authorUrl]) : ['@type' => 'Organization', '@id' => url('/').'/#org'];
     $crumbs = array_values(array_filter([['Africa Global Press', url($lang)], $cat ? [$catName, $cat->url($lang)] : null, [$t->title, $url]]));
 @endphp
 @push('meta')
 <meta property="article:published_time" content="{{ $post->published_at->toIso8601String() }}">
 <meta property="article:modified_time" content="{{ $post->updated_at->toIso8601String() }}">
-<meta property="article:author" content="{{ $post->author?->name }}">
+@if ($authorUrl)<meta property="article:author" content="{{ $authorUrl }}">
+@endif
 @foreach ($post->sortedCategories($lang) as $c)<meta property="article:section" content="{{ $c->translation($lang)?->name }}">
 @endforeach
 @endpush
@@ -29,7 +36,7 @@
 @endif
 @push('jsonld')
 <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => collect($crumbs)->map(fn ($c, $i) => ['@type' => 'ListItem', 'position' => $i + 1, 'name' => $c[0], 'item' => $c[1]])->all()], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
-<script type="application/ld+json">{!! json_encode(array_filter(['@context' => 'https://schema.org', '@type' => 'NewsArticle', 'headline' => $t->title, 'description' => $meta['description'], 'image' => $post->cover ? [$post->cover->url()] : null, 'datePublished' => $post->published_at->toIso8601String(), 'dateModified' => $post->updated_at->toIso8601String(), 'inLanguage' => $lang, 'author' => ['@type' => 'Person', 'name' => $post->author?->name], 'publisher' => ['@id' => url('/').'/#org'], 'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $url], 'articleSection' => $post->sortedCategories($lang)->map(fn ($c) => $c->translation($lang)?->name)->all(), 'url' => $url,
+<script type="application/ld+json">{!! json_encode(array_filter(['@context' => 'https://schema.org', '@type' => 'NewsArticle', 'headline' => $t->title, 'description' => $meta['description'], 'image' => $post->cover ? [$post->cover->url()] : null, 'datePublished' => $post->published_at->toIso8601String(), 'dateModified' => $post->updated_at->toIso8601String(), 'inLanguage' => $lang, 'author' => $authorLd, 'publisher' => ['@id' => url('/').'/#org'], 'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $url], 'articleSection' => $post->sortedCategories($lang)->map(fn ($c) => $c->translation($lang)?->name)->all(), 'url' => $url,
     'commentCount' => $comments->count() ? $comments->count() + $comments->sum(fn ($c) => $c->replies->count()) : null,
     'comment' => $comments->isEmpty() ? null : $comments->map(fn ($c) => array_filter(['@type' => 'Comment', 'author' => ['@type' => 'Person', 'name' => $c->author], 'dateCreated' => $c->created_at->toIso8601String(), 'text' => $c->body,
         'comment' => $c->replies->isEmpty() ? null : $c->replies->map(fn ($r) => ['@type' => 'Comment', 'author' => $r->isStaff() ? ['@type' => 'Person', 'name' => $r->staff?->name ?? $r->author, 'worksFor' => ['@id' => url('/').'/#org']] : ['@type' => 'Person', 'name' => $r->author], 'dateCreated' => $r->created_at->toIso8601String(), 'text' => $r->body])->all()]))->all()]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
@@ -40,7 +47,7 @@
 <nav class="breadcrumb" aria-label="{{ __('site.breadcrumb') }}"><ol>@foreach ($crumbs as $i => [$name, $href])<li>@if ($loop->last)<span aria-current="page">{{ $name }}</span>@else<a href="{{ $href }}">{{ $name }}</a>@endif</li>@endforeach</ol></nav>
 <article class="article">
 <header class="article-head">@include('site.partials.chips')<h1 class="article-title">{{ $t->title }}</h1>
-<div class="byline"><span class="avatar" aria-hidden="true">{{ mb_substr($post->author?->name ?? 'A', 0, 1) }}</span><div><p class="meta meta-lg"><span class="meta-by">{{ __('site.by') }} <b class="author">{{ $post->author?->name }}</b></span><span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $post->published_at->toDateString() }}">{{ \App\Support\Seo::date($post->published_at) }}</time><span class="meta-sep" aria-hidden="true"></span><span>{{ __('site.min_read', ['n' => $minutes]) }}</span></p>
+<div class="byline"><span class="avatar" aria-hidden="true">{{ mb_substr($post->author?->name ?? 'A', 0, 1) }}</span><div><p class="meta meta-lg"><span class="meta-by">{{ __('site.by') }} <b class="author">@if ($authorUrl)<a href="{{ $authorUrl }}" rel="author">{{ $post->author->name }}</a>@else{{ $post->author?->name }}@endif</b></span><span class="meta-sep" aria-hidden="true"></span><time datetime="{{ $post->published_at->toDateString() }}">{{ \App\Support\Seo::date($post->published_at) }}</time><span class="meta-sep" aria-hidden="true"></span><span>{{ __('site.min_read', ['n' => $minutes]) }}</span></p>
 <p class="byline-upd">{{ __('site.updated') }} <time datetime="{{ $post->updated_at->toDateString() }}">{{ \App\Support\Seo::date($post->updated_at) }}</time></p></div></div>
 {{-- Only between two real versions: not to or from an English title over a French body. --}}
 @if (($o = $post->translations->firstWhere('locale', $other)) && ! $o->body_locale && ! $t->body_locale)<p class="alt-version"><a href="{{ $alternates[$other] }}" hreflang="{{ $other }}" lang="{{ $other }}">{{ __('site.read_in_other') }}</a></p>@endif
@@ -53,7 +60,7 @@
 {{-- Ad zone "in_article": after the 3rd paragraph (prototype admin), nothing while inactive. --}}
 <div class="prose"{!! $t->body_locale && $t->body_locale !== $lang ? ' lang="'.e($t->body_locale).'"' : '' !!}>{!! $inArticle ? \App\Support\AdSlots::afterParagraph($t->body, 3, '<div class="ad-in-article" data-ad-zone="in_article"><span class="ad-label">'.e(__('site.ad')).'</span>'.$inArticle.'</div>') : $t->body !!}</div></div>
 <div class="e-shared-sec entry-sec"><div class="e-shared-header h4"><svg class="i i-md" aria-hidden="true" focusable="false"><use href="#i-share"/></svg><span>{{ __('site.share_article') }}</span></div><div class="rbbsl">@include('site.partials.share', ['url' => $url, 'title' => $t->title, 'labels' => true])</div></div>
-<section class="usr-holder entry-sec" aria-label="{{ __('site.by') }} {{ $post->author?->name }}"><div class="ubox"><div class="ubox-header"><div class="author-info-wrap"><span class="avatar" aria-hidden="true">{{ mb_substr($post->author?->name ?? 'A', 0, 1) }}</span><div class="is-meta"><div class="nname-info meta-author"><span class="meta-label">{{ __('site.by') }}</span><b class="nice-name">{{ $post->author?->name }}</b></div><span class="author-job">{{ __('site.editorial_team') }}</span></div></div>
+<section class="usr-holder entry-sec" aria-label="{{ __('site.by') }} {{ $post->author?->name }}"><div class="ubox"><div class="ubox-header"><div class="author-info-wrap"><span class="avatar" aria-hidden="true">{{ mb_substr($post->author?->name ?? 'A', 0, 1) }}</span><div class="is-meta"><div class="nname-info meta-author"><span class="meta-label">{{ __('site.by') }}</span><b class="nice-name">@if ($authorUrl)<a href="{{ $authorUrl }}" rel="author">{{ $post->author->name }}</a>@else{{ $post->author?->name }}@endif</b></div><span class="author-job">{{ __('site.editorial_team') }}</span></div></div>
 <div class="usocials meta-text"><span class="ef-label">{{ __('site.follow') }}</span>@foreach ([['facebook', 'Facebook', 'https://www.facebook.com/africaglobalpress'], ['x', 'X', 'https://x.com/africaglobalpress'], ['instagram', 'Instagram', 'https://www.instagram.com/africaglobalpress/']] as [$k, $n, $h])<a href="{{ $h }}" rel="noopener nofollow" target="_blank" aria-label="{{ $n }}" title="{{ $n }}"><svg class="i i-md" aria-hidden="true" focusable="false"><use href="#i-{{ $k }}"/></svg></a>@endforeach</div></div>
 <p class="bio-description">{{ __('site.bio') }}</p></div></section>
 @if ($prev || $next)

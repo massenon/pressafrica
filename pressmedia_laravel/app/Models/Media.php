@@ -38,6 +38,22 @@ class Media extends Model
         return $parts ? implode(', ', $parts) : null;
     }
 
+    /**
+     * Older uploads have no stored size, so their <img> would reserve no space and shift the page (CLS). Read it
+     * from the file once and keep it; saved quietly so a page view never empties the page cache.
+     */
+    public function ensureSize(): void
+    {
+        if (($this->width && $this->height) || ! $this->isImage()) {
+            return;
+        }
+        $disk = Storage::disk(MediaStore::DISK);
+        if (! $disk->exists($this->path) || ! is_array($info = @getimagesize($disk->path($this->path)))) {
+            return;
+        }
+        $this->forceFill(['width' => $info[0], 'height' => $info[1]])->saveQuietly();
+    }
+
     public function isImage(): bool
     {
         return str_starts_with($this->mime, 'image/');

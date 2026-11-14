@@ -88,6 +88,8 @@ return [
     'latest_pubs' => 'Les dernières publications',
     'show_more' => 'Afficher plus',
     'end_list' => 'Vous avez atteint la fin de la liste !',
+    'newer' => 'Articles plus récents',
+    'older' => 'Articles plus anciens',
     'faq_title' => 'Questions fréquentes',
     'cat_faq' => [['Quelles actualités {c} trouve-t-on sur Africa Global Press ?', 'Africa Global Press publie des reportages, des analyses et des enquêtes sur le thème « {c} » à travers tout le continent africain, rédigés et vérifiés par sa rédaction.'], ['À quelle fréquence la rubrique {c} est-elle mise à jour ?', 'La rédaction publie de nouveaux articles dès que l\'actualité l\'exige. Les contenus les plus récents apparaissent toujours en tête de la rubrique.'], ['Comment suivre la rubrique {c} ?', 'Abonnez-vous à la newsletter d\'Africa Global Press pour recevoir une sélection hebdomadaire des meilleurs articles, ou utilisez la recherche pour retrouver un sujet précis.']],
 ];

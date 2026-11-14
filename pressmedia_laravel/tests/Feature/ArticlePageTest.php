@@ -98,11 +98,13 @@ class ArticlePageTest extends TestCase
     public function test_title_and_description_rules_match_the_prototype(): void
     {
         $this->assertSame('Court | Africa Global Press', Seo::title('Court'));
-        $long = 'Un titre vraiment très long qui dépasse nettement la limite des soixante-dix caractères';
-        $this->assertSame('Un titre vraiment très long qui dépasse… | Africa Global Press', Seo::title($long));
+        // About 60 characters is what a results page shows: brand when it fits, else the title alone, cut only past 60.
+        $long = 'Un titre vraiment très long qui dépasse nettement la limite des soixante caractères';
+        $this->assertSame('Un titre vraiment très long qui dépasse nettement la limite…', Seo::title($long));
         $this->assertSame('Titre SEO choisi | Africa Global Press', Seo::title($long, 'Titre SEO choisi'));
-        $seo = str_repeat('Titre SEO de soixante caractères ', 2);   // fits alone, not with the suffix
-        $this->assertSame($seo, Seo::title($long, $seo));
+        $mid = str_repeat('mot ', 13).'fin';   // 55 characters: too long with the brand, whole without it
+        $this->assertSame($mid, Seo::title($mid));
+        $this->assertSame('Un titre moyen | Africa Global Press', Seo::title('Un titre moyen'));
         $this->assertSame('abc def…', Seo::truncate('abc def ghi', 9));
     }
 }

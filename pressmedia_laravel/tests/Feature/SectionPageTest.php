@@ -44,7 +44,7 @@ class SectionPageTest extends TestCase
 
         preg_match_all('#<script type="application/ld\+json">(.*?)</script>#s', $html, $m);
         $types = collect($m[1])->map(fn ($j) => json_decode($j, true)['@type'] ?? null)->all();
-        $this->assertContains('FAQPage', $types);
+        $this->assertNotContains('FAQPage', $types, 'templated FAQ is not marked up');
         $this->assertStringContainsString('"name":"Presse en ligne"', $html, 'archive sections sit under Online press in the breadcrumb');
         $this->assertStringContainsString('hreflang="en" href="'.url('en/en-societe').'"', $html);
     }

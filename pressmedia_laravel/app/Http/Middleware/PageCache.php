@@ -25,7 +25,7 @@ class PageCache
         if (! $this->cacheable($request)) {
             return $next($request);
         }
-        $key = 'page:'.Cache::store('pages')->get('version', 0).':'.sha1($request->getRequestUri());
+        $key = $this->key($request);
         if (is_string($html = Cache::store('pages')->get($key))) {
             return response($this->personalise($html), 200, ['Content-Type' => 'text/html; charset=UTF-8', 'X-Page-Cache' => 'hit']);
         }
@@ -59,6 +59,24 @@ class PageCache
         }
 
         return $n;
+    }
+
+    /**
+     * Path plus only the query parameters that change the HTML (page, reply). Campaign and click-id parameters
+     * (utm_*, fbclid, gclid...) all share the one stored page instead of each adding an entry, and ?reply= is bounded
+     * to a number so it cannot be used to fill the cache with arbitrary strings.
+     */
+    private function key(Request $request): string
+    {
+        $keep = [];
+        if (($page = (int) $request->query('page')) > 1) {
+            $keep['page'] = $page;
+        }
+        if (($reply = (int) $request->query('reply')) > 0) {
+            $keep['reply'] = $reply;
+        }
+
+        return 'page:'.Cache::store('pages')->get('version', 0).':'.sha1($request->getPathInfo().'?'.http_build_query($keep));
     }
 
     private function cacheable(Request $request): bool
