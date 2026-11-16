@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\PostStatsController;
 use App\Http\Controllers\Admin\PrivacyController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -83,6 +84,8 @@ Route::prefix('admin')->group(function () {
         Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
         Route::view('/', 'admin.dashboard')->name('dashboard');
         Route::get('audit', [AuditLogController::class, 'index'])->middleware('can:audit.view')->name('audit.index');
+
+        Route::get('posts/{post}/stats', [PostStatsController::class, 'show'])->middleware('can:analytics.view')->name('posts.stats');
 
         // Posts: fine-grained checks (own posts vs all) live in PostPolicy.
         Route::resource('posts', PostController::class)->except('show');
