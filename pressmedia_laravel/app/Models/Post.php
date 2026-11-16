@@ -46,6 +46,14 @@ class Post extends Model
         return $t ? url("$locale/articles/{$t->slug}") : null;
     }
 
+    /** URL in $locale only when that version is indexable (see PostTranslation::isIndexable), else null. */
+    public function indexableUrl(string $locale): ?string
+    {
+        $t = $this->translations->firstWhere('locale', $locale);
+
+        return $t && $t->isIndexable() ? $this->url($locale) : null;
+    }
+
     /** Categories in label order for $locale, accents ignored (build_site.py mk(): the prototype's chip order). */
     public function sortedCategories(?string $locale = null)
     {

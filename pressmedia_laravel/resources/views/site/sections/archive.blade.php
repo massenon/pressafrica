@@ -26,6 +26,7 @@
 @if ($pages->count() > 1)
 <nav class="pagination" aria-label="{{ __('site.pages') }}"><ul>@foreach ($pages as $n => $page)<li><button type="button" class="pg" data-goto="{{ $n }}" aria-label="{{ __('site.page_of') }} {{ $n + 1 }}"@if ($n === 0) aria-current="page"@endif>{{ $n + 1 }}</button></li>@endforeach<li><button type="button" class="pg pg-next" data-next-page aria-label="{{ __('site.next_page') }}"><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-angle-r"/></svg></button></li></ul></nav>
 @endif
+@isset($paginator)@include('site.partials.pager')@endisset
 </section>@include('site.partials.nl-card')</div></div>
 @endif
 <div class="container-page">@include('site.partials.faq')</div>

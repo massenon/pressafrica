@@ -26,6 +26,7 @@ return [
         'search' => 'Recherche | Africa Global Press',
     ],
     'desc' => [
+        'section' => ':name sur Africa Global Press : articles, analyses et reportages sur l\'actualité africaine, en continu.',
         'home' => 'Africa Global Press : toute l\'actualité africaine en direct et en continu. Politique, économie, société, culture, sport, science. Source d\'information fiable.',
         'society' => 'Société : restez informé de l\'actualité sociale en Afrique avec Africa Global Press. Analyses et enjeux qui touchent les communautés africaines.',
         'politics' => 'Politique africaine : élections, gouvernance, diplomatie et conflits. Reportages et analyses d\'Africa Global Press sur l\'actualité politique du continent.',

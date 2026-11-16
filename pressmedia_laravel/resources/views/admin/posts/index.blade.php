@@ -12,7 +12,7 @@
     <div class="a-field" style="align-self:end"><button class="a-btn" type="submit">Filter</button></div>
 </form>
 <div class="a-tablewrap"><table class="a-table" aria-label="Posts">
-<thead><tr><th scope="col">Post</th><th scope="col" class="text-sm">Author</th><th scope="col">Categories</th><th scope="col">Lang</th><th scope="col">Status</th><th scope="col">Date</th><th scope="col" class="text-right"><span class="a-vh">Actions</span></th></tr></thead>
+<thead><tr><th scope="col">Post</th><th scope="col" class="text-sm">Author</th><th scope="col">Categories</th><th scope="col">Lang</th><th scope="col">Status</th><th scope="col">Date</th><th scope="col" class="text-right">Views</th><th scope="col" class="text-right"><span class="a-vh">Actions</span></th></tr></thead>
 <tbody>
 @forelse ($posts as $p)
 @php($t = $p->translation('fr'))
@@ -22,9 +22,10 @@
 <td>@foreach ($p->translations->sortBy('locale') as $tr)<span class="a-badge">{{ strtoupper($tr->locale) }}</span> @endforeach</td>
 <td><span class="a-badge {{ $badge[$p->status] ?? '' }}">{{ ucfirst($p->status) }}</span></td>
 <td class="whitespace-nowrap">{{ $p->published_at?->format('j M Y') }}</td>
-<td class="text-right whitespace-nowrap">@if ($p->status === 'published' && $p->url('fr'))<a class="a-btn a-btn-sm a-btn-ghost" href="{{ $p->url('fr') }}" target="_blank" rel="noopener">View</a>@endif @can('update', $p)<a class="a-btn a-btn-sm" href="{{ route('admin.posts.edit', $p) }}" wire:navigate>Edit</a>@endcan</td></tr>
+<td class="text-right">{{ number_format($p->views, 0, ',', ' ') }}</td>
+<td class="text-right whitespace-nowrap">@if ($p->status === 'published' && $p->url('fr'))<a class="a-btn a-btn-sm a-btn-ghost" href="{{ $p->url('fr') }}" target="_blank" rel="noopener">View</a>@endif @can('analytics.view')<a class="a-btn a-btn-sm a-btn-ghost" href="{{ route('admin.posts.stats', $p) }}" wire:navigate>Stats</a>@endcan @can('update', $p)<a class="a-btn a-btn-sm" href="{{ route('admin.posts.edit', $p) }}" wire:navigate>Edit</a>@endcan</td></tr>
 @empty
-<tr><td colspan="7">No posts.</td></tr>
+<tr><td colspan="8">No posts.</td></tr>
 @endforelse
 </tbody></table></div></section>
 <div class="mt-4">{{ $posts->links() }}</div>

@@ -15,7 +15,7 @@
 <p class="watermark" aria-hidden="true" data-t="Africa Global Press"></p><section aria-labelledby="lp-t"><h2 class="thematic-sub" id="lp-t">{{ __('site.latest_pubs') }}</h2>
 <div class="grid-3" data-loadmore-grid>@foreach ($posts as $i => $p)<div class="grid-cell"{!! $i >= 9 ? ' hidden data-more' : '' !!}>@include('site.partials.card-grid')</div>@endforeach</div>
 @if ($posts->count() > 9)<div class="more-wrap"><button type="button" class="btn btn-outline" data-loadmore>{{ __('site.show_more') }}</button></div>@endif
-<p class="end-list"{!! $posts->count() > 9 ? ' hidden' : '' !!} data-end><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-info"/></svg>{{ __('site.end_list') }}</p></section></div>
+<p class="end-list"{!! $posts->count() > 9 ? ' hidden' : '' !!} data-end><svg class="i i-sm" aria-hidden="true" focusable="false"><use href="#i-info"/></svg>{{ __('site.end_list') }}</p>@isset($paginator)@include('site.partials.pager')@endisset</section></div>
 @endif
 <div class="container-page">@include('site.partials.faq')</div>
 @endsection

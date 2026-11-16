@@ -48,15 +48,13 @@ class ArticleController extends Controller
         ]);
     }
 
-    /** URL of this article in each language; a language without a translation points to its home page. */
+    /**
+     * hreflang cluster: only real, indexable versions of this article. A missing language, or a version whose body is
+     * still in the other language, is left out rather than pointed at a different page (hreflang needs equivalents).
+     * The language switcher in the header falls back to the other language's home page by itself.
+     */
     private function alternates(Post $post): array
     {
-        $out = [];
-        foreach (['fr', 'en'] as $l) {
-            $tr = $post->translations->firstWhere('locale', $l);
-            $out[$l] = $tr ? url("$l/articles/{$tr->slug}") : url($l);
-        }
-
-        return $out;
+        return array_filter(['fr' => $post->indexableUrl('fr'), 'en' => $post->indexableUrl('en')]);
     }
 }

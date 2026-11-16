@@ -26,6 +26,7 @@ return [
         'search' => 'Search | Africa Global Press',
     ],
     'desc' => [
+        'section' => ':name on Africa Global Press: articles, analysis and reports on African news, around the clock.',
         'home' => 'Africa Global Press: all African news live and around the clock. Politics, economy, society, culture, sports, science. Your trusted source of information.',
         'society' => 'Society: stay informed about social news in Africa with Africa Global Press. Analysis and issues affecting African communities.',
         'politics' => 'African politics: elections, governance, diplomacy and conflicts. Reports and analysis from Africa Global Press on the continent\'s political news.',

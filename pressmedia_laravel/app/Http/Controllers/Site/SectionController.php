@@ -14,6 +14,8 @@ use Illuminate\View\View;
 /** Section and fixed pages /{locale}/{slug} with the prototype's layouts (build_site.py build_category()). */
 class SectionController extends Controller
 {
+    public const PER_PAGE = 60;
+
     public function show(string $slug): View
     {
         $lang = app()->getLocale();
@@ -24,11 +26,16 @@ class SectionController extends Controller
             CategoryTranslation::where('locale', $lang)->where('slug', $slug)->value('category_id') ?? 0
         );
 
-        $posts = Post::published()
+        // Server-paginated so the page weight, LCP and query time stay flat as a section grows; the prototype's
+        // "show more" button keeps working inside a page, ?page=N gives crawlers (and readers) the older articles.
+        $paginator = Post::published()
             ->whereHas('categories', fn ($q) => $q->whereKey($category->id))
             ->whereHas('translations', fn ($q) => $q->where('locale', $lang))
             ->with(['translations', 'cover', 'author', 'categories.translations'])
-            ->orderByDesc('published_at')->orderByDesc('id')->get();
+            ->orderByDesc('published_at')->orderByDesc('id')->paginate((int) config('seo.per_page', self::PER_PAGE));
+        abort_if($paginator->isEmpty() && $paginator->currentPage() > 1, 404);
+        $posts = $paginator->getCollection();
+        $page = $paginator->currentPage();
 
         $t = $category->translation($lang);
         $crumbs = [[__('site.home_crumb'), url($lang)]];
@@ -52,10 +59,16 @@ class SectionController extends Controller
             'category' => $category,
             't' => $t,
             'posts' => $posts,
+            'paginator' => $paginator,
             'crumbs' => $crumbs,
             'faq' => collect(__('site.cat_faq'))->map(fn ($qa) => [str_replace('{c}', $label, $qa[0]), str_replace('{c}', $label, $qa[1])])->all(),
-            'meta' => ['title' => $t->seo_title ?: $t->name.Seo::SUFFIX, 'description' => $t->description ?: '',
-                'canonical' => $category->url($lang), 'image' => $posts->first()?->cover?->url()],
+            'meta' => [
+                'title' => ($t->seo_title ? Seo::bound($t->seo_title, 70) : Seo::title($t->name)).($page > 1 ? ' – '.__('site.page_of').' '.$page : ''),
+                // Never empty: the owner's text, else the section's own line from the language file, else a generic one.
+                'description' => Seo::truncate($t->description ?: (trans()->has("seo.desc.{$category->key}") ? __("seo.desc.{$category->key}") : __('seo.desc.section', ['name' => $t->name]))),
+                'canonical' => $page > 1 ? $category->url($lang).'?page='.$page : $category->url($lang),
+                'prev' => Seo::pageUrl($paginator, $page - 1), 'next' => Seo::pageUrl($paginator, $page + 1),
+                'image' => $posts->first()?->cover?->url(), 'image_w' => $posts->first()?->cover?->width, 'image_h' => $posts->first()?->cover?->height],
             'alternates' => collect(['fr', 'en'])->mapWithKeys(fn ($l) => [$l => $category->url($l)])->all(),
         ]);
     }

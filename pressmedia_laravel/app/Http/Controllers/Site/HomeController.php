@@ -48,7 +48,7 @@ class HomeController extends Controller
             'slides' => $slides, 'latest' => $latest, 'econPages' => $econPages, 'mostRead' => $mostRead, 'topics' => $topics,
             'ticker' => $all->take(10),
             'meta' => ['title' => __('seo.title.home'), 'description' => __('seo.desc.home'), 'canonical' => url($lang),
-                'image' => ($slides->first()['image'] ?? null)?->url()],
+                'image' => ($slides->first()['image'] ?? null)?->url(), 'image_w' => ($slides->first()['image'] ?? null)?->width, 'image_h' => ($slides->first()['image'] ?? null)?->height],
             'alternates' => ['fr' => url('fr'), 'en' => url('en')],
         ]);
     }

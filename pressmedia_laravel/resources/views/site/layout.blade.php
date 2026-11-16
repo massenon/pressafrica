@@ -7,12 +7,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ $meta['title'] }}</title>
 <meta name="description" content="{{ $meta['description'] }}">
-<meta name="robots" content="{{ ($meta['robots'] ?? null) ?: 'index,follow,max-image-preview:large' }}">
+<meta name="robots" content="{{ ($meta['robots'] ?? null) ?: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' }}">
 <link rel="canonical" href="{{ $meta['canonical'] }}">
 @foreach ($alternates as $l => $href)
 <link rel="alternate" hreflang="{{ $l }}" href="{{ $href }}">
 @endforeach
-<link rel="alternate" hreflang="x-default" href="{{ $alternates['fr'] }}">
+@if ($alternates)
+<link rel="alternate" hreflang="x-default" href="{{ $alternates['fr'] ?? reset($alternates) }}">
+@endif
+@if (! empty($meta['prev']))<link rel="prev" href="{{ $meta['prev'] }}">
+@endif
+@if (! empty($meta['next']))<link rel="next" href="{{ $meta['next'] }}">
+@endif
+@if (\App\Support\Settings::get('rssFeed'))<link rel="alternate" type="application/rss+xml" title="Africa Global Press ({{ strtoupper($lang) }})" href="{{ url($lang.'/feed.xml') }}">
+@endif
+@php($og = isset($meta['image']) ? ['image' => $meta['image'], 'width' => $meta['image_w'] ?? null, 'height' => $meta['image_h'] ?? null, 'alt' => $meta['image_alt'] ?? $meta['title']] : \App\Support\Assets::ogDefault())
 <meta property="og:site_name" content="Africa Global Press">
 <meta property="og:type" content="{{ $meta['og_type'] ?? 'website' }}">
 <meta property="og:title" content="{{ $meta['title'] }}">
@@ -20,15 +29,18 @@
 <meta property="og:url" content="{{ $meta['canonical'] }}">
 <meta property="og:locale" content="{{ __('site.og_locale') }}">
 <meta property="og:locale:alternate" content="{{ __('site.og_locale_alt') }}">
-@isset($meta['image'])
-<meta property="og:image" content="{{ $meta['image'] }}">
-<meta property="og:image:alt" content="{{ $meta['image_alt'] ?? $meta['title'] }}">
-@endisset
+<meta property="og:image" content="{{ $og['image'] }}">
+@if ($og['width'] && $og['height'])<meta property="og:image:width" content="{{ $og['width'] }}">
+<meta property="og:image:height" content="{{ $og['height'] }}">
+@endif
+<meta property="og:image:alt" content="{{ $og['alt'] }}">
 @stack('meta')
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@africaglobalpress">
 <meta name="twitter:title" content="{{ $meta['title'] }}">
 <meta name="twitter:description" content="{{ $meta['description'] }}">
-@isset($meta['image'])<meta name="twitter:image" content="{{ $meta['image'] }}">@endisset
+<meta name="twitter:image" content="{{ $og['image'] }}">
+<meta name="twitter:image:alt" content="{{ $og['alt'] }}">
 <meta name="theme-color" content="{{ \App\Support\Settings::get('pwaTheme') }}">
 <meta name="color-scheme" content="light dark">
 @if (\App\Support\Settings::get('pwa'))<link rel="manifest" href="/manifest.webmanifest">@endif
@@ -39,17 +51,17 @@
 <link rel="preload" href="/assets/fonts/Alegreya-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/EncodeSans-normal-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 @stack('preload')
-<link rel="stylesheet" href="/assets/css/app.min.css">
+<link rel="stylesheet" href="{{ \App\Support\Assets::v('/assets/css/app.min.css') }}">
 {{-- Small Laravel-only stylesheet inlined: one render-blocking request less (Lighthouse mobile). --}}
 <style>{!! file_get_contents(public_path('css/agp-comments.css')) !!}</style>
 {{-- Light by default; the visitor's saved choice wins; the OS preference is never read (INV-07). --}}
 <script>(function(d){try{var t=localStorage.getItem("agp-theme");d.setAttribute("data-theme",t==="dark"?"dark":"light")}catch(e){d.setAttribute("data-theme","light")}d.classList.add("js")})(document.documentElement)</script>
-<script src="/assets/js/vendor/turbo.min.js" defer></script>
+<script src="{{ \App\Support\Assets::v('/assets/js/vendor/turbo.min.js') }}" defer></script>
 <meta name="turbo-prefetch" content="true">
 <meta name="view-transition" content="same-origin">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'WebSite', '@id' => url('/').'/#website', 'url' => url($lang), 'name' => 'Africa Global Press', 'inLanguage' => $lang, 'publisher' => ['@id' => url('/').'/#org']], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
-<script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'Organization', '@id' => url('/').'/#org', 'name' => 'Africa Global Press', 'url' => url('/').'/', 'logo' => url('assets/img/site/logo-420.webp')], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+<script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'Organization', '@id' => url('/').'/#org', 'name' => 'Africa Global Press', 'url' => url('/').'/', 'logo' => ['@type' => 'ImageObject', 'url' => url('assets/img/site/logo-860.webp'), 'width' => 607, 'height' => 411], 'sameAs' => ['https://www.facebook.com/africaglobalpress', 'https://x.com/africaglobalpress', 'https://www.instagram.com/africaglobalpress/', 'https://www.pinterest.com/africaglobalpress/']], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 @stack('jsonld')
 @if (\App\Support\Settings::get('ga4Enabled') && ($ga = \App\Support\Settings::get('ga4MeasurementId')))
 {{-- GA4 (off by default, Q7): denied until the visitor accepts "analytics" in the cookie banner; the prototype's app.js
@@ -70,7 +82,7 @@ document.addEventListener('turbo:load',function(){if(on)pv()})})();</script>
 @yield('main')
 </main>
 {!! \App\Support\Chrome::render('footer', $lang, $alternates, $navMarkers) !!}
-<script src="/assets/js/app.js" defer></script>
-<script src="/js/agp-server.js" defer></script>
+<script src="{{ \App\Support\Assets::v('/assets/js/app.js') }}" defer></script>
+<script src="{{ \App\Support\Assets::v('/js/agp-server.js') }}" defer></script>
 </body>
 </html>

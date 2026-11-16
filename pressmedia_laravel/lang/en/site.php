@@ -88,6 +88,8 @@ return [
     'latest_pubs' => 'Latest publications',
     'show_more' => 'Show more',
     'end_list' => 'You have reached the end of the list!',
+    'newer' => 'Newer articles',
+    'older' => 'Older articles',
     'faq_title' => 'Frequently asked questions',
     'cat_faq' => [['What {c} news can I find on Africa Global Press?', 'Africa Global Press publishes reports, analysis and investigations on "{c}" across the African continent, written and verified by its editorial team.'], ['How often is the {c} section updated?', 'The editorial team publishes new articles as soon as news requires. The most recent content always appears at the top of the section.'], ['How can I follow the {c} section?', 'Subscribe to the Africa Global Press newsletter to receive a weekly selection of the best articles, or use the search to find a specific topic.']],
 ];
